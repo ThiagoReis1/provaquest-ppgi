@@ -126,7 +126,7 @@ export const studyData = {
             distractors:
               "A, C e D incluem a afirmação II, que confunde a propriedade de um heap máximo com a de um heap mínimo.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades de heap e das operações de fila de prioridades.",
           },
           blocks: [
             {
@@ -204,8 +204,7 @@ export const studyData = {
               "Alternativa C: O(e) no melhor caso e O(e) no pior caso.",
             distractors:
               "A e B desconsideram a duplicação das chamadas recursivas; D acrescenta um fator logarítmico que não aparece na soma do trabalho da árvore de recursão.",
-            method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+            method: "Desenvolvimento da recorrência e análise dos casos-base.",
           },
           blocks: [
             {
@@ -227,7 +226,7 @@ export const studyData = {
         },
         {
           number: 4,
-          subject: "Estruturas de dados",
+          subject: "Algoritmos",
           prompt:
             "Sejam x[i] e x[j] dois elementos de iguais chaves armazenados em um vetor. Um algoritmo de ordenação é dito estável se ao final da ordenação x[i] e x[j] mantêm suas posições relativas inalteradas. Considere as seguintes afirmações:\nI. A implementação clássica do algoritmo Quick Sort não é estável;\nII. A implementação clássica do algoritmo Merge Sort é sempre estável, independentemente do critério de desempate adotado na fase de intercalação;\nIII. A implementação clássica do algoritmo Heap Sort não é estável.\nConsidere que, por implementação clássica, a questão refere-se à versão usual dos algoritmos, na qual o algoritmo apenas realiza comparações de chaves, sem fazer uso de mecanismos auxiliares para garantir a estabilidade.\nQuais afirmações são verdadeiras?",
           intro: null,
@@ -267,7 +266,7 @@ export const studyData = {
             distractors:
               "A omite a afirmação III, que é verdadeira; C e D incluem II, embora a estabilidade do Merge Sort dependa do critério de desempate.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Análise da propriedade de estabilidade dos algoritmos de ordenação.",
           },
           blocks: [
             {
@@ -301,9 +300,16 @@ export const studyData = {
               text: "Quais afirmações são verdadeiras?",
             },
           ],
-          topic: "Heaps",
-          subtopic: "Heap e fila de prioridades",
-          searchTerms: ["heap", "heapsort", "fila de prioridades"],
+          topic: "Ordenação",
+          subtopic: "Estabilidade de ordenação",
+          searchTerms: [
+            "ordenação",
+            "estabilidade",
+            "algoritmo estável",
+            "quicksort",
+            "mergesort",
+            "heapsort",
+          ],
         },
         {
           number: 5,
@@ -348,7 +354,7 @@ export const studyData = {
             distractors:
               "A omite III, B omite II e C omite I, embora as três propriedades sejam garantidas pela divisão e pela intercalação do Merge Sort nesse vetor.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -436,7 +442,7 @@ export const studyData = {
             distractors:
               "A inclui I, que é falsa; B inclui II, que é falsa; C inclui as duas afirmações falsas e exclui III, que é verdadeira.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -468,7 +474,7 @@ export const studyData = {
         },
         {
           number: 7,
-          subject: "Estruturas de dados",
+          subject: "Algoritmos",
           prompt:
             "Considere o pseudocódigo a seguir, no qual uma linha do algoritmo foi substituída pela string ???\nvoid f(int v[], int n) {\n    int tmp1, tmp2, x, y;\n    for (x = 0; x < n; x++) {\n        tmp1 = v[x];\n        tmp2 = x;\n        for (y = x + 1; y < n; y++) {\n            ???\n        }\n        tmp1 = v[tmp2];\n        v[tmp2] = v[x];\n        v[x] = tmp1;\n    }\n}\nConsidere ainda as opções:\nI. if (v[y] < v[tmp2]) {\n    tmp2 = y;\n}\nII. if (v[y] > v[tmp2]) {\n    tmp2 = y;\n}\nIII. if (v[y] > v[tmp2]) {\n    v[y] = v[y+1];\n}\nAssinale a alternativa correta.",
           intro: null,
@@ -510,7 +516,7 @@ export const studyData = {
             distractors:
               "A chama incorretamente o procedimento de inserção; B também o chama de inserção, embora a opção II selecione máximos; D não seleciona o mínimo e ainda pode acessar v[y+1] fora do vetor quando y = n − 1.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do índice do menor elemento para identificar a ordenação por seleção.",
           },
           blocks: [
             {
@@ -551,13 +557,13 @@ export const studyData = {
               text: "Assinale a alternativa correta.",
             },
           ],
-          topic: "Árvores",
-          subtopic: "BST e percursos",
+          topic: "Ordenação",
+          subtopic: "Ordenação por seleção",
           searchTerms: [
-            "árvore",
-            "bst",
-            "árvore binária de busca",
-            "percursos",
+            "ordenação",
+            "selection sort",
+            "ordenação por seleção",
+            "seleção do menor elemento",
           ],
         },
         {
@@ -604,7 +610,7 @@ export const studyData = {
             distractors:
               "B e D incluem a afirmação III, que é falsa; C também inclui III e exclui a afirmação II, que é verdadeira.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -735,7 +741,7 @@ export const studyData = {
             distractors:
               "A e D incluem lista simplesmente encadeada, que utiliza apenas um ponteiro de ligação por nó; B inclui árvore B, cujos nós não são descritos, em geral, por uma única chave e exatamente dois ponteiros.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das referências, endereços e alterações na memória.",
           },
           blocks: [
             {
@@ -874,7 +880,7 @@ export const studyData = {
             distractors:
               "A percorre posições consecutivas, mas sua exclusão depende da tabela legível; B, partindo de 2, visita apenas 2, 3, 6 e 4, nunca alcançando 1; C está corrompida e não pode ser avaliada com segurança.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -1032,7 +1038,7 @@ export const studyData = {
             distractors:
               "A indica a base quando há vários elementos; B indica a próxima posição livre, se houver capacidade; D indica o último espaço do vetor, que só coincide com o topo quando a pilha está cheia.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -1125,7 +1131,7 @@ export const studyData = {
             distractors:
               "A e B não correspondem às 10.000 acumulações com passo = −1, enquanto C corresponderia a passo = +1.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do algoritmo e verificação do invariante solicitado.",
           },
           blocks: [
             {
@@ -1184,7 +1190,7 @@ export const studyData = {
             distractors:
               "B e C ignoram uma das duas atribuições executadas; D é falsa porque uma fila vazia recebe o novo nó, e o retorno antecipado ocorre apenas se a alocação falhar.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {
@@ -1302,7 +1308,7 @@ export const studyData = {
             distractors:
               "A, B e C não devem ser marcadas porque descrevem propriedades válidas: alcançabilidade por busca em profundidade, verificação de conexão forte por buscas em largura e correção de Dijkstra com pesos não negativos.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Modelagem do grafo e rastreamento das operações ou do algoritmo solicitado.",
           },
           blocks: [
             {
@@ -1489,7 +1495,7 @@ export const studyData = {
             distractors:
               "A ignora as 10 repetições externas; B trata o laço externo como se executasse n vezes; D soma 10 em vez de multiplicar a quantidade de execuções internas por 10.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -1552,7 +1558,7 @@ export const studyData = {
             distractors:
               "A, B e C indicam tamanhos menores que a quantidade de cinco chaves que colidem no índice 2.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -1853,7 +1859,7 @@ export const studyData = {
             distractors:
               "A inverte as estruturas adequadas para I e II e usa vetor em III; C não associa pilha a I nem fila a II; D acerta I, mas não associa fila a II nem lista encadeada a III.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -1997,7 +2003,7 @@ export const studyData = {
             distractors:
               "A mantém o meio no intervalo ao fazer j = meio e pode impedir o término; B inclui o índice inválido tamanho; D atualiza os limites no sentido contrário ao descarte correto.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -2274,7 +2280,7 @@ export const studyData = {
             distractors:
               "A usa insert sem o índice exigido e remove do final; B insere antes do último elemento e remove do final, sem preservar FIFO; D usa append com argumentos inválidos e remove(0) busca o valor 0, não o elemento da posição 0.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {
@@ -2334,7 +2340,7 @@ export const studyData = {
             distractors:
               "A aceita a matriz ao encontrar condições isoladas corretas, sem rejeitar as incorretas; B nunca verifica a diagonal nem a parte inferior, pois j começa em i + 1; D também ignora essas posições e pode restaurar flag para 1 após detectar um erro.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Identificação das propriedades da estrutura e simulação da operação solicitada.",
           },
           blocks: [
             {
@@ -2465,7 +2471,7 @@ export const studyData = {
             distractors:
               "A não corrige o ponteiro anterior de C; C não corrige o ponteiro próxima de A e altera desnecessariamente o próximo de C; D é incorreta porque excluir um nó não atualiza automaticamente os ponteiros dos demais.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {
@@ -2533,7 +2539,7 @@ export const studyData = {
             distractors:
               "A exigiria remoção por ordem de chegada, não do último inserido; C exigiria uma organização hierárquica não descrita; D exigiria uma regra de prioridade, também ausente.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das referências, endereços e alterações na memória.",
           },
           blocks: [
             {
@@ -2772,7 +2778,7 @@ export const studyData = {
             distractors:
               "A corresponde à soma 1 + 2 + 3 + 4, mas o código multiplica; B corresponde a 4², operação não realizada; D corresponde a 5!, enquanto a chamada calcula 4!.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do algoritmo e verificação do invariante solicitado.",
           },
           blocks: [
             {
@@ -2850,7 +2856,7 @@ export const studyData = {
             distractors:
               "A indica uma remoção a mais, C desconsidera uma das remoções e D conta todas as visitas sem descontar os comandos Voltar().",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -2931,7 +2937,7 @@ export const studyData = {
             distractors:
               "B mantém os pacientes já atendidos e exclui os que aguardavam, C coloca os novos pacientes antes dos antigos e D inverte a ordem correta da lista.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {
@@ -3027,7 +3033,7 @@ export const studyData = {
             distractors:
               "B remove indevidamente o pedido 103, C exclui o pedido 105 sem atendimento e D exclui indevidamente tanto 103 quanto 105.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {
@@ -3117,7 +3123,7 @@ export const studyData = {
             distractors:
               "A corresponde ao percurso em ordem, B ao percurso em ordem inversa e D não começa pela raiz, contrariando a pré-ordem.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da propriedade de ordem da BST durante a operação ou percurso.",
           },
           blocks: [
             {
@@ -3345,7 +3351,7 @@ export const studyData = {
             distractors:
               "B altera a ordem original da parte direita, C deixa a parte esquerda desordenada e também altera a direita, e D deixa a parte esquerda desordenada.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -3459,7 +3465,7 @@ export const studyData = {
             distractors:
               "B contém 12 e 31, que ficam pretos na última recoloração, C inclui 31 preto e a raiz 38 preta, e D inclui 38 e 41, ambos pretos no estado final.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -3528,7 +3534,7 @@ export const studyData = {
             distractors:
               "A indica o índice 4, já ocupado por 11, enquanto B e D indicam índices que não são alcançados antes da primeira posição livre, o índice 9.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -3619,7 +3625,7 @@ export const studyData = {
             distractors:
               "A, C e D indicam, respectivamente, 5, 20 e 30, mas nenhuma dessas chaves ocupa a raiz após o rebalanceamento RL final.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -3700,7 +3706,7 @@ export const studyData = {
             distractors:
               'A remove indevidamente todos os filtros, C mantém "Saturação+20" apesar do último Desfazer, e D mantém esse filtro enquanto elimina incorretamente "Brilho+10".',
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -3780,7 +3786,7 @@ export const studyData = {
             distractors:
               "A pula a comparação com o centro do intervalo restante, B realiza uma busca sequencial, e C começa pelas extremidades em vez de pelo elemento central.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -3843,7 +3849,7 @@ export const studyData = {
             distractors:
               "A e B não começam pela raiz 50, como exige a pré-ordem, e D não corresponde à remoção de 30 por substituição pelo sucessor 35 ou pelo predecessor 20.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da propriedade de ordem da BST durante a operação ou percurso.",
           },
           blocks: [
             {
@@ -3912,7 +3918,7 @@ export const studyData = {
             distractors:
               "A aponta o índice 3, ocupado por 10, enquanto C e D apontam os índices 5 e 6, ocupados por 31 e 18.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -4005,8 +4011,7 @@ export const studyData = {
             conclusion: "Alternativa D: return max(primeiro, maior(resto)).",
             distractors:
               "A usa um laço, não recursão, e ainda referencia list[0] em vez de lista[0]; B compara o primeiro elemento com uma lista sem calcular seu máximo; C também compara diretamente um elemento com uma lista.",
-            method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+            method: "Desenvolvimento da recorrência e análise dos casos-base.",
           },
           blocks: [
             {
@@ -4062,7 +4067,7 @@ export const studyData = {
             distractors:
               "B e C usam valores centrais incompatíveis com os limites e a fórmula fornecidos, enquanto D erra a segunda comparação e retorna o índice 7, que contém 720.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -4200,7 +4205,7 @@ export const studyData = {
             distractors:
               "A intercala partes ordenadas, B particiona usando pivôs e C utiliza um heap, em vez de inserir cada elemento no prefixo ordenado por deslocamentos.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -4364,7 +4369,7 @@ export const studyData = {
             distractors:
               "B rompe as ligações ao atribuir NULL, C altera os campos e nós errados, e D libera também os vizinhos, que deveriam permanecer na lista.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos nós e dos ponteiros alterados pelas operações.",
           },
           blocks: [
             {
@@ -4444,7 +4449,7 @@ export const studyData = {
             distractors:
               "B, C, D e E apresentam contagens diferentes de 6 e não correspondem ao produto das quantidades de iterações dos dois laços.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Identificação das propriedades da estrutura e simulação da operação solicitada.",
           },
           blocks: [
             {
@@ -4590,7 +4595,7 @@ export const studyData = {
             distractors:
               "B, C, D e E não se aplicam porque 18 possui exatamente 6 divisores positivos, e não 7, 5, 8 ou 4.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -4653,7 +4658,7 @@ export const studyData = {
             distractors:
               "A, B, C e D não se aplicam porque há 6 operações Push e 4 operações Pop válidas, resultando em 6 − 4 = 2 elementos.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -4885,7 +4890,7 @@ export const studyData = {
             distractors:
               "A, B, D e E propõem alturas de pelo menos 4, que exigem no mínimo 12 nós em uma AVL e, portanto, são impossíveis com 9 nós.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -4945,7 +4950,7 @@ export const studyData = {
             distractors:
               "A inclui indevidamente 3 e exclui 7; B inclui 4 e 5, que não respeitam a partição; D exclui o possível pivô 7; E não se aplica porque C está correta.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -5019,7 +5024,7 @@ export const studyData = {
             distractors:
               "A, C e D escolhem algoritmos com pior caso quadrático, enquanto E afirma um empate inexistente entre o pior caso do QuickSort e o do MergeSort.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -5085,7 +5090,7 @@ export const studyData = {
             distractors:
               "A nega o uso de alocação dinâmica; B afirma inserção no fim; C afirma uma liberação explícita inexistente; E não se aplica porque D está correta.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -5149,7 +5154,7 @@ export const studyData = {
             distractors:
               "A e C indicam três avaliações, e C ainda nega a dependência do tamanho da lista; D indica zero avaliações; E confunde a única execução do corpo com as duas avaliações da condição.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -5213,7 +5218,7 @@ export const studyData = {
             distractors:
               "A confunde o valor procurado com seu índice; B indica uma terceira execução inexistente; D indica três execuções e uma busca sem sucesso; E não se aplica porque C está correta.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -5275,7 +5280,7 @@ export const studyData = {
             distractors:
               "A, C, D e E apresentam valores diferentes da soma dos dígitos de 42, que é 6.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -5341,7 +5346,7 @@ export const studyData = {
             distractors:
               "A, B, C e E não correspondem ao acumulador final 24; em particular, 6 seria a soma dos dígitos, não a operação realizada por esta função.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -5487,7 +5492,7 @@ export const studyData = {
             distractors:
               "A usa 15%, que não é uma expressão percentual válida em C; B desconta 85%; C produz −0,15 vezes o valor original; D divide por 1,15, o que não equivale a descontar 15%.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Identificação das propriedades da estrutura e simulação da operação solicitada.",
           },
           blocks: [
             {
@@ -5546,7 +5551,7 @@ export const studyData = {
             distractors:
               "A, B e D consideram a afirmação II verdadeira, enquanto E desconsidera a veracidade das afirmações I e III.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -5632,7 +5637,7 @@ export const studyData = {
             distractors:
               "A apresenta a ordem de inserção, B percorre a lista desde ea, D omite 8 mas inverte a ordem efetiva do percurso, e E não se aplica porque C corresponde à saída.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -5694,8 +5699,7 @@ export const studyData = {
               "Alternativa E, conforme o gabarito oficial: n <= 1; a validação completa depende dos trechos ausentes.",
             distractors:
               "A testa apenas 0, B testa valores até 0, C testa apenas 1 e D inclui também 2; sem a recorrência e o pseudocódigo, não é possível justificar integralmente por que essas condições não se aplicam à lacuna.",
-            method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+            method: "Desenvolvimento da recorrência e análise dos casos-base.",
           },
           blocks: [
             {
@@ -5753,7 +5757,7 @@ export const studyData = {
             distractors:
               "A exclui indevidamente III, B exclui I, C exclui II e E rejeita D, embora as três afirmações sejam verdadeiras.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades da árvore e rastreamento do percurso solicitado.",
           },
           blocks: [
             {
@@ -5904,7 +5908,7 @@ export const studyData = {
             distractors:
               "A corresponde a crescimento linear ao dobrar a entrada, enquanto B e D não correspondem ao fator quadrático 4 calculado.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -5967,7 +5971,7 @@ export const studyData = {
             distractors:
               "B, C e D incluem a afirmação III, que é falsa; além disso, B exclui II e C exclui I, ambas verdadeiras.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -6045,7 +6049,7 @@ export const studyData = {
             distractors:
               "A e B não seguem a sequência de pontos centrais da busca binária; C é incorreta porque uma chave ausente também exige comparações para que sua ausência seja constatada.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -6184,7 +6188,7 @@ export const studyData = {
             distractors:
               "B e D incluem a afirmação II, que é falsa, e C considera verdadeira a afirmação III, embora inserções crescentes não eliminem a garantia de balanceamento.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -6330,7 +6334,7 @@ export const studyData = {
             distractors:
               "B impõe quantidade de filhos e altura que não definem uma AVL; C exige igualdade de alturas, embora diferença de 1 seja permitida; D descreve uma propriedade de busca, não de balanceamento.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -6389,7 +6393,7 @@ export const studyData = {
             distractors:
               "A e B recebem Lista * e fazem atribuições incompatíveis ao usar *lista como ponteiro; D usa a expressão inválida *lista->prox e não liga o novo nó ao antigo início da lista.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos nós e dos ponteiros alterados pelas operações.",
           },
           blocks: [
             {
@@ -6452,7 +6456,7 @@ export const studyData = {
             distractors:
               "A, B e D incluem a afirmação II, cuja recomendação universal do quick sort é incorreta.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -6531,7 +6535,7 @@ export const studyData = {
             distractors:
               "A e B correspondem às contagens para chamada(2) e chamada(3), não chamada(4); D superestima a contagem ao não respeitar o encerramento da recursão em n ≤ 1.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -6593,7 +6597,7 @@ export const studyData = {
             distractors:
               "B, C e D apresentam valores que não correspondem à soma chamada(3) + chamada(2), que é 3.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -6656,7 +6660,7 @@ export const studyData = {
             distractors:
               "A omite a afirmação II, que é verdadeira, enquanto C e D incluem a afirmação III, que é falsa.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -6737,7 +6741,7 @@ export const studyData = {
             distractors:
               "B descreve o balanceamento de árvores AVL, C impõe uma exigência inexistente aos nós pretos e D apresenta um critério percentual que não define o balanceamento rubro-negro.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -6797,7 +6801,7 @@ export const studyData = {
             distractors:
               "A não apresenta o limite característico e não vale universalmente para árvores pequenas, C indica incorretamente um pior caso quadrático e D estabelece um limite menor que o garantido.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -6915,7 +6919,7 @@ export const studyData = {
             distractors:
               "A inverte os princípios, C ignora a diferença na ordem de remoção e D nega incorretamente que pilhas e filas sejam estruturas comuns na programação.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -6969,7 +6973,7 @@ export const studyData = {
             distractors:
               "B acrescenta um endereço final que não é passado automaticamente, C supõe a cópia dos elementos e D supõe o envio automático do tamanho.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das referências, endereços e alterações na memória.",
           },
           blocks: [
             {
@@ -7025,7 +7029,7 @@ export const studyData = {
             distractors:
               "A, B e D não correspondem à sequência das somas de 1 até x − 1 para as entradas 9, 7, 6 e 10.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do algoritmo e verificação do invariante solicitado.",
           },
           blocks: [
             {
@@ -7092,7 +7096,7 @@ export const studyData = {
             distractors:
               "A soma a despesa a 118% dela, resultando em 218%; B imprime apenas a gorjeta; D calcula 18% do quadrado da despesa, em vez de somar a gorjeta à despesa.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -7221,7 +7225,7 @@ export const studyData = {
             distractors:
               "B e D incluem III, que atribui incorretamente custo quadrático ao pior caso; C exclui II, embora a divisão em construção do heap e seleção esteja correta.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades de heap e das operações de fila de prioridades.",
           },
           blocks: [
             {
@@ -7294,7 +7298,7 @@ export const studyData = {
             distractors:
               "A e C indicam custos superiores ao necessário para a melhor implementação; D ignora que restaurar a propriedade do heap pode exigir percorrer sua altura.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades de heap e das operações de fila de prioridades.",
           },
           blocks: [
             {
@@ -7348,7 +7352,7 @@ export const studyData = {
             distractors:
               "A aplica crescimento linear, B aplica crescimento quadrático e D não corresponde à razão cúbica entre os tamanhos das entradas.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -7411,7 +7415,7 @@ export const studyData = {
             distractors:
               "A, C e D incluem II, que estabelece indevidamente um limite superior universal para o custo dos algoritmos.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Identificação das propriedades da estrutura e simulação da operação solicitada.",
           },
           blocks: [
             {
@@ -7485,7 +7489,7 @@ export const studyData = {
             distractors:
               "A não segue a seleção dos índices centrais; C confunde ausência da chave com ausência de comparações; D segue para valores maiores após constatar que 9 é menor que 10.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -7622,7 +7626,7 @@ export const studyData = {
             distractors:
               "A e B afirmam incorretamente que a remoção retira 2; C atribui custo proporcional ao tamanho da pilha, embora a remoção padrão no topo tenha custo constante.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -7699,7 +7703,7 @@ export const studyData = {
             distractors:
               "A ignora a possibilidade de busca binária; C desconsidera os deslocamentos e atribui custo constante à busca; D atribui custo logarítmico à remoção, embora ela possa exigir deslocamentos lineares.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -7829,7 +7833,7 @@ export const studyData = {
             distractors:
               "A e B apresentam custos de inserção e remoção maiores que os necessários aos melhores algoritmos, enquanto B e C indicam busca linear apesar de ser possível usar busca binária.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -7888,7 +7892,7 @@ export const studyData = {
             distractors:
               "A e C não se aplicam porque nenhuma ocorrência de 2 ou 1 separa corretamente valores menores e maiores; D não se aplica porque há um 9 à esquerda de 7 e valores menores à sua direita.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -7956,7 +7960,7 @@ export const studyData = {
             distractors:
               "A e B subestimam as duas inserções em posições já ocupadas, enquanto D contabiliza uma colisão a mais do que ocorre.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -8016,7 +8020,7 @@ export const studyData = {
             distractors:
               "A e B excedem o comprimento dos caminhos de busca dessa árvore, enquanto C desconsidera as buscas que chegam ao terceiro nível.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades da árvore e rastreamento do percurso solicitado.",
           },
           blocks: [
             {
@@ -8072,7 +8076,7 @@ export const studyData = {
             distractors:
               "A confunde o valor procurado com o retorno da função; C indica a posição real de 100, que não é visitada; D indica um índice que também não é retornado.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -8131,7 +8135,7 @@ export const studyData = {
             distractors:
               "B ignora a verificação de duplicidade e o custo de inserção na árvore; C atribui custo constante às buscas no pior caso; D desconsidera o efeito das colisões em todas as operações.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -8201,7 +8205,7 @@ export const studyData = {
             distractors:
               "A ignora as chamadas executadas; B conta apenas as três chamadas recursivas, excluindo a inicial; D acrescenta uma chamada que não ocorre após encontrar o item.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -8261,7 +8265,7 @@ export const studyData = {
             distractors:
               "A e B apresentam as próprias matrizes de entrada, não o produto; C troca as duas linhas do resultado.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -8322,7 +8326,7 @@ export const studyData = {
             distractors:
               "A não considera a última remoção nem a mensagem de erro; C remove indevidamente o elemento 2; D omite a mensagem e também o elemento 2 que permanece.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações LIFO e acompanhamento do topo da pilha.",
           },
           blocks: [
             {
@@ -8389,7 +8393,7 @@ export const studyData = {
             distractors:
               "A é incorreta porque fator foi fornecido e preservado pela closure; C apresenta somente o fator, não o produto; D não corresponde ao cálculo 5 × 3.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do fluxo de execução e das variáveis linha a linha.",
           },
           blocks: [
             {
@@ -8468,7 +8472,7 @@ export const studyData = {
             distractors:
               "A coloca 21 na posição 3, B e E colocam 18 na posição 0, e D coloca 21 na posição 6, produzindo configurações diferentes da obtida por C; sem a tabela de referência, não é possível rejeitá-las de forma independente do gabarito.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da função hash e simulação da estratégia de resolução de colisões.",
           },
           blocks: [
             {
@@ -8548,7 +8552,7 @@ export const studyData = {
             distractors:
               "B, C e D não representam a árvore obtida por essa sequência de inserções e rotações, enquanto E é incompatível com a existência da árvore AVL resultante indicada pelo gabarito.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -8616,7 +8620,7 @@ export const studyData = {
             distractors:
               "A tem crescimento cúbico; B e E têm crescimento quadrático; C tem crescimento constante, não linear.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -8677,7 +8681,7 @@ export const studyData = {
             distractors:
               "A e B superestimam a quantidade de itens examinados, enquanto D e E a subestimam, conforme a simulação da pesquisa binária.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos limites e das comparações da busca binária.",
           },
           blocks: [
             {
@@ -8736,7 +8740,7 @@ export const studyData = {
             distractors:
               "A inverte a ordem efetiva da impressão, C e D indicam filtros de posição inexistentes no código, e E não se aplica porque B descreve corretamente a função.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos nós e dos ponteiros alterados pelas operações.",
           },
           blocks: [
             {
@@ -8803,7 +8807,7 @@ export const studyData = {
             distractors:
               "A ignora o crescimento das cadeias, B e D não se aplicam porque o pior caso pode exigir percorrer n chaves na mesma cadeia, e E é incorreta porque C é verdadeira.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -8868,7 +8872,7 @@ export const studyData = {
             distractors:
               "A não rompe a ligação do penúltimo com o último e cria um ciclo, B faz o último apontar para si mesmo, C perde a ligação com o início original, e E deixa de realizar a movimentação.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação da propriedade de ordem da BST durante a operação ou percurso.",
           },
           blocks: [
             {
@@ -8940,7 +8944,7 @@ export const studyData = {
             distractors:
               "Nas versões usuais consideradas, heapsort e mergesort mantêm custo O(n log n), quicksort não tem comportamento linear garantido para valores iguais, e E é falsa porque insertion sort é linear nesse caso.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Contagem de operações e comparação das ordens assintóticas.",
           },
           blocks: [
             {
@@ -9004,7 +9008,7 @@ export const studyData = {
             distractors:
               "B confunde igualdade de altura preta com igualdade entre quantidades de pretos e vermelhos, C contraria a propriedade de raiz preta, D exige indevidamente filhos vermelhos para nós pretos, e E é falsa porque A é verdadeira.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Aplicação das propriedades rubro-negras após a operação indicada.",
           },
           blocks: [
             {
@@ -9067,8 +9071,7 @@ export const studyData = {
               "Alternativa E: pilha é a estrutura usada para implementar as chamadas recursivas.",
             distractors:
               "Heap binário, tabela hash e árvore de busca não representam a ordem de retorno das chamadas, enquanto a fila usa FIFO, e não o LIFO necessário.",
-            method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+            method: "Desenvolvimento da recorrência e análise dos casos-base.",
           },
           blocks: [
             {
@@ -9183,7 +9186,7 @@ export const studyData = {
             distractors:
               "Segundo o gabarito, A, B e C incluem indevidamente a árvore B ou excluem alguma árvore válida, enquanto E nega que A e C sejam AVL; sem as figuras, essas classificações não podem ser verificadas.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -9308,7 +9311,7 @@ export const studyData = {
             distractors:
               "A e E representam custo linear, pois Θ(n/2) = Θ(n), enquanto C e D não bastam, no pior caso, para determinar os limites do bloco de ocorrências.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento do algoritmo e verificação do invariante solicitado.",
           },
           blocks: [
             {
@@ -9368,7 +9371,7 @@ export const studyData = {
             distractors:
               "B e D afirmam indevidamente igualdade de alturas, C inverte a tendência de altura e E é falsa porque A descreve corretamente a comparação.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Atualização de alturas e fatores de balanceamento após cada operação.",
           },
           blocks: [
             {
@@ -9489,7 +9492,7 @@ export const studyData = {
             distractors:
               "A subestima o tamanho máximo, enquanto B, D e E excedem os 360 segundos no modelo T(n) proporcional a n log₂ n.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -9561,7 +9564,7 @@ export const studyData = {
             distractors:
               "B ordena a partir da extremidade direita, C não mantém o prefixo ordenado, D troca a ordem das inserções de 3 e 2 e E altera elementos que ainda não deveriam ser processados.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento das permutações e das propriedades do algoritmo de ordenação.",
           },
           blocks: [
             {
@@ -9627,7 +9630,7 @@ export const studyData = {
             distractors:
               "A, B, C e D apresentam subconjuntos incompletos, pois todas as quatro operações podem ser realizadas em tempo O(1).",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Rastreamento dos nós e dos ponteiros alterados pelas operações.",
           },
           blocks: [
             {
@@ -9714,7 +9717,7 @@ export const studyData = {
             distractors:
               "A erra a condição de vazio, B e D usam a condição de vazio para indicar fila cheia, e C avança FRONT em vez de REAR para testar a falta de espaço.",
             method:
-              "Conte as iterações do algoritmo e relacione-as ao tamanho de n.",
+              "Simulação das operações FIFO e acompanhamento das extremidades da fila.",
           },
           blocks: [
             {

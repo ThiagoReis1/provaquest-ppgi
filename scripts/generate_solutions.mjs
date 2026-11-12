@@ -1,9 +1,11 @@
 import fs from 'node:fs/promises';
-import { pathToFileURL } from 'node:url';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const { LlmClient, messageText } = await import(pathToFileURL('/home/ubuntu/skills/builtin-llm-models/lib/llm.mjs').href);
-const inputPath = '/home/ubuntu/provaquest/client/src/data/questions.json';
-const outputPath = '/home/ubuntu/provaquest/client/src/data/solutions.json';
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const inputPath = path.join(projectRoot, 'client/src/data/questions.json');
+const outputPath = path.join(projectRoot, 'client/src/data/solutions.json');
 const data = JSON.parse(await fs.readFile(inputPath, 'utf8'));
 const items = data.editions.flatMap((edition) => edition.questions
   .filter((question) => !question.annulled && !question.needsReview)

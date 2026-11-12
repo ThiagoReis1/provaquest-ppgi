@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,8 +67,30 @@ def validate() -> dict:
     actual_figures = {path.name for path in FIGURES_DIR.glob("*.webp")}
     assert actual_figures == figure_names, f"Figuras órfãs ou ausentes: arquivos={actual_figures ^ figure_names}"
     ts_text = TS_PATH.read_text(encoding="utf-8")
-    assert "export const studyData" in ts_text
-    assert re.search(r"export const studyData = \{", ts_text)
+    generated = (
+        "// Generated from the official PPGI/UFAM exam PDFs.\n"
+        "// Do not edit manually; update questions.json and run scripts/json_to_ts.py.\n"
+        "export const studyData = "
+        + json.dumps(data, ensure_ascii=False, indent=2)
+        + " as const;\n"
+    )
+    formatted = subprocess.run(
+        [
+            "pnpm",
+            "exec",
+            "prettier",
+            "--parser",
+            "typescript",
+            "--stdin-filepath",
+            str(TS_PATH.relative_to(ROOT)),
+        ],
+        input=generated,
+        text=True,
+        capture_output=True,
+        cwd=ROOT,
+        check=True,
+    ).stdout
+    assert ts_text == formatted, "questions.ts diverge de questions.json; execute scripts/json_to_ts.py"
     return {"editions": len(editions), "questions": len(ids), "annulled": annulled, "review": review, "valid": valid, "figures": len(figure_names)}
 
 

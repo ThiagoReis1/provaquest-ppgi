@@ -53,6 +53,8 @@ describe("acervo de questões", () => {
     expect(question("2026-01", 11).subtopic).toBe("Árvores B e B+");
     expect(question("2025-02", 8).subtopic).toBe("Rubro-negra");
     expect(question("2026-02", 2).subtopic).toBe("Heap e fila de prioridades");
+    expect(question("2026-02", 4).subtopic).toBe("Estabilidade de ordenação");
+    expect(question("2026-02", 7).subtopic).toBe("Ordenação por seleção");
     expect(question("2025-02", 6).subject).toBe("Algoritmos");
   });
 

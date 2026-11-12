@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +22,11 @@ def main() -> None:
         + json.dumps(data, ensure_ascii=False, indent=2)
         + " as const;\n",
         encoding="utf-8",
+    )
+    subprocess.run(
+        ["pnpm", "exec", "prettier", "--write", str(args.output)],
+        cwd=ROOT,
+        check=True,
     )
     print(args.output)
 

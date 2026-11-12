@@ -2080,6 +2080,14 @@ button:disabled {
   color: var(--coral);
   background: var(--coral-soft);
 }
+.stage-neutral .stage-dot {
+  color: #64748b;
+  background: #eef2f6;
+}
+.stage-warning .stage-dot {
+  color: #9a6700;
+  background: #fff4cc;
+}
 .candidate-stage b,
 .candidate-stage small {
   display: block;
@@ -2203,6 +2211,9 @@ button:disabled {
 }
 .candidate-stage-row.stage-no {
   background: #fff9f7;
+}
+.candidate-stage-row.stage-warning {
+  background: #fffdf4;
 }
 .stage-name {
   display: flex;

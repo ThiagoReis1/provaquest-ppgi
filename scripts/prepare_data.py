@@ -159,7 +159,23 @@ for edition in EDITIONS:
 
 out = ROOT / 'client/src/data/questions.json'
 out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(json.dumps({'editions': all_editions}, ensure_ascii=False, indent=2))
+# A rerun of the OCR/import stage must not erase classification, solutions,
+# structured blocks, or figures produced by later pipeline stages.
+if out.is_file():
+    previous = json.loads(out.read_text(encoding='utf-8'))
+    previous_questions = {
+        (edition['id'], question['number']): question
+        for edition in previous.get('editions', [])
+        for question in edition.get('questions', [])
+    }
+    derived_fields = ('topic', 'subtopic', 'searchTerms', 'solution', 'blocks', 'figures')
+    for edition in all_editions:
+        for question in edition['questions']:
+            old_question = previous_questions.get((edition['id'], question['number']), {})
+            for field in derived_fields:
+                if field in old_question:
+                    question[field] = old_question[field]
+out.write_text(json.dumps({'editions': all_editions}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 print('wrote', out)
 for e in all_editions:
     print(e['id'], sum(not q['annulled'] and not q['needsReview'] for q in e['questions']), 'interactive,', sum(q['needsReview'] for q in e['questions']), 'needs review')

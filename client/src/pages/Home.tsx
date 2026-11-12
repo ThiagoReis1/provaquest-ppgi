@@ -32,6 +32,12 @@ import {
   sessionBelongsToEdition,
 } from "@/lib/simulation";
 import { matchesQuestionQuery } from "@/lib/questionFilters";
+import { candidateStageTone } from "@/lib/candidateStageTone";
+import {
+  availableSubjects,
+  availableSubtopics,
+  availableTopics,
+} from "@/lib/questionTaxonomy";
 
 type Edition = (typeof studyData.editions)[number];
 type Question = Edition["questions"][number];
@@ -216,6 +222,18 @@ function sanitizeProgress(value: unknown): Record<string, boolean> {
     )
   );
 }
+function sanitizeResults(value: unknown): Record<string, boolean> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, correct]) =>
+        typeof correct === "boolean" && respondibleQuestionIds.has(id)
+    )
+  );
+}
+function isRespondible(question: Question) {
+  return !question.annulled && !question.needsReview;
+}
 const subjectColors: Record<string, string> = {
   Algoritmos: "coral",
   "Estruturas de dados": "blue",
@@ -382,6 +400,17 @@ export default function Home() {
       return {};
     }
   });
+  const [studyResults, setStudyResults] = useState<Record<string, boolean>>(
+    () => {
+      try {
+        return sanitizeResults(
+          JSON.parse(localStorage.getItem("provaquest-results") ?? "{}")
+        );
+      } catch {
+        return {};
+      }
+    }
+  );
 
   useEffect(() => {
     const syncBookmarks = (event: Event) => {
@@ -428,42 +457,34 @@ export default function Home() {
     ? Boolean(submitted[safeSession[sessionIndex]])
     : false;
 
-  const subjects = useMemo(() => {
-    const unique = new Set(allQuestions.map(question => question.subject));
-    return ["Todos os assuntos", ...Array.from(unique)];
-  }, []);
+  const subjects = useMemo(
+    () => [
+      "Todos os assuntos",
+      ...availableSubjects(allQuestions, selectedEdition),
+    ],
+    [selectedEdition]
+  );
 
-  const topics = useMemo(() => {
-    const unique = new Set(
-      allQuestions
-        .filter(
-          question =>
-            (selectedEdition === "todos" ||
-              question.editionId === selectedEdition) &&
-            (selectedSubject === "Todos os assuntos" ||
-              question.subject === selectedSubject)
-        )
-        .map(question => question.topic)
-    );
-    return ["Todos os temas", ...Array.from(unique).filter(Boolean)];
-  }, [selectedEdition, selectedSubject]);
+  const topics = useMemo(
+    () => [
+      "Todos os temas",
+      ...availableTopics(allQuestions, selectedEdition, selectedSubject),
+    ],
+    [selectedEdition, selectedSubject]
+  );
 
-  const subtopics = useMemo(() => {
-    const unique = new Set(
-      allQuestions
-        .filter(
-          question =>
-            (selectedEdition === "todos" ||
-              question.editionId === selectedEdition) &&
-            (selectedSubject === "Todos os assuntos" ||
-              question.subject === selectedSubject) &&
-            (selectedTopic === "Todos os temas" ||
-              question.topic === selectedTopic)
-        )
-        .map(question => question.subtopic)
-    );
-    return ["Todos os subtemas", ...Array.from(unique).filter(Boolean)];
-  }, [selectedEdition, selectedSubject, selectedTopic]);
+  const subtopics = useMemo(
+    () => [
+      "Todos os subtemas",
+      ...availableSubtopics(
+        allQuestions,
+        selectedEdition,
+        selectedSubject,
+        selectedTopic
+      ),
+    ],
+    [selectedEdition, selectedSubject, selectedTopic]
+  );
 
   const filteredQuestions = useMemo(() => {
     return allQuestions.filter(question => {
@@ -481,7 +502,6 @@ export default function Home() {
       const matchesBookmark =
         !bookmarkedOnly ||
         bookmarkedIds.includes(question.editionId + "-" + question.number);
-      const isRespondible = !question.annulled && !question.needsReview;
       return (
         matchesQuery &&
         matchesSubject &&
@@ -489,7 +509,7 @@ export default function Home() {
         matchesSubtopic &&
         matchesEdition &&
         matchesBookmark &&
-        isRespondible
+        isRespondible(question)
       );
     });
   }, [
@@ -512,6 +532,9 @@ export default function Home() {
         question => question.editionId + "-" + question.number === id
       )?.correct === answers[id]
   ).length;
+  const recordedCorrectCount =
+    Object.values(studyResults).filter(Boolean).length;
+  const recordedAnswerCount = Object.keys(studyResults).length;
   const globalProgress = Math.min(
     100,
     Math.round(
@@ -533,6 +556,16 @@ export default function Home() {
       localStorage.setItem("provaquest-progress", JSON.stringify(sanitized));
     } catch {
       /* storage bloqueado/quota excedida não interrompe a resposta */
+    }
+  }
+
+  function persistResult(id: string, correct: boolean) {
+    const next = sanitizeResults({ ...studyResults, [id]: correct });
+    setStudyResults(next);
+    try {
+      localStorage.setItem("provaquest-results", JSON.stringify(next));
+    } catch {
+      /* O histórico de aproveitamento é local e não pode interromper a resposta. */
     }
   }
 
@@ -630,6 +663,7 @@ export default function Home() {
     setSubmitted(next);
     const nextCompleted = { ...completed, [id]: true };
     persistProgress(nextCompleted);
+    persistResult(id, currentAnswer === currentQuestion.correct);
   }
 
   function goNext() {
@@ -664,6 +698,7 @@ export default function Home() {
     if (nextMode === "search") {
       setQuery("");
       setSelectedEdition("todos");
+      setSelectedSubject("Todos os assuntos");
       setSelectedTopic("Todos os temas");
       setSelectedSubtopic("Todos os subtemas");
     }
@@ -681,6 +716,28 @@ export default function Home() {
     },
     { id: "sources", label: "Fontes oficiais", icon: <FileText size={17} /> },
   ];
+
+  useEffect(() => {
+    const handleSearchShortcut = (event: KeyboardEvent) => {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLowerCase() === "k" &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        nav("search");
+        window.setTimeout(() => {
+          document
+            .querySelector<HTMLInputElement>(
+              'input[aria-label="Buscar questões"]'
+            )
+            ?.focus();
+        }, 0);
+      }
+    };
+    window.addEventListener("keydown", handleSearchShortcut);
+    return () => window.removeEventListener("keydown", handleSearchShortcut);
+  }, [mode]);
 
   return (
     <div className="app-shell">
@@ -726,7 +783,7 @@ export default function Home() {
                   {item.icon}
                   <span>{item.label}</span>
                   {item.id === "search" && (
-                    <span className="nav-shortcut">⌘K</span>
+                    <span className="nav-shortcut">Ctrl/⌘ K</span>
                   )}
                 </button>
               ))}
@@ -1059,19 +1116,32 @@ function QuestionCard({
   const id = question ? (sessionIds[sessionIndex] ?? "") : "";
   const [bookmarked, setBookmarked] = useState(false);
   useEffect(() => {
-    if (!id) {
-      setBookmarked(false);
-      return;
-    }
-    try {
-      setBookmarked(
-        JSON.parse(
+    const syncBookmark = (event?: Event) => {
+      if (!id) {
+        setBookmarked(false);
+        return;
+      }
+      const detail = (event as CustomEvent<string[]> | undefined)?.detail;
+      if (Array.isArray(detail)) {
+        setBookmarked(detail.includes(id));
+        return;
+      }
+      try {
+        const saved: unknown = JSON.parse(
           localStorage.getItem("provaquest-bookmarks") ?? "[]"
-        ).includes(id)
-      );
-    } catch {
-      setBookmarked(false);
-    }
+        );
+        setBookmarked(Array.isArray(saved) && saved.includes(id));
+      } catch {
+        setBookmarked(false);
+      }
+    };
+    syncBookmark();
+    window.addEventListener("provaquest-bookmarks-changed", syncBookmark);
+    window.addEventListener("storage", syncBookmark);
+    return () => {
+      window.removeEventListener("provaquest-bookmarks-changed", syncBookmark);
+      window.removeEventListener("storage", syncBookmark);
+    };
   }, [id]);
   if (!question)
     return (
@@ -1869,6 +1939,12 @@ function CandidatesView() {
   const activeStages = stageDefs.filter(def =>
     selectedEditionRecords.some(item => item.candidate.stages[def.id])
   );
+  const activeStageIds = activeStages.map(def => def.id).join("|");
+  useEffect(() => {
+    if (stage !== "todos" && !activeStageIds.split("|").includes(stage)) {
+      setStage("todos");
+    }
+  }, [stage, activeStageIds]);
   const normalized = query.trim().toLowerCase();
   const filtered = selectedEditionRecords.filter(item => {
     const c = item.candidate;
@@ -1979,7 +2055,7 @@ function CandidatesView() {
           onChange={event => setStage(event.target.value)}
         >
           <option value="todos">Todas as etapas</option>
-          {stageDefs.map(def => (
+          {activeStages.map(def => (
             <option key={def.id} value={def.id}>
               {def.label}
             </option>
@@ -2050,6 +2126,7 @@ function CandidatesView() {
                   target="_blank"
                   rel="noreferrer"
                   title="Abrir fonte oficial"
+                  aria-label={`Abrir fonte oficial de ${c.name}`}
                 >
                   <ExternalLink size={15} />
                 </a>
@@ -2064,18 +2141,23 @@ function CandidatesView() {
                         ? (entry.finalScore ?? entry.score)
                         : entry.score;
                     const status = statusFor(c, def, index);
-                    const passed =
-                      status === "Passou" ||
-                      status === "Homologada" ||
-                      /Classificado/i.test(status);
+                    const tone = candidateStageTone(def.id, status);
                     return (
                       <div
-                        className={`candidate-stage-row ${passed ? "stage-ok" : "stage-no"}`}
+                        className={`candidate-stage-row stage-${tone}`}
                         key={def.id}
                       >
                         <div className="stage-name">
                           <span className="stage-dot">
-                            {passed ? <Check size={11} /> : <X size={11} />}
+                            {tone === "positive" ? (
+                              <Check size={11} />
+                            ) : tone === "negative" ? (
+                              <X size={11} />
+                            ) : tone === "warning" ? (
+                              <CircleHelp size={11} />
+                            ) : (
+                              <FileText size={11} />
+                            )}
                           </span>
                           <div>
                             <b>{def.label}</b>

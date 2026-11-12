@@ -97,9 +97,22 @@ def main() -> None:
         "Recursão": "Algoritmos",
         "Programação": "Algoritmos",
     }
+    overrides = {
+        ("2026-02", 4): (
+            "Ordenação",
+            "Estabilidade de ordenação",
+            ["ordenação", "estabilidade", "algoritmo estável", "quicksort", "mergesort", "heapsort"],
+        ),
+        ("2026-02", 7): (
+            "Ordenação",
+            "Ordenação por seleção",
+            ["ordenação", "selection sort", "ordenação por seleção", "seleção do menor elemento"],
+        ),
+    }
     for edition in data["editions"]:
         for question in edition["questions"]:
-            topic, subtopic, terms = classify(question)
+            override = overrides.get((edition["id"], question["number"]))
+            topic, subtopic, terms = override or classify(question)
             question["subject"] = broad_subject.get(topic, topic)
             question["topic"] = topic
             question["subtopic"] = subtopic
