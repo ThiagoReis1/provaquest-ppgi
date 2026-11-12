@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-root=Path('/home/ubuntu/provaquest')
+root=Path(__file__).resolve().parents[1]
 data=json.loads((root/'client/src/data/questions.json').read_text())
 solutions=json.loads((root/'client/src/data/solutions.json').read_text())['solutions']
 for edition in data['editions']:

@@ -123,15 +123,42 @@ O script [`scripts/extract_figures.py`](scripts/extract_figures.py) recorta cada
 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
-pip install pymupdf numpy scipy pillow
+pip install -r requirements.txt
 sudo apt-get install -y tesseract-ocr tesseract-ocr-por   # só para as provas escaneadas
-python scripts/extract_figures.py            # gera as figuras
-python scripts/extract_figures.py --report   # só mostra o que seria gerado
+python scripts/extract_figures.py            # gera as figuras; PDFs em .sources/
+python scripts/extract_figures.py --report   # relatório sem gravar
+python scripts/validate_figures.py           # valida arquivos e metadados
+python scripts/validate_data.py              # valida questões e gabaritos
 ```
 
-Ordem do pipeline: `prepare_data.py` (texto) → `format_questions.py` (blocos, alternativas, explicações) → `extract_figures.py` (figuras). O `extract_figures.py` só acrescenta o campo `figures`, então pode ser rodado de novo a qualquer momento sem estragar o texto.
+Os nomes, URLs e arquivos esperados das fontes ficam em [`research/source_manifest.json`](research/source_manifest.json). Os PDFs não são versionados no Git; se uma fonte obrigatória estiver ausente, `extract_figures.py` termina com código de erro em vez de declarar sucesso incompleto. O pipeline usa a raiz do próprio clone, sem depender de `/home/ubuntu/provaquest`.
+
+Ordem do pipeline: `prepare_data.py` (texto) → `format_questions.py` (blocos, alternativas, explicações) → `scripts/json_to_ts.py` (artefato TypeScript) → `extract_figures.py` (figuras). O `extract_figures.py` só acrescenta o campo `figures`, então pode ser rodado de novo a qualquer momento sem estragar o texto.
+
+Para validar a aplicação JavaScript:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+pnpm check:format
+pnpm test
+pnpm test:coverage
+pnpm build
+pnpm validate:data
+pnpm validate:figures
+```
 
 No app, as figuras aparecem dentro do card da questão (`FigureList` em `client/src/pages/Home.tsx`), com clique para abrir em tamanho real.
+
+## Busca por questões em camadas
+
+A busca não depende apenas do texto livre. Cada questão respondível recebe uma classificação reproduzível em três níveis: **assunto** (Algoritmos, Estruturas de dados, Complexidade ou Grafos), **tema** (por exemplo, Árvores, Hash e espalhamento, Heaps, Grafos, Ordenação, Busca, Recursão, Programação ou Estruturas lineares) e **subtema**. Os subtemas agora distinguem AVL e balanceamento, BST e percursos, Rubro-negra, Árvores B e B+, Árvores binárias e percursos, Dijkstra e caminho mínimo, Heap e fila de prioridades, Colisões e encadeamento, Endereçamento aberto, Pilhas (LIFO), Filas (FIFO), Listas encadeadas, Busca binária, Algoritmos de ordenação, Recursão e recorrências, Ponteiros e memória e Operações bit a bit. Ao escolher um nível, o próximo seletor é recalculado somente com as opções compatíveis.
+
+O texto livre também aceita múltiplos termos, sem diferenciar maiúsculas ou acentos. Assim, `caminho minimo`, `Dijkstra`, `tabela hash`, `stack lifo` e `pilha` são encontrados por seus aliases. A taxonomia e os aliases ficam em `scripts/classify_topics.py`; para regenerar os campos `topic`, `subtopic` e `searchTerms` do JSON e do TypeScript, execute:
+
+```bash
+pnpm classify:data
+```
 
 ## Dados oficiais
 

@@ -1,0 +1,8 @@
+# Dependências do pipeline de preparação e extração de figuras.
+# O Tesseract OCR é uma dependência do sistema, instalada separadamente.
+PyMuPDF==1.26.5
+numpy==2.3.4
+scipy==1.16.2
+Pillow==11.3.0
+requests==2.32.5
+beautifulsoup4==4.14.2

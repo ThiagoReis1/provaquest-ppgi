@@ -1,8 +1,8 @@
 import json, pathlib, re, unicodedata, requests
 from bs4 import BeautifulSoup
 
-root = pathlib.Path('/tmp/ppgi_result_text')
-out = pathlib.Path('/home/ubuntu/provaquest/client/src/data/candidates.ts')
+root = pathlib.Path(__import__('os').environ.get('PPGI_RESULT_TEXT_DIR', str(pathlib.Path(__file__).resolve().parents[1] / '.sources' / 'results')) )
+out = pathlib.Path(__file__).resolve().parents[1] / 'client/src/data/candidates.ts'
 num_re = re.compile(r'(?<!\w)(\d{1,3}(?:[.,]\d{1,2})?)(?!\w)')
 skip = ('PODER EXECUTIVO','MINISTÉRIO','UNIVERSIDADE','INSTITUTO','PROGRAMA','EDITAL','RESULTADO','CANDIDATO','NOTA','MANAUS','COORDENADOR','AV. GAL','FONE','PROCESSO','SELETIVO','ANEXO','TÍTULOS','PROPOSTA','PROVA','FINAL','SITUAÇÃO','HOMOLOGAÇÃO')
 

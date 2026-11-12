@@ -6,8 +6,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
-ROOT = Path('/home/ubuntu/provaquest')
-SRC = Path('/tmp/ppgi_provas')
+ROOT = Path(__file__).resolve().parents[1]
+SRC = Path(__import__('os').environ.get('PPGI_PROVAS_DIR', str(ROOT / '.sources')))
 ASSETS = ROOT / 'client/public/evidence'
 ASSETS.mkdir(parents=True, exist_ok=True)
 

@@ -463,13 +463,17 @@ def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     report_only = "--report" in sys.argv
     targets = args or list(PDFS)
+    unknown = sorted(set(targets) - set(PDFS))
+    if unknown:
+        raise SystemExit(f"Editais desconhecidos: {', '.join(unknown)}")
     data = load_data()
     by_id = {e["id"]: e for e in data["editions"]}
     total = 0
+    missing = []
     for eid in targets:
         pdf = SOURCES / PDFS[eid]
         if not pdf.exists():
-            print(f"!! {eid}: PDF ausente em {pdf}")
+            missing.append(f"{eid}: {pdf}")
             continue
         doc = pymupdf.open(pdf)
         markers = question_markers(doc)
@@ -534,6 +538,10 @@ def main() -> None:
                       ", ".join(f"p{f['page']} {f['width']}x{f['height']}" for f in figures))
         total += count
         print(f"{eid}: {count} figuras em {len(found)} questões (marcadores {len(markers)}{', scan' if scanned else ''})")
+    if missing:
+        print("PDF(s) obrigatório(s) ausente(s):")
+        print("\n".join(f" - {item}" for item in missing))
+        raise SystemExit(1)
     if not report_only:
         save_data(data)
         print(f"OK: {total} figuras gravadas em {FIGDIR.relative_to(ROOT)}")

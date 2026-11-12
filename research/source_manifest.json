@@ -1,0 +1,13 @@
+{
+  "description": "Fontes oficiais usadas na preparação dos dados do ProvaQuest PPGI.",
+  "source_index": "https://ppgi.ufam.edu.br/encerrados.html",
+  "editions": [
+    {"id": "2026-02", "examUrl": "https://drive.google.com/file/d/11XQsev4g5wn1PfgxElCN1wfIHRX58SoG/view?usp=sharing", "keyUrl": "https://drive.google.com/file/d/11wCulVUskHybras1UMRWq99pYDvkOmSS/view?usp=sharing", "examFile": "2026-02.pdf", "keyFile": "2026-02-key.pdf"},
+    {"id": "2026-01", "examUrl": "https://drive.google.com/file/d/1shVppMY4lUK2DVS3lbmF5VAIl-b8aXq2/view?usp=sharing", "keyUrl": "https://drive.google.com/file/d/1xxU3OnzvpzOyYhT93twE6mI3CHujbqxy/view?usp=sharing", "examFile": "2026-01.pdf", "keyFile": "2026-01-key.pdf"},
+    {"id": "2025-02", "examUrl": "https://drive.google.com/file/d/1cZ8WHwtn2w5ss20QuuPsJD1AfpaVKYAa/view?usp=sharing", "keyUrl": "https://drive.google.com/file/d/108eCXIqBQu-Pj8WRLtJf1qwW2KgLc3mU/view?usp=sharing", "examFile": "2025-02.pdf", "keyFile": "2025-02-key.pdf"},
+    {"id": "2025-01", "examUrl": "https://drive.google.com/file/d/1dgMdVquQk6bRWwjP9fcgbMBJM17lqfj9/view?usp=sharing", "keyUrl": "https://drive.google.com/file/d/19Sx7b9HZzHn8irWWpFcB6j-gz96wTTT3/view?usp=sharing", "examFile": "2025-01.pdf", "keyFile": "2025-01-key.pdf"},
+    {"id": "2024-02", "examUrl": "https://drive.google.com/file/d/15bdnFE6wyQmUFUEn7CpSmfGuB0cosl0a/view?usp=sharing", "keyUrl": "https://drive.google.com/file/d/14h4rFRXHrmzQEDIvjXIlSKHz74VNuNwn/view?usp=sharing", "examFile": "2024-02.pdf", "keyFile": "2024-02-key.pdf"},
+    {"id": "2024-01", "examUrl": "https://ppgi.ufam.edu.br/images/editais/2024_01/Prova_Processo_Seletivo2024_01.pdf", "keyUrl": "https://ppgi.ufam.edu.br/images/editais/2024_01/5_GABARITO_DEFINITIVO.pdf", "examFile": "2024-01.pdf", "keyFile": "2024-01-key.pdf"},
+    {"id": "2020-01", "examUrl": "https://ppgi.ufam.edu.br/images/editais/Caderno_Questoes_Edital_060_2019.pdf", "keyUrl": "https://ppgi.ufam.edu.br/images/editais/Gabarito_Edital_060_2019.pdf", "examFile": "2020-01.pdf", "keyFile": "2020-01-key.pdf"}
+  ]
+}
