@@ -3508,6 +3508,9 @@ export const candidateData = {
               7.0,
               7.84
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-margefson-machado-barros",
@@ -5493,6 +5496,9 @@ export const candidateData = {
               9.4,
               9.01
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-alcilene-batista-dos-santos",
@@ -5532,6 +5538,9 @@ export const candidateData = {
               9.55,
               8.54
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-alternei-de-souza-brito",
@@ -5593,6 +5602,9 @@ export const candidateData = {
               7.3,
               8.59
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-carlos-eduardo-de-souza-santos",
@@ -5632,6 +5644,9 @@ export const candidateData = {
               7.72,
               7.94
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-edson-rodrigues-de-aguiar",
@@ -5671,6 +5686,9 @@ export const candidateData = {
               9.37,
               9.25
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-elson-pessoa-vasques",
@@ -5732,6 +5750,9 @@ export const candidateData = {
               7.0,
               7.28
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-francisco-lourenco-duarte-arce-junior",
@@ -5771,6 +5792,9 @@ export const candidateData = {
               10.0,
               8.78
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-gabriel-de-oliveira-araujo",
@@ -5810,6 +5834,9 @@ export const candidateData = {
               7.42,
               7.33
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-gabriel-de-oliveira-rezende",
@@ -5849,6 +5876,9 @@ export const candidateData = {
               8.47,
               8.63
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-hevelen-francisca-silva-e-silva",
@@ -5888,6 +5918,9 @@ export const candidateData = {
               10.0,
               9.25
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-joao-alfredo-holanda-bessa-neto",
@@ -5949,6 +5982,9 @@ export const candidateData = {
               8.53,
               8.68
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-juan-choque-souza",
@@ -6010,6 +6046,9 @@ export const candidateData = {
               8.71,
               8.4
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-lucas-alves-bandeira",
@@ -6093,6 +6132,9 @@ export const candidateData = {
               7.0,
               8.27
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-manoel-victor-florencio-de-souza",
@@ -6132,6 +6174,9 @@ export const candidateData = {
               7.0,
               7.14
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-marco-antonio-pereira-rodrigues",
@@ -6171,6 +6216,9 @@ export const candidateData = {
               7.0,
               8.25
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-maria-luisa-pereira-braga",
@@ -6210,6 +6258,9 @@ export const candidateData = {
               7.9,
               7.92
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-natanael-bezerra-de-oliveira",
@@ -6249,6 +6300,9 @@ export const candidateData = {
               8.05,
               8.85
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-paolo-bruno-silva-ramos",
@@ -6288,6 +6342,9 @@ export const candidateData = {
               10.0,
               8.58
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-ronilson-cavalcante-da-silva",
@@ -6349,6 +6406,9 @@ export const candidateData = {
               7.0,
               8.25
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-thiago-soares-marques",
@@ -6410,6 +6470,9 @@ export const candidateData = {
               7.0,
               7.98
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-02-tiago-paula-custodio",
@@ -13540,6 +13603,9 @@ export const candidateData = {
               7.33,
               7.5
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-aline-do-espirito-santo-romao",
@@ -13579,6 +13645,9 @@ export const candidateData = {
               9.55,
               9.45
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-andre-filipe-aloise",
@@ -13618,6 +13687,9 @@ export const candidateData = {
               10.0,
               8.66
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-andre-ramos-fernandes-da-silva",
@@ -13657,6 +13729,9 @@ export const candidateData = {
               7.3,
               8.41
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-bento-pedro-chico-baptista",
@@ -13696,6 +13771,9 @@ export const candidateData = {
               10.0,
               9.61
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-daniel-mitsuaki-da-silva-utyiama",
@@ -13735,6 +13813,9 @@ export const candidateData = {
               10.0,
               9.03
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-elizamary-de-souza-nascimento",
@@ -13796,6 +13877,9 @@ export const candidateData = {
               9.4,
               8.55
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-erick-rego-ribeiro",
@@ -13835,6 +13919,9 @@ export const candidateData = {
               9.1,
               9.23
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-eriky-rodrigues-de-souza",
@@ -13874,6 +13961,9 @@ export const candidateData = {
               8.95,
               9.0
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-fabricio-de-sousa-ribeiro",
@@ -13913,6 +14003,9 @@ export const candidateData = {
               10.0,
               9.37
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-fabrizio-honda-franzoia",
@@ -13952,6 +14045,9 @@ export const candidateData = {
               8.41,
               8.16
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-felipe-guerra-monteiro",
@@ -14013,6 +14109,9 @@ export const candidateData = {
               9.1,
               8.02
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-gabriel-de-oliveira-araujo",
@@ -14052,6 +14151,9 @@ export const candidateData = {
               7.9,
               8.77
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-gilberto-eduardo-santos",
@@ -14091,6 +14193,9 @@ export const candidateData = {
               7.9,
               7.75
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-heron-jeovalino-bivaqua-de-moura",
@@ -14152,6 +14257,9 @@ export const candidateData = {
               9.82,
               8.75
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-igor-nonato-almeida-pereira",
@@ -14191,6 +14299,9 @@ export const candidateData = {
               9.25,
               8.78
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-isaias-abner-lima-saraiva",
@@ -14230,6 +14341,9 @@ export const candidateData = {
               10.0,
               8.56
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-jaco-miranda-dos-santos",
@@ -14269,6 +14383,9 @@ export const candidateData = {
               10.0,
               8.97
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-joethe-moraes-de-carvalho",
@@ -14308,6 +14425,9 @@ export const candidateData = {
               10.0,
               9.89
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-jordan-de-sa-queiroz",
@@ -14347,6 +14467,9 @@ export const candidateData = {
               8.05,
               8.68
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-jorge-carlos-magno-silva-de-lima",
@@ -14386,6 +14509,9 @@ export const candidateData = {
               8.05,
               7.66
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-juan-choque-souza",
@@ -14425,6 +14551,9 @@ export const candidateData = {
               10.0,
               8.39
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-laura-aguiar-martinho",
@@ -14464,6 +14593,9 @@ export const candidateData = {
               7.6,
               7.7
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-lesly-delgado-perez",
@@ -14503,6 +14635,9 @@ export const candidateData = {
               10.0,
               8.95
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-lia-alessandra-da-silva-martins",
@@ -14542,6 +14677,9 @@ export const candidateData = {
               10.0,
               8.81
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-lucas-lima-florencio-viana",
@@ -14581,6 +14719,9 @@ export const candidateData = {
               7.3,
               7.57
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-manoel-fernandes-amaral-filho",
@@ -14642,6 +14783,9 @@ export const candidateData = {
               10.0,
               8.89
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-priscilla-nascimento-santos",
@@ -14681,6 +14825,9 @@ export const candidateData = {
               9.82,
               8.55
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-reine-menezes-dos-santos",
@@ -14720,6 +14867,9 @@ export const candidateData = {
               10.0,
               8.33
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-ronilson-cavalcante-da-silva",
@@ -14759,6 +14909,9 @@ export const candidateData = {
               8.05,
               7.49
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-tiago-de-paula-custodio",
@@ -14798,6 +14951,9 @@ export const candidateData = {
               7.9,
               8.33
             ]
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2026-01-victor-beltrao-valente-duarte",
@@ -17943,6 +18099,9 @@ export const candidateData = {
           "prova": {
             "status": "Publicado",
             "score": 4.0
+          },
+          "inscricoes": {
+            "status": "Aprovado"
           }
         },
         "id": "2025-02-vinicius-costa-lazzari-da-silva",
@@ -22016,6 +22175,9 @@ export const candidateData = {
           "prova": {
             "status": "Publicado",
             "score": 3.5
+          },
+          "inscricoes": {
+            "status": "Aprovado"
           }
         },
         "id": "2025-01-douglas-ferraz-vercosa",
@@ -22054,6 +22216,9 @@ export const candidateData = {
           "final": {
             "status": "Publicado",
             "score": 8.0
+          },
+          "inscricoes": {
+            "status": "Aprovado"
           }
         },
         "id": "2025-01-joao-pedro-abensur-amoedo",
@@ -22152,6 +22317,9 @@ export const candidateData = {
               8.65,
               7.6
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-anderson-araujo-da-cruz",
@@ -22227,6 +22395,9 @@ export const candidateData = {
               8.8,
               8.0
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-atacilio-costa-cunha",
@@ -22273,6 +22444,9 @@ export const candidateData = {
               7.9,
               7.6
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-carlos-bruno-oliveira-lopes",
@@ -22319,6 +22493,9 @@ export const candidateData = {
               7.75,
               8.1
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-eriky-rodrigues-de-souza",
@@ -22365,6 +22542,9 @@ export const candidateData = {
               10.0,
               7.9
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-fabiann-matthaus-dantas-barbosa",
@@ -22440,6 +22620,9 @@ export const candidateData = {
               8.05,
               8.3
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-felipe-sonntag-manzoni",
@@ -22544,6 +22727,9 @@ export const candidateData = {
               8.65,
               7.6
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-jhonathan-araujo-oliveira",
@@ -22619,6 +22805,9 @@ export const candidateData = {
               7.6,
               8.3
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-juan-marcelo-dell-oso",
@@ -22665,6 +22854,9 @@ export const candidateData = {
               7.6,
               8.1
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-larissa-de-andrade-silva",
@@ -22740,6 +22932,9 @@ export const candidateData = {
               7.9,
               8.2
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-matheus-santana-da-silva",
@@ -22811,6 +23006,9 @@ export const candidateData = {
               7.6,
               7.6
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-yan-rodrigo-da-silva-soares",
@@ -23154,6 +23352,9 @@ export const candidateData = {
               7.69,
               8.7
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-cassio-antonio-tavares-alves",
@@ -23287,6 +23488,9 @@ export const candidateData = {
               7.12,
               7.2
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-ewerton-rodrigo-nunes-petillo",
@@ -23362,6 +23566,9 @@ export const candidateData = {
               7.0,
               7.8
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-gabriel-da-silva-freitas",
@@ -23404,6 +23611,9 @@ export const candidateData = {
               7.0,
               7.4
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-george-d-paula-galucio-da-silva",
@@ -23478,6 +23688,9 @@ export const candidateData = {
               7.3,
               7.8
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-igor-de-souza-lima",
@@ -23860,6 +24073,9 @@ export const candidateData = {
               7.45,
               7.9
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-leandro-almeida-da-silva",
@@ -23935,6 +24151,9 @@ export const candidateData = {
               7.12,
               8.9
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-lucas-castro-de-souza",
@@ -24010,6 +24229,9 @@ export const candidateData = {
               7.9,
               7.9
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-lucas-sarmento-de-araujo",
@@ -24130,6 +24352,9 @@ export const candidateData = {
               7.24,
               8.1
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-manoel-victor-florencio-de-souza",
@@ -24234,6 +24459,9 @@ export const candidateData = {
               7.3,
               8.1
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-mikael-chardson-ferreira-hayden",
@@ -24441,6 +24669,9 @@ export const candidateData = {
               8.95,
               7.4
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-ramayana-assuncao-menezes-junior",
@@ -24786,6 +25017,9 @@ export const candidateData = {
               7.06,
               8.1
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-thiago-de-sa-queiroz",
@@ -24866,6 +25100,9 @@ export const candidateData = {
           "projetos": {
             "status": "Publicado",
             "score": 8.3
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-yan-rodrigo-d-silva-soares",
@@ -24896,6 +25133,9 @@ export const candidateData = {
           "titulos": {
             "status": "Publicado",
             "score": 7.0
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-02-george-dpaula-galucio-da-silva",
@@ -26348,6 +26588,9 @@ export const candidateData = {
               7.75,
               9.0
             ]
+          },
+          "titulos": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-01-giovanna-andrade-santos",
@@ -27927,6 +28170,9 @@ export const candidateData = {
           "titulos": {
             "status": "Publicado",
             "score": 7.75
+          },
+          "prova": {
+            "status": "Aprovado"
           }
         },
         "id": "2024-01-giovanna-andrade-santo",
@@ -31077,6 +31323,9 @@ export const candidateData = {
               9.14,
               8.26
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-jonas-da-conceicao-nascimento",
@@ -31109,6 +31358,9 @@ export const candidateData = {
               8.38,
               8.9
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-antonio-arquelau-de-oliveira",
@@ -31141,6 +31393,9 @@ export const candidateData = {
               8.43,
               8.89
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-braulio-henrique-orion-uchoa",
@@ -31173,6 +31428,9 @@ export const candidateData = {
               8.76,
               8.89
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-leonardo-augusto-picanco",
@@ -31205,6 +31463,9 @@ export const candidateData = {
               8.61,
               8.01
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-lucas-gabriel-coimbra",
@@ -31237,6 +31498,9 @@ export const candidateData = {
               8.03,
               7.61
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-fabiann-matthaus-dantas",
@@ -31269,6 +31533,9 @@ export const candidateData = {
               7.69,
               7.54
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-michael-alves-bittencourt-de",
@@ -31301,6 +31568,9 @@ export const candidateData = {
               9.65,
               7.53
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-jose-carlos-da-silva-duarte",
@@ -31333,6 +31603,9 @@ export const candidateData = {
               7.36,
               7.47
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-max-geovane-fonseca",
@@ -31365,6 +31638,9 @@ export const candidateData = {
               8.24,
               7.25
             ]
+          },
+          "projetos": {
+            "status": "Aprovado"
           }
         },
         "id": "2020-01-rodrigo-otacilio-queiroz-lins-da",

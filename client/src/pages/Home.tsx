@@ -202,6 +202,20 @@ const allQuestions = editionList.flatMap(edition =>
     editionLabel: edition.label,
   }))
 );
+const respondibleQuestionIds = new Set(
+  allQuestions
+    .filter(question => !question.annulled && !question.needsReview)
+    .map(question => question.editionId + "-" + question.number)
+);
+
+function sanitizeProgress(value: unknown): Record<string, boolean> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, answered]) => answered === true && respondibleQuestionIds.has(id)
+    )
+  );
+}
 const subjectColors: Record<string, string> = {
   Algoritmos: "coral",
   "Estruturas de dados": "blue",
@@ -361,7 +375,9 @@ export default function Home() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [completed, setCompleted] = useState<Record<string, boolean>>(() => {
     try {
-      return JSON.parse(localStorage.getItem("provaquest-progress") ?? "{}");
+      return sanitizeProgress(
+        JSON.parse(localStorage.getItem("provaquest-progress") ?? "{}")
+      );
     } catch {
       return {};
     }
@@ -487,9 +503,7 @@ export default function Home() {
   ]);
 
   const answeredCount = Object.keys(completed).filter(id =>
-    allQuestions.some(
-      question => question.editionId + "-" + question.number === id
-    )
+    respondibleQuestionIds.has(id)
   ).length;
   const correctCount = Object.entries(submitted).filter(
     ([id, didSubmit]) =>
@@ -513,9 +527,10 @@ export default function Home() {
   );
 
   function persistProgress(next: Record<string, boolean>) {
-    setCompleted(next);
+    const sanitized = sanitizeProgress(next);
+    setCompleted(sanitized);
     try {
-      localStorage.setItem("provaquest-progress", JSON.stringify(next));
+      localStorage.setItem("provaquest-progress", JSON.stringify(sanitized));
     } catch {
       /* storage bloqueado/quota excedida não interrompe a resposta */
     }
@@ -533,6 +548,19 @@ export default function Home() {
   function handleEditionChange(nextEdition: string) {
     if (nextEdition !== selectedEdition) clearSession();
     setSelectedEdition(nextEdition);
+    if (
+      selectedSubject !== "Todos os assuntos" &&
+      nextEdition !== "todos" &&
+      !allQuestions.some(
+        question =>
+          question.editionId === nextEdition &&
+          question.subject === selectedSubject &&
+          !question.annulled &&
+          !question.needsReview
+      )
+    ) {
+      setSelectedSubject("Todos os assuntos");
+    }
     setSelectedTopic("Todos os temas");
     setSelectedSubtopic("Todos os subtemas");
   }
@@ -692,6 +720,7 @@ export default function Home() {
                 <button
                   key={item.id}
                   className={`nav-item ${mode === item.id ? "active" : ""}`}
+                  aria-current={mode === item.id ? "page" : undefined}
                   onClick={() => nav(item.id)}
                 >
                   {item.icon}

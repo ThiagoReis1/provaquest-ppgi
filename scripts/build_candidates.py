@@ -118,6 +118,11 @@ for eid, c in config.items():
         person['id'] = f"{eid}-{norm(person['name']).replace(' ','-')}"
         # A stage is considered passed only when the candidate is present in the official next-stage result.
         person['passedStages'] = [stage_keys[i] for i in range(len(stage_keys)-1) if stage_keys[i+1] in st]
+        # Some official result documents omit the previous stage while still
+        # publishing the candidate in the next one. Keep that passed stage in
+        # the generated model so the UI can display the complete funnel.
+        for stage in person['passedStages']:
+            st.setdefault(stage, {'status': 'Aprovado'})
         records.append({'editionId':eid,'editionLabel':c['label'],'sourcePage':sources[eid],'documents':c['docUrls'],'candidate':person})
 
 payload = {
