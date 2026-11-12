@@ -325,6 +325,19 @@ export default function Home() {
   const [selectedTopic, setSelectedTopic] = useState("Todos os temas");
   const [selectedSubtopic, setSelectedSubtopic] = useState("Todos os subtemas");
   const [query, setQuery] = useState("");
+  const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("provaquest-bookmarks") ?? "[]"
+      );
+      return Array.isArray(saved)
+        ? saved.filter(item => typeof item === "string")
+        : [];
+    } catch {
+      return [];
+    }
+  });
   const [sessionIds, setSessionIds] = useState<string[]>(() =>
     previewMode === "study"
       ? allQuestions
@@ -353,6 +366,34 @@ export default function Home() {
       return {};
     }
   });
+
+  useEffect(() => {
+    const syncBookmarks = (event: Event) => {
+      const detail = (event as CustomEvent<string[]>).detail;
+      if (Array.isArray(detail)) {
+        setBookmarkedIds(detail);
+        return;
+      }
+      try {
+        const saved = JSON.parse(
+          localStorage.getItem("provaquest-bookmarks") ?? "[]"
+        );
+        setBookmarkedIds(
+          Array.isArray(saved)
+            ? saved.filter(item => typeof item === "string")
+            : []
+        );
+      } catch {
+        setBookmarkedIds([]);
+      }
+    };
+    window.addEventListener("provaquest-bookmarks-changed", syncBookmarks);
+    window.addEventListener("storage", syncBookmarks);
+    return () => {
+      window.removeEventListener("provaquest-bookmarks-changed", syncBookmarks);
+      window.removeEventListener("storage", syncBookmarks);
+    };
+  }, []);
 
   const edition =
     editionList.find(item => item.id === selectedEdition) ?? editionList[0];
@@ -421,6 +462,9 @@ export default function Home() {
         question.subtopic === selectedSubtopic;
       const matchesEdition =
         selectedEdition === "todos" || question.editionId === selectedEdition;
+      const matchesBookmark =
+        !bookmarkedOnly ||
+        bookmarkedIds.includes(question.editionId + "-" + question.number);
       const isRespondible = !question.annulled && !question.needsReview;
       return (
         matchesQuery &&
@@ -428,6 +472,7 @@ export default function Home() {
         matchesTopic &&
         matchesSubtopic &&
         matchesEdition &&
+        matchesBookmark &&
         isRespondible
       );
     });
@@ -437,6 +482,8 @@ export default function Home() {
     selectedTopic,
     selectedSubtopic,
     selectedEdition,
+    bookmarkedOnly,
+    bookmarkedIds,
   ]);
 
   const answeredCount = Object.keys(completed).filter(id =>
@@ -935,6 +982,8 @@ export default function Home() {
               topics={topics}
               subtopics={subtopics}
               filteredQuestions={filteredQuestions}
+              bookmarkedOnly={bookmarkedOnly}
+              setBookmarkedOnly={setBookmarkedOnly}
               openQuestion={openSearchQuestion}
             />
           )}
@@ -1012,6 +1061,9 @@ function QuestionCard({
         ? current.filter(item => item !== id)
         : [...current, id];
       localStorage.setItem("provaquest-bookmarks", JSON.stringify(next));
+      window.dispatchEvent(
+        new CustomEvent("provaquest-bookmarks-changed", { detail: next })
+      );
       setBookmarked(next.includes(id));
     } catch {
       /* bookmark é opcional e não pode interromper o fluxo */
@@ -1111,6 +1163,8 @@ function QuestionCard({
         </div>
         {isSubmitted ? (
           <div
+            role="status"
+            aria-live="polite"
             className={`answer-feedback ${correct ? "feedback-correct" : "feedback-wrong"}`}
           >
             <div className="feedback-icon">
@@ -1564,6 +1618,8 @@ function SearchView({
   topics,
   subtopics,
   filteredQuestions,
+  bookmarkedOnly,
+  setBookmarkedOnly,
   openQuestion,
 }: any) {
   return (
@@ -1632,6 +1688,14 @@ function SearchView({
             <option key={subtopic}>{subtopic}</option>
           ))}
         </select>
+        <label className="bookmark-filter">
+          <input
+            type="checkbox"
+            checked={bookmarkedOnly}
+            onChange={event => setBookmarkedOnly(event.target.checked)}
+          />
+          Somente salvas
+        </label>
       </div>
       <div className="search-filter-path" aria-live="polite">
         <span>Filtro atual:</span>
