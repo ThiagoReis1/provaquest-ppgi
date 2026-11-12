@@ -81,4 +81,10 @@ describe("sessão do simulado", () => {
     );
     expect(sessionBelongsToEdition([], "2026-02")).toBe(true);
   });
+
+  it("aceita uma sessão de qualquer edital quando o filtro é global", () => {
+    expect(sessionBelongsToEdition(["2026-02-1", "2025-02-8"], "todos")).toBe(
+      true
+    );
+  });
 });

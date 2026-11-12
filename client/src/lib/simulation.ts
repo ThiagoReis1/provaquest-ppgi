@@ -26,5 +26,6 @@ export function sessionBelongsToEdition(
   sessionIds: readonly string[],
   editionId: string
 ): boolean {
+  if (editionId === "todos") return true;
   return sessionIds.every(id => id.startsWith(`${editionId}-`));
 }

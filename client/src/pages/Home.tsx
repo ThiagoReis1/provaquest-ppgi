@@ -137,10 +137,12 @@ function QuestionBody({ question }: { question: Question }) {
               <code>{block.text}</code>
             </pre>
           );
-        if (block.type === "list")
+        if (block.type === "list") {
+          const ListTag = block.style === "bullet" ? "ul" : "ol";
           return (
-            <ol
+            <ListTag
               className={`question-list question-list-${block.style}`}
+              type={block.style === "roman" ? "I" : undefined}
               key={index}
             >
               {block.items.map((item, itemIndex) => (
@@ -158,8 +160,9 @@ function QuestionBody({ question }: { question: Question }) {
                   )}
                 </li>
               ))}
-            </ol>
+            </ListTag>
           );
+        }
         const isAsk = index > 0 && index === blocks.length - 1;
         return (
           <div
@@ -316,7 +319,7 @@ export default function Home() {
     new URLSearchParams(window.location.search).get("demo") === "answered";
   const [mode, setMode] = useState<Mode>(previewMode);
   const [selectedEdition, setSelectedEdition] = useState<string>(
-    editionList[0].id
+    previewMode === "search" ? "todos" : editionList[0].id
   );
   const [selectedSubject, setSelectedSubject] = useState("Todos os assuntos");
   const [selectedTopic, setSelectedTopic] = useState("Todos os temas");
@@ -378,19 +381,23 @@ export default function Home() {
       allQuestions
         .filter(
           question =>
-            selectedSubject === "Todos os assuntos" ||
-            question.subject === selectedSubject
+            (selectedEdition === "todos" ||
+              question.editionId === selectedEdition) &&
+            (selectedSubject === "Todos os assuntos" ||
+              question.subject === selectedSubject)
         )
         .map(question => question.topic)
     );
     return ["Todos os temas", ...Array.from(unique).filter(Boolean)];
-  }, [selectedSubject]);
+  }, [selectedEdition, selectedSubject]);
 
   const subtopics = useMemo(() => {
     const unique = new Set(
       allQuestions
         .filter(
           question =>
+            (selectedEdition === "todos" ||
+              question.editionId === selectedEdition) &&
             (selectedSubject === "Todos os assuntos" ||
               question.subject === selectedSubject) &&
             (selectedTopic === "Todos os temas" ||
@@ -399,7 +406,7 @@ export default function Home() {
         .map(question => question.subtopic)
     );
     return ["Todos os subtemas", ...Array.from(unique).filter(Boolean)];
-  }, [selectedSubject, selectedTopic]);
+  }, [selectedEdition, selectedSubject, selectedTopic]);
 
   const filteredQuestions = useMemo(() => {
     return allQuestions.filter(question => {
@@ -432,8 +439,10 @@ export default function Home() {
     selectedEdition,
   ]);
 
-  const answeredCount = Object.keys(submitted).filter(
-    id => submitted[id]
+  const answeredCount = Object.keys(completed).filter(id =>
+    allQuestions.some(
+      question => question.editionId + "-" + question.number === id
+    )
   ).length;
   const correctCount = Object.entries(submitted).filter(
     ([id, didSubmit]) =>
@@ -477,6 +486,8 @@ export default function Home() {
   function handleEditionChange(nextEdition: string) {
     if (nextEdition !== selectedEdition) clearSession();
     setSelectedEdition(nextEdition);
+    setSelectedTopic("Todos os temas");
+    setSelectedSubtopic("Todos os subtemas");
   }
 
   function handleSearchSubjectChange(nextSubject: string) {
@@ -504,6 +515,13 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function openSearchQuestion(question: Question & { editionId: string }) {
+    // Um resultado encontrado em "Todos os editais" precisa abrir no edital
+    // real para que a sessão e a revisão usem a fonte correta.
+    setSelectedEdition(question.editionId);
+    beginStudy([questionId(question.editionId, question.number)]);
+  }
+
   function startSubjectStudy(subject = selectedSubject) {
     const pool = allQuestions.filter(
       question =>
@@ -511,6 +529,7 @@ export default function Home() {
         !question.needsReview &&
         (subject === "Todos os assuntos" || question.subject === subject)
     );
+    setSelectedEdition("todos");
     beginStudy(
       pool
         .slice(0, 12)
@@ -562,10 +581,14 @@ export default function Home() {
         mode === "simulate")
     )
       clearSession();
+    if (nextMode === "simulate" && selectedEdition === "todos") {
+      setSelectedEdition(editionList[0].id);
+    }
     setMode(nextMode);
     setMobileMenu(false);
     if (nextMode === "search") {
       setQuery("");
+      setSelectedEdition("todos");
       setSelectedTopic("Todos os temas");
       setSelectedSubtopic("Todos os subtemas");
     }
@@ -912,7 +935,7 @@ export default function Home() {
               topics={topics}
               subtopics={subtopics}
               filteredQuestions={filteredQuestions}
-              beginStudy={beginStudy}
+              openQuestion={openSearchQuestion}
             />
           )}
 
@@ -955,17 +978,13 @@ function QuestionCard({
   resetStudy: () => void;
   simulate?: boolean;
 }) {
-  if (!question)
-    return (
-      <div className="empty-state">
-        <CircleHelp size={28} />
-        <h3>Escolha uma sessão para começar</h3>
-        <p>Selecione um assunto ou edital e volte para esta área.</p>
-      </div>
-    );
-  const id = sessionIds[sessionIndex];
+  const id = question ? (sessionIds[sessionIndex] ?? "") : "";
   const [bookmarked, setBookmarked] = useState(false);
   useEffect(() => {
+    if (!id) {
+      setBookmarked(false);
+      return;
+    }
     try {
       setBookmarked(
         JSON.parse(
@@ -976,6 +995,14 @@ function QuestionCard({
       setBookmarked(false);
     }
   }, [id]);
+  if (!question)
+    return (
+      <div className="empty-state">
+        <CircleHelp size={28} />
+        <h3>Escolha uma sessão para começar</h3>
+        <p>Selecione um assunto ou edital e volte para esta área.</p>
+      </div>
+    );
   function toggleBookmark() {
     try {
       const current = JSON.parse(
@@ -1253,9 +1280,8 @@ function SimulationView({
 }: any) {
   const [reviewing, setReviewing] = useState(false);
   const sessionCorrect = sessionIds.filter((id: string) => {
-    const number = Number(id.split("-").pop());
-    const question = edition.questions.find(
-      (item: Question) => item.number === number
+    const question = allQuestions.find(
+      item => item.editionId + "-" + item.number === id
     );
     return question && answers[id] === question.correct;
   }).length;
@@ -1479,9 +1505,8 @@ function ReviewPanel({
       </div>
       <div className="review-list">
         {sessionIds.map((id, index) => {
-          const number = Number(id.split("-").pop());
-          const question = edition.questions.find(
-            item => item.number === number
+          const question = allQuestions.find(
+            item => item.editionId + "-" + item.number === id
           );
           if (!question) return null;
           const marked = answers[id];
@@ -1539,7 +1564,7 @@ function SearchView({
   topics,
   subtopics,
   filteredQuestions,
-  beginStudy,
+  openQuestion,
 }: any) {
   return (
     <div className="page-view">
@@ -1621,9 +1646,7 @@ function SearchView({
           <button
             key={`${question.editionId}-${question.number}`}
             className="search-result"
-            onClick={() =>
-              beginStudy([`${question.editionId}-${question.number}`])
-            }
+            onClick={() => openQuestion(question)}
           >
             <div className={`result-index ${subjectColor(question.subject)}`}>
               {String(question.number).padStart(2, "0")}
