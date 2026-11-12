@@ -1,0 +1,8613 @@
+// Generated from the official PPGI/UFAM exam PDFs.
+export const studyData = {
+  "editions": [
+    {
+      "id": "2026-02",
+      "label": "Mestrado 2026/02",
+      "examUrl": "https://drive.google.com/file/d/11XQsev4g5wn1PfgxElCN1wfIHRX58SoG/view?usp=sharing",
+      "keyUrl": "https://drive.google.com/file/d/11wCulVUskHybras1UMRWq99pYDvkOmSS/view?usp=sharing",
+      "title": "Edital 014/2026",
+      "subtitle": "Prova de conceitos · 05 jun 2026",
+      "subjects": [
+        "Algoritmos",
+        "Estruturas de dados",
+        "Grafos"
+      ],
+      "thumbnail": "/evidence/2026-02.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Algoritmos",
+          "prompt": "Considere o pseudocódigo a seguir, no qual conta(A, n) recebe um vetor A de tamanho n. Suponha que as operações aritméticas, comparações e acessos a vetores têm custo constante.\nint conta(int A[], int n) {\n    int s = 0;\n    int i, j;\n\n    for (i = 1; i <= n; i = i * 2) {\n        for (j = 0; j < i && j < n; j++) {\n            s = s + A[j];\n        }\n    }\n\n    return s;\n}\nQuais as complexidades de tempo e espaço auxiliar do algoritmo em função de n?",
+          "intro": "Considere o pseudocódigo a seguir, no qual conta(A, n) recebe um vetor A de tamanho n. Suponha que as operações aritméticas, comparações e acessos a vetores têm custo constante.",
+          "code": "int conta(int A[], int n) {\n    int s = 0;\n    int i, j;\n\n    for (i = 1; i <= n; i = i * 2) {\n        for (j = 0; j < i && j < n; j++) {\n            s = s + A[j];\n        }\n    }\n\n    return s;\n}",
+          "ask": "Quais as complexidades de tempo e espaço auxiliar do algoritmo em função de n?",
+          "sourcePageImage": "/evidence/2026-02-page-1.jpg",
+          "sourcePageLabel": "Página 1 · prova original",
+          "options": [
+            {
+              "id": "A",
+              "text": "Tempo O(n log n) e espaço auxiliar O(1)."
+            },
+            {
+              "id": "B",
+              "text": "Tempo O(n) e espaço auxiliar O(1)."
+            },
+            {
+              "id": "C",
+              "text": "Tempo O(n\"2) e espaço auxiliar O(1)."
+            },
+            {
+              "id": "D",
+              "text": "Tempo O(log n) e espaço auxiliar O(n)."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "method": "Contagem de iterações + soma geométrica",
+            "steps": [
+              "Primeiro, conte o laço externo. Como i começa em 1 e dobra (i = i × 2), seus valores são 1, 2, 4, 8, … até ultrapassar n. Portanto, ele executa ⌊log₂ n⌋ + 1 vezes, isto é, Θ(log n) vezes.",
+              "Agora analise o laço interno em uma volta qualquer. Ele começa em j = 0 e incrementa j de 1 em 1 enquanto j < i e j < n. Como o laço externo só chega a i ≤ n, nessa volta o teste efetivo é j < i: são exatamente i acessos ao vetor.",
+              "Liste o trabalho de cada volta externa: quando i = 1, o custo é 1; quando i = 2, é 2; depois 4, 8, …; na última volta o custo é aproximadamente n. Assim, o total não é Θ(n) repetido Θ(log n) vezes: é a soma 1 + 2 + 4 + 8 + … + n.",
+              "Essa é uma soma geométrica. Se L = ⌊log₂ n⌋, então 1 + 2 + … + 2ᴸ = 2ᴸ⁺¹ − 1. Como 2ᴸ ≤ n < 2ᴸ⁺¹, essa expressão fica limitada por constantes vezes n; logo, o tempo é Θ(n).",
+              "Para o espaço, conte apenas a memória extra: s, i e j são três variáveis escalares. O vetor A já é entrada e não foi criado pelo algoritmo; portanto, o espaço auxiliar é Θ(1)."
+            ],
+            "conclusion": "Resposta B — tempo Θ(n) e espaço auxiliar Θ(1).",
+            "distractors": "A trata cada nível como se percorresse n posições; C confunde log n níveis com custo total logarítmico; D ignora a soma dos acessos e atribui espaço auxiliar proporcional a n.",
+            "methodNote": "O Teorema Mestre não se aplica: ele é usado para recorrências de algoritmos recursivos, como T(n) = aT(n/b) + f(n). Aqui não há chamada recursiva; a ferramenta correta é contar as iterações dos laços e somar os custos por nível."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o pseudocódigo a seguir, no qual conta(A, n) recebe um vetor A de tamanho n. Suponha que as operações aritméticas, comparações e acessos a vetores têm custo constante."
+            },
+            {
+              "type": "code",
+              "text": "int conta(int A[], int n) {\n    int s = 0;\n    int i, j;\n\n    for (i = 1; i <= n; i = i * 2) {\n        for (j = 0; j < i && j < n; j++) {\n            s = s + A[j];\n        }\n    }\n\n    return s;\n}"
+            },
+            {
+              "type": "p",
+              "text": "Quais as complexidades de tempo e espaço auxiliar do algoritmo em função de n?"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Estruturas de dados",
+          "prompt": "Com relação à estrutura de heap implementada como uma árvore binária, quais afirmações são verdadeiras?\nI. O maior valor em um heap máximo está no elemento raiz da árvore.\nII. O menor valor no heap máximo está no elemento raiz da árvore.\nIII. O heap pode ser utilizado como base para o método de ordenação Heap Sort.\nIV. O heap pode ser utilizado como uma fila de prioridades.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I, II e III."
+            },
+            {
+              "id": "B",
+              "text": "Apenas I, III e IV."
+            },
+            {
+              "id": "C",
+              "text": "Apenas II, III e IV."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-2",
+            "steps": [
+              "Em um heap máximo, a chave de cada pai é maior ou igual às chaves de seus filhos; portanto, a raiz contém o maior valor, tornando I verdadeira e II falsa.",
+              "O Heap Sort utiliza um heap para retirar sucessivamente os elementos de maior prioridade e posicioná-los na ordenação, tornando III verdadeira.",
+              "Um heap permite consultar e remover o elemento de maior prioridade e inserir novos elementos, podendo implementar uma fila de prioridades; logo, IV é verdadeira."
+            ],
+            "conclusion": "Alternativa B: apenas I, III e IV são verdadeiras.",
+            "distractors": "A, C e D incluem a afirmação II, que confunde a propriedade de um heap máximo com a de um heap mínimo.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Com relação à estrutura de heap implementada como uma árvore binária, quais afirmações são verdadeiras?"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "O maior valor em um heap máximo está no elemento raiz da árvore."
+                },
+                {
+                  "label": "II.",
+                  "text": "O menor valor no heap máximo está no elemento raiz da árvore."
+                },
+                {
+                  "label": "III.",
+                  "text": "O heap pode ser utilizado como base para o método de ordenação Heap Sort."
+                },
+                {
+                  "label": "IV.",
+                  "text": "O heap pode ser utilizado como uma fila de prioridades."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "O pseudocódigo seguinte é uma função recursiva para calcular a potência b^e, com o pré-requisito de que o parâmetro e seja um inteiro maior ou igual a 1.\ndef pot(b, e):\n    if e <= 1:\n        return b\n\n    if e % 2 == 1:\n        fator = b\n        e -= 1\n    else:\n        fator = 1\n\n    return fator * pot(b, e // 2) * pot(b, e // 2)\nQual é a complexidade temporal do algoritmo, respectivamente, no melhor e no pior caso? Considere que a operação de multiplicação tem complexidade constante.",
+          "intro": "O pseudocódigo seguinte é uma função recursiva para calcular a potência b^e, com o pré-requisito de que o parâmetro e seja um inteiro maior ou igual a 1.",
+          "code": "def pot(b, e):\n    if e <= 1:\n        return b\n\n    if e % 2 == 1:\n        fator = b\n        e -= 1\n    else:\n        fator = 1\n\n    return fator * pot(b, e // 2) * pot(b, e // 2)",
+          "ask": "Qual é a complexidade temporal do algoritmo, respectivamente, no melhor e no pior caso? Considere que a operação de multiplicação tem complexidade constante.",
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O(1) e O(log(e))."
+            },
+            {
+              "id": "B",
+              "text": "O(log(e)) e O(e)."
+            },
+            {
+              "id": "C",
+              "text": "O(e) e O(e)."
+            },
+            {
+              "id": "D",
+              "text": "O(e) e O(e-log(e))."
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-3",
+            "steps": [
+              "Para e > 1, cada chamada executa duas chamadas recursivas com expoente ⌊e/2⌋: quando e é ímpar, decrementá-lo antes da divisão produz esse mesmo valor.",
+              "As duas chamadas são calculadas separadamente, sem reaproveitamento do resultado; assim, T(e) = 2T(⌊e/2⌋) + Θ(1), com T(1) = Θ(1).",
+              "A árvore de recursão tem profundidade ⌊log₂ e⌋ e 2^⌊log₂ e⌋ folhas, quantidade entre e/2 e e; portanto, o total de chamadas é Θ(e).",
+              "A paridade de e e o valor de b não eliminam nenhuma das duas chamadas, de modo que melhor e pior caso têm a mesma ordem linear."
+            ],
+            "conclusion": "Alternativa C: O(e) no melhor caso e O(e) no pior caso.",
+            "distractors": "A e B desconsideram a duplicação das chamadas recursivas; D acrescenta um fator logarítmico que não aparece na soma do trabalho da árvore de recursão.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "O pseudocódigo seguinte é uma função recursiva para calcular a potência b^e, com o pré-requisito de que o parâmetro e seja um inteiro maior ou igual a 1."
+            },
+            {
+              "type": "code",
+              "text": "def pot(b, e):\n    if e <= 1:\n        return b\n\n    if e % 2 == 1:\n        fator = b\n        e -= 1\n    else:\n        fator = 1\n\n    return fator * pot(b, e // 2) * pot(b, e // 2)"
+            },
+            {
+              "type": "p",
+              "text": "Qual é a complexidade temporal do algoritmo, respectivamente, no melhor e no pior caso? Considere que a operação de multiplicação tem complexidade constante."
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Estruturas de dados",
+          "prompt": "Sejam x[i] e x[j] dois elementos de iguais chaves armazenados em um vetor. Um algoritmo de ordenação é dito estável se ao final da ordenação x[i] e x[j] mantêm suas posições relativas inalteradas. Considere as seguintes afirmações:\nI. A implementação clássica do algoritmo Quick Sort não é estável;\nII. A implementação clássica do algoritmo Merge Sort é sempre estável, independentemente do critério de desempate adotado na fase de intercalação;\nIII. A implementação clássica do algoritmo Heap Sort não é estável.\nConsidere que, por implementação clássica, a questão refere-se à versão usual dos algoritmos, na qual o algoritmo apenas realiza comparações de chaves, sem fazer uso de mecanismos auxiliares para garantir a estabilidade.\nQuais afirmações são verdadeiras?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I."
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e III."
+            },
+            {
+              "id": "C",
+              "text": "Apenas II e III."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-4",
+            "steps": [
+              "Na implementação clássica do Quick Sort, as trocas da partição podem inverter a ordem relativa de elementos com chaves iguais; portanto, I é verdadeira.",
+              "No Merge Sort, a estabilidade depende do desempate: para preservá-la, deve-se escolher primeiro o elemento da metade esquerda quando as chaves forem iguais; portanto, II é falsa.",
+              "Na implementação clássica do Heap Sort, as trocas durante a construção do heap e as extrações podem inverter elementos de chaves iguais; portanto, III é verdadeira."
+            ],
+            "conclusion": "Alternativa B: apenas I e III são verdadeiras.",
+            "distractors": "A omite a afirmação III, que é verdadeira; C e D incluem II, embora a estabilidade do Merge Sort dependa do critério de desempate.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sejam x[i] e x[j] dois elementos de iguais chaves armazenados em um vetor. Um algoritmo de ordenação é dito estável se ao final da ordenação x[i] e x[j] mantêm suas posições relativas inalteradas. Considere as seguintes afirmações:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "A implementação clássica do algoritmo Quick Sort não é estável;"
+                },
+                {
+                  "label": "II.",
+                  "text": "A implementação clássica do algoritmo Merge Sort é sempre estável, independentemente do critério de desempate adotado na fase de intercalação;"
+                },
+                {
+                  "label": "III.",
+                  "text": "A implementação clássica do algoritmo Heap Sort não é estável."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Considere que, por implementação clássica, a questão refere-se à versão usual dos algoritmos, na qual o algoritmo apenas realiza comparações de chaves, sem fazer uso de mecanismos auxiliares para garantir a estabilidade."
+            },
+            {
+              "type": "p",
+              "text": "Quais afirmações são verdadeiras?"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Algoritmos",
+          "prompt": "Seja um vetor semi-ordenado que contém 16 elementos indexados de 1 a 16 com a seguinte propriedade: cada elemento a[i] contém a chave i, mas a subsequência em que i é múltiplo de 3 contém uma permutação aleatória das chaves 3, 6, 9, 12 e 15. Por exemplo, o conteúdo do vetor pode ser o seguinte (as chaves em negrito são múltiplos de 3):\n1, 2, 6, 4, 5, 12, 7, 8, 9, 10, 11, 15, 13, 14, 3, 16\nConsidere a situação em que algum vetor respeitando essa propriedade (não necessariamente o exemplo mostrado acima) foi usado como entrada para uma implementação clássica do algoritmo de ordenação Merge Sort — isto é, aquele que divide o vetor em duas metades de tamanhos iguais, ordena recursivamente cada metade de maneira crescente e depois as intercala. Identifique as afirmativas verdadeiras.\nI. As chaves 2 e 10 jamais serão comparadas entre si;\nII. Sempre que as chaves 2 e 6 forem comparadas entre si, as chaves 4 e 6 também serão comparadas entre si;\nIII. As chaves 1 e 3 necessariamente serão comparadas entre si.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas | e Il são verdadeiras."
+            },
+            {
+              "id": "B",
+              "text": "Apenas | e Ill são verdadeiras."
+            },
+            {
+              "id": "C",
+              "text": "Apenas Ile III são verdadeiras."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmativas são verdadeiras."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-5",
+            "steps": [
+              "As chaves 2 e 10 pertencem a metades diferentes do vetor e só poderiam ser comparadas na intercalação final; a metade direita contém três chaves distintas entre 3, 6, 9, 12 e 15, então seu menor elemento é no máximo 9 e será comparado com 2 antes que 10 possa ser alcançado, consumindo a chave 2; logo, I é verdadeira.",
+              "Se 6 estiver na posição 3, a chave 4 a precede na metade direita da intercalação do bloco [1, 4]; se estiver na posição 6, a chave 5 a precede na metade direita da intercalação do bloco [1, 8]; nessas situações, 2 é consumida antes de ser comparada com 6.",
+              "Assim, uma comparação entre 2 e 6 só pode ocorrer na intercalação final, com 6 na metade direita; como 4 está na mesma metade que 2, todos os elementos dessa metade anteriores a 4 são menores que 6 e são consumidos antes de uma comparação entre 4 e 6; logo, II é verdadeira.",
+              "A chave 3 ocupa uma das posições 3, 6, 9, 12 ou 15; na primeira intercalação que reúne 1 e 3, ambas são os menores elementos de suas respectivas metades e, portanto, são comparadas; logo, III é verdadeira."
+            ],
+            "conclusion": "Alternativa D: todas as afirmativas são verdadeiras.",
+            "distractors": "A omite III, B omite II e C omite I, embora as três propriedades sejam garantidas pela divisão e pela intercalação do Merge Sort nesse vetor.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Seja um vetor semi-ordenado que contém 16 elementos indexados de 1 a 16 com a seguinte propriedade: cada elemento a[i] contém a chave i, mas a subsequência em que i é múltiplo de 3 contém uma permutação aleatória das chaves 3, 6, 9, 12 e 15. Por exemplo, o conteúdo do vetor pode ser o seguinte (as chaves em negrito são múltiplos de 3):"
+            },
+            {
+              "type": "code",
+              "text": "1, 2, 6, 4, 5, 12, 7, 8, 9, 10, 11, 15, 13, 14, 3, 16"
+            },
+            {
+              "type": "p",
+              "text": "Considere a situação em que algum vetor respeitando essa propriedade (não necessariamente o exemplo mostrado acima) foi usado como entrada para uma implementação clássica do algoritmo de ordenação Merge Sort — isto é, aquele que divide o vetor em duas metades de tamanhos iguais, ordena recursivamente cada metade de maneira crescente e depois as intercala. Identifique as afirmativas verdadeiras."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "As chaves 2 e 10 jamais serão comparadas entre si;"
+                },
+                {
+                  "label": "II.",
+                  "text": "Sempre que as chaves 2 e 6 forem comparadas entre si, as chaves 4 e 6 também serão comparadas entre si;"
+                },
+                {
+                  "label": "III.",
+                  "text": "As chaves 1 e 3 necessariamente serão comparadas entre si."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Algoritmos",
+          "prompt": "Considere um vetor com n elementos no qual apenas um está fora de ordem (contém um único elemento a[i] < a[i − 1]) e não sei em que posição está esse elemento. Finalmente, considere como “busca binária” apenas o algoritmo clássico apresentado na bibliografia do presente edital de seleção, sem alterações.\nI. Posso descobrir onde está o elemento fora de ordem usando busca binária, que o identificaria em no máximo log₂(n) + 1 comparações entre chaves, mesmo para n > 20;\nII. Posso fazer uma busca binária por qualquer chave no vetor com garantia de corretude da busca caso o valor de n, que indica o número de elementos do vetor, seja menor ou igual a 20;\nIII. Posso fazer uma busca sequencial no vetor, seja qual for o valor de n, e ela encontrará o elemento buscado, ou indicará se o elemento não existe, ao comparar a chave com, no máximo n, elementos do vetor.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmações I e III estão corretas."
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmações II e III estão corretas."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmações I e II estão corretas."
+            },
+            {
+              "id": "D",
+              "text": "Nenhuma das opções anteriores, A, B ou C, está certa."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-6",
+            "steps": [
+              "A busca binária clássica procura uma chave descartando metades conforme a ordem do vetor; ela não é um procedimento para localizar uma quebra de ordenação, tornando I falsa.",
+              "A garantia da busca binária depende da ordenação, não de um limite como n ≤ 20; mesmo em um vetor pequeno, a quebra de ordem pode provocar o descarte da região que contém a chave buscada, tornando II falsa.",
+              "A busca sequencial examina os elementos independentemente da ordem e encontra a chave, se presente, ou confirma sua ausência após no máximo n comparações; portanto, III é verdadeira.",
+              "Como somente III é verdadeira e nenhuma das alternativas A, B ou C apresenta essa combinação, deve-se escolher D."
+            ],
+            "conclusion": "Alternativa D: nenhuma das opções A, B ou C está correta.",
+            "distractors": "A inclui I, que é falsa; B inclui II, que é falsa; C inclui as duas afirmações falsas e exclui III, que é verdadeira.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere um vetor com n elementos no qual apenas um está fora de ordem (contém um único elemento a[i] < a[i − 1]) e não sei em que posição está esse elemento. Finalmente, considere como “busca binária” apenas o algoritmo clássico apresentado na bibliografia do presente edital de seleção, sem alterações."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Posso descobrir onde está o elemento fora de ordem usando busca binária, que o identificaria em no máximo log₂(n) + 1 comparações entre chaves, mesmo para n > 20;"
+                },
+                {
+                  "label": "II.",
+                  "text": "Posso fazer uma busca binária por qualquer chave no vetor com garantia de corretude da busca caso o valor de n, que indica o número de elementos do vetor, seja menor ou igual a 20;"
+                },
+                {
+                  "label": "III.",
+                  "text": "Posso fazer uma busca sequencial no vetor, seja qual for o valor de n, e ela encontrará o elemento buscado, ou indicará se o elemento não existe, ao comparar a chave com, no máximo n, elementos do vetor."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere o pseudocódigo a seguir, no qual uma linha do algoritmo foi substituída pela string ???\nvoid f(int v[], int n) {\n    int tmp1, tmp2, x, y;\n    for (x = 0; x < n; x++) {\n        tmp1 = v[x];\n        tmp2 = x;\n        for (y = x + 1; y < n; y++) {\n            ???\n        }\n        tmp1 = v[tmp2];\n        v[tmp2] = v[x];\n        v[x] = tmp1;\n    }\n}\nConsidere ainda as opções:\nI. if (v[y] < v[tmp2]) {\n    tmp2 = y;\n}\nII. if (v[y] > v[tmp2]) {\n    tmp2 = y;\n}\nIII. if (v[y] > v[tmp2]) {\n    v[y] = v[y+1];\n}\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Se ??? for trocado pela opção I, então a função ordena o vetor v em ordem crescente usando ordenação por inserção."
+            },
+            {
+              "id": "B",
+              "text": "Se ??? for trocado pela opção II, então a função ordena o vetor v em ordem decrescente usando ordenação por inserção."
+            },
+            {
+              "id": "C",
+              "text": "Se ??? for trocado pela opção I, então a função ordena o vetor por seleção em ordem crescente."
+            },
+            {
+              "id": "D",
+              "text": "Se ??? for trocado pela opção III, então a função ordena o vetor v em ordem crescente usando ordenação por seleção."
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-7",
+            "steps": [
+              "A cada passagem do laço externo, tmp2 começa na posição x, enquanto o laço interno percorre as posições seguintes.",
+              "Com a opção I, sempre que v[y] < v[tmp2], tmp2 recebe y; ao terminar a varredura, tmp2 indica a posição do menor elemento do trecho ainda não ordenado.",
+              "A troca entre v[x] e v[tmp2] coloca esse menor elemento na posição x; repetindo o processo, o vetor fica em ordem crescente.",
+              "Selecionar o menor elemento do trecho restante e colocá-lo na próxima posição é a operação característica da ordenação por seleção."
+            ],
+            "conclusion": "Alternativa C: a opção I produz ordenação por seleção em ordem crescente.",
+            "distractors": "A chama incorretamente o procedimento de inserção; B também o chama de inserção, embora a opção II selecione máximos; D não seleciona o mínimo e ainda pode acessar v[y+1] fora do vetor quando y = n − 1.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o pseudocódigo a seguir, no qual uma linha do algoritmo foi substituída pela string ???"
+            },
+            {
+              "type": "code",
+              "text": "void f(int v[], int n) {\n    int tmp1, tmp2, x, y;\n    for (x = 0; x < n; x++) {\n        tmp1 = v[x];\n        tmp2 = x;\n        for (y = x + 1; y < n; y++) {\n            ???\n        }\n        tmp1 = v[tmp2];\n        v[tmp2] = v[x];\n        v[x] = tmp1;\n    }\n}"
+            },
+            {
+              "type": "p",
+              "text": "Considere ainda as opções:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "if (v[y] < v[tmp2]) {\n    tmp2 = y;\n}",
+                  "code": true
+                },
+                {
+                  "label": "II.",
+                  "text": "if (v[y] > v[tmp2]) {\n    tmp2 = y;\n}",
+                  "code": true
+                },
+                {
+                  "label": "III.",
+                  "text": "if (v[y] > v[tmp2]) {\n    v[y] = v[y+1];\n}",
+                  "code": true
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Complexidade",
+          "prompt": "Considere uma árvore AVL inicialmente vazia na qual serão inseridos os valores 30, 20, 10, 40, 50 e 25, exatamente nessa ordem, com aplicação imediata das rotações necessárias após cada inserção que causar desbalanceamento.\nI. Após a inserção dos três primeiros valores (30, 20 e 10), o nó 20 torna-se raiz da árvore em decorrência de uma rotação simples aplicada no nó 30;\nII. Após a inserção dos cinco primeiros valores (30, 20, 10, 40 e 50), é necessária exatamente uma rotação simples no nó 30 para restaurar o balanceamento da árvore;\nIII. Após a inserção do sexto valor (25), uma rotação simples no nó 20 é suficiente para restaurar o balanceamento da árvore.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmações | e Il estão corretas."
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmações Il e Ill estão corretas."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmações | e Ill estão corretas."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações (I, Il e III) estão corretas."
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-8",
+            "steps": [
+              "Ao inserir 30, 20 e 10, forma-se uma cadeia à esquerda de 30. Uma rotação simples à direita em 30 torna 20 a raiz, com filhos 10 e 30. A afirmação I é verdadeira.",
+              "A inserção de 40 coloca esse valor à direita de 30, sem desbalanceamento. Ao inserir 50 à direita de 40, o nó 30 fica desbalanceado no caso direita-direita.",
+              "Uma única rotação simples à esquerda em 30 restaura o equilíbrio: a raiz continua sendo 20, e sua subárvore direita passa a ter raiz 40, com filhos 30 e 50. A afirmação II é verdadeira.",
+              "Ao inserir 25, ele fica à esquerda de 30. O nó 20 fica desbalanceado no caso direita-esquerda, exigindo uma rotação à direita em 40 seguida de uma rotação à esquerda em 20. A afirmação III é falsa."
+            ],
+            "conclusion": "Alternativa A: apenas as afirmações I e II estão corretas.",
+            "distractors": "B e D incluem a afirmação III, que é falsa; C também inclui III e exclui a afirmação II, que é verdadeira.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma árvore AVL inicialmente vazia na qual serão inseridos os valores 30, 20, 10, 40, 50 e 25, exatamente nessa ordem, com aplicação imediata das rotações necessárias após cada inserção que causar desbalanceamento."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Após a inserção dos três primeiros valores (30, 20 e 10), o nó 20 torna-se raiz da árvore em decorrência de uma rotação simples aplicada no nó 30;"
+                },
+                {
+                  "label": "II.",
+                  "text": "Após a inserção dos cinco primeiros valores (30, 20, 10, 40 e 50), é necessária exatamente uma rotação simples no nó 30 para restaurar o balanceamento da árvore;"
+                },
+                {
+                  "label": "III.",
+                  "text": "Após a inserção do sexto valor (25), uma rotação simples no nó 20 é suficiente para restaurar o balanceamento da árvore."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere o programa em C abaixo. Qual será o valor impresso?\n#include <stdio.h>\n\nint main(void) {\n    unsigned v1 = 16;\n    unsigned *v2 = &v1;\n    int cont = 0;\n    while (*v2 > 0) {\n        v1 >>= 1;\n        cont++;\n    }\n    printf(\"%d\\n\", cont);\n    return 0;\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2."
+            },
+            {
+              "id": "B",
+              "text": "3."
+            },
+            {
+              "id": "C",
+              "text": "4."
+            },
+            {
+              "id": "D",
+              "text": "5."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-9",
+            "steps": [
+              "A transcrição contém problemas: &avl referencia um identificador não declarado, e \"Sd\\n\" não contém o especificador %d; portanto, o código literalmente apresentado não produz a saída numérica indicada pelo gabarito.",
+              "A contagem de deslocamentos do valor inicial 16 até zero é: 16 → 8 → 4 → 2 → 1 → 0.",
+              "São cinco deslocamentos à direita; incrementando cont uma vez por deslocamento, a contagem final é 5."
+            ],
+            "conclusion": "Alternativa D: 5 é a contagem correspondente ao gabarito, mas a transcrição do programa precisa ser corrigida para efetivamente imprimi-la.",
+            "distractors": "A, B e C correspondem a contagens insuficientes, pois após dois, três ou quatro deslocamentos o valor ainda seria, respectivamente, 4, 2 ou 1.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o programa em C abaixo. Qual será o valor impresso?"
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n\nint main(void) {\n    unsigned v1 = 16;\n    unsigned *v2 = &v1;\n    int cont = 0;\n    while (*v2 > 0) {\n        v1 >>= 1;\n        cont++;\n    }\n    printf(\"%d\\n\", cont);\n    return 0;\n}"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Algoritmos",
+          "prompt": "Em uma estrutura de dados, cada item é armazenado em um registro que possui três campos: uma chave numérica e exatamente dois ponteiros para registros do mesmo tipo. Assinale a alternativa que contém apenas estruturas de dados que são adequadamente descritos por esse tipo de item.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Lista simplesmente encadeada e árvore binária de busca."
+            },
+            {
+              "id": "B",
+              "text": "Lista duplamente encadeada, árvore binária de busca e árvore B."
+            },
+            {
+              "id": "C",
+              "text": "Lista duplamente encadeada circular e árvore binária de busca."
+            },
+            {
+              "id": "D",
+              "text": "Lista simplesmente encadeada."
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-10",
+            "steps": [
+              "Uma lista duplamente encadeada circular utiliza dois ponteiros por registro: um para o próximo elemento e outro para o anterior.",
+              "Uma árvore binária de busca utiliza dois ponteiros por registro: um para o filho esquerdo e outro para o filho direito.",
+              "As duas estruturas da alternativa C correspondem ao registro descrito, com uma chave e exatamente dois ponteiros."
+            ],
+            "conclusion": "Alternativa C: lista duplamente encadeada circular e árvore binária de busca.",
+            "distractors": "A e D incluem lista simplesmente encadeada, que utiliza apenas um ponteiro de ligação por nó; B inclui árvore B, cujos nós não são descritos, em geral, por uma única chave e exatamente dois ponteiros.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Em uma estrutura de dados, cada item é armazenado em um registro que possui três campos: uma chave numérica e exatamente dois ponteiros para registros do mesmo tipo. Assinale a alternativa que contém apenas estruturas de dados que são adequadamente descritos por esse tipo de item."
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Algoritmos",
+          "prompt": "Deseja-se ordenar um vetor A com n > 2 inteiros não negativos, todos menores que n³. Considere as seguintes afirmações sobre o uso de Radix Sort com Counting Sort como sub-rotina.\nI. Se for usada base n, cada número terá no máximo 3 dígitos, e cada chamada ao Counting Sort custará O(n). Portanto, o tempo total será O(n);\nII. Para que o Radix Sort funcione corretamente ordenando do dígito menos significativo para o mais significativo, o algoritmo usado para ordenar por cada dígito deve ser estável;\nIII. Se for usado Counting Sort diretamente sobre os valores inteiros completos, sem decomposição em dígitos, o tempo será O(n), pois há apenas n elementos no vetor;\nIV. Se for usada base 10, cada valor terá no máximo log(n) dígitos e, como cada chamada ao Counting Sort tem custo temporal O(n), o tempo total do Radix Sort será O(n log(n)).\nQuais afirmações são verdadeiras?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas |, Ile IV."
+            },
+            {
+              "id": "B",
+              "text": "Apenas I, Ile III."
+            },
+            {
+              "id": "C",
+              "text": "Apenas Il, Ill e IV."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Deseja-se ordenar um vetor A com n > 2 inteiros não negativos, todos menores que n³. Considere as seguintes afirmações sobre o uso de Radix Sort com Counting Sort como sub-rotina."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Se for usada base n, cada número terá no máximo 3 dígitos, e cada chamada ao Counting Sort custará O(n). Portanto, o tempo total será O(n);"
+                },
+                {
+                  "label": "II.",
+                  "text": "Para que o Radix Sort funcione corretamente ordenando do dígito menos significativo para o mais significativo, o algoritmo usado para ordenar por cada dígito deve ser estável;"
+                },
+                {
+                  "label": "III.",
+                  "text": "Se for usado Counting Sort diretamente sobre os valores inteiros completos, sem decomposição em dígitos, o tempo será O(n), pois há apenas n elementos no vetor;"
+                },
+                {
+                  "label": "IV.",
+                  "text": "Se for usada base 10, cada valor terá no máximo log(n) dígitos e, como cada chamada ao Counting Sort tem custo temporal O(n), o tempo total do Radix Sort será O(n log(n))."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Quais afirmações são verdadeiras?"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Estruturas de dados",
+          "prompt": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo @ representa uma posição vazia):\níndices: O, 4d, De 3, ay 5, 6\nelementos: [70, 9, 2y Ds 4, 705, 27]\nSabendo que as colisões foram tratadas por endereçamento aberto e que nenhuma outra operação de inserção ou remoção foi realizada, selecione a alternativa que representa uma possível função de sondagem empregada na elaboração dessa tabela.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "h(k, i) = (h'(k) + i) mod m."
+            },
+            {
+              "id": "B",
+              "text": "h(k, i) = (h'(k) + i²) mod m."
+            },
+            {
+              "id": "C",
+              "text": "h(k, i) = (h'(k) + 21 + 2) mod m."
+            },
+            {
+              "id": "D",
+              "text": "h(k, i) = (h'(k) + 3i) mod m."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-12",
+            "steps": [
+              "Para a última chave inserida, 9, a posição inicial é h'(9) = 9 mod 7 = 2.",
+              "Na alternativa D, a sondagem é h(9, i) = (2 + 3i) mod 7. Para i = 0, 1, 2, 3, 4, 5 e 6, obtêm-se as posições 2, 5, 1, 4, 0, 3 e 6.",
+              "Assim, essa função pode colocar 9 na posição 1 quando as posições 2 e 5 já estiverem ocupadas e a posição 1 estiver vazia antes da última inserção.",
+              "Como 3 e 7 são coprimos, essa sondagem visita todas as posições antes de repetir uma delas. Entretanto, a tabela final e a expressão da alternativa C estão corrompidas na transcrição, impedindo uma verificação integral da exclusão das demais alternativas."
+            ],
+            "conclusion": "Alternativa D, conforme o gabarito: h(k, i) = (h'(k) + 3i) mod m; sua sequência de sondagem para 9 é 2, 5, 1, 4, 0, 3, 6.",
+            "distractors": "A percorre posições consecutivas, mas sua exclusão depende da tabela legível; B, partindo de 2, visita apenas 2, 3, 6 e 4, nunca alcançando 1; C está corrompida e não pode ser avaliada com segurança.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo @ representa uma posição vazia):"
+            },
+            {
+              "type": "code",
+              "text": "índices: O, 4d, De 3, ay 5, 6\nelementos: [70, 9, 2y Ds 4, 705, 27]"
+            },
+            {
+              "type": "p",
+              "text": "Sabendo que as colisões foram tratadas por endereçamento aberto e que nenhuma outra operação de inserção ou remoção foi realizada, selecione a alternativa que representa uma possível função de sondagem empregada na elaboração dessa tabela."
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Complexidade",
+          "prompt": "Considere uma implementação do algoritmo Quick Sort para ordenar vetores em ordem crescente que emprega a estratégia de particionamento de Lomuto ou a estratégia de Hoare. Suponha que essa implementação foi utilizada para ordenar o vetor\n[2, 8, 3, 10, 5, 1, 7, 6, 4]\nSuponha ainda que, imediatamente após o primeiro particionamento e antes de qualquer chamada recursiva ser realizada, o conteúdo do vetor era\n[2, 3, 1, 4, 5, 8, 7, 6, 10]\nCom base nisso, analise as afirmativas e assinale a alternativa correta.\nI. Tanto a chave 4 quanto a chave 5 podem ter sido escolhidas como pivô para particionar esse vetor;\nII. Foi empregado o algoritmo de Hoare para particionar esse vetor;\nIII. Foi empregado o algoritmo de Lomuto para particionar esse vetor.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas a afirmativa I é verdadeira."
+            },
+            {
+              "id": "B",
+              "text": "Apenas a afirmativa II é verdadeira."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmativas I e II são verdadeiras."
+            },
+            {
+              "id": "D",
+              "text": "Apenas as afirmativas I e III são verdadeiras."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma implementação do algoritmo Quick Sort para ordenar vetores em ordem crescente que emprega a estratégia de particionamento de Lomuto ou a estratégia de Hoare. Suponha que essa implementação foi utilizada para ordenar o vetor"
+            },
+            {
+              "type": "code",
+              "text": "[2, 8, 3, 10, 5, 1, 7, 6, 4]"
+            },
+            {
+              "type": "p",
+              "text": "Suponha ainda que, imediatamente após o primeiro particionamento e antes de qualquer chamada recursiva ser realizada, o conteúdo do vetor era"
+            },
+            {
+              "type": "code",
+              "text": "[2, 3, 1, 4, 5, 8, 7, 6, 10]"
+            },
+            {
+              "type": "p",
+              "text": "Com base nisso, analise as afirmativas e assinale a alternativa correta."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Tanto a chave 4 quanto a chave 5 podem ter sido escolhidas como pivô para particionar esse vetor;"
+                },
+                {
+                  "label": "II.",
+                  "text": "Foi empregado o algoritmo de Hoare para particionar esse vetor;"
+                },
+                {
+                  "label": "III.",
+                  "text": "Foi empregado o algoritmo de Lomuto para particionar esse vetor."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a seguinte definição de tipo de dados para pilha com vetor na linguagem de programação C:\nstruct TipoPilha {\n    int n;       /* número de elementos armazenados */\n    int dim;     /* tamanho do vetor */\n    float* vet;  /* vetor dos elementos */\n} pilha;\nConsidere que:\n• struct TipoPilha é o nome do tipo de dados;\n• pilha é uma variável global desse tipo de dados;\n• pilha.vet é um vetor usado para armazenar os elementos da pilha;\n• pilha.dim é a capacidade máxima da pilha (número de elementos do vetor);\n• pilha.n é o número de elementos armazenados na pilha.\nSupondo que desejamos uma implementação eficiente, em qual elemento deve ser encontrado o topo da pilha não vazia?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "pilha.vet [0]."
+            },
+            {
+              "id": "B",
+              "text": "pilha.vet[pilha.n]."
+            },
+            {
+              "id": "C",
+              "text": "pilha.vet[pilha.n - 1]."
+            },
+            {
+              "id": "D",
+              "text": "pilha.vet[pilha.dim - 1]."
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-14",
+            "steps": [
+              "Em uma implementação eficiente com vetor, os n elementos ocupam as posições de 0 a n − 1.",
+              "O topo fica no último elemento ocupado, permitindo inserir e remover sem deslocar os demais elementos.",
+              "Logo, para uma pilha não vazia, o topo está em pilha.vet[pilha.n − 1], com acesso em tempo O(1)."
+            ],
+            "conclusion": "Alternativa C: pilha.vet[pilha.n - 1].",
+            "distractors": "A indica a base quando há vários elementos; B indica a próxima posição livre, se houver capacidade; D indica o último espaço do vetor, que só coincide com o topo quando a pilha está cheia.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a seguinte definição de tipo de dados para pilha com vetor na linguagem de programação C:"
+            },
+            {
+              "type": "code",
+              "text": "struct TipoPilha {\n    int n;       /* número de elementos armazenados */\n    int dim;     /* tamanho do vetor */\n    float* vet;  /* vetor dos elementos */\n} pilha;"
+            },
+            {
+              "type": "p",
+              "text": "Considere que:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "struct TipoPilha é o nome do tipo de dados;"
+                },
+                {
+                  "label": "•",
+                  "text": "pilha é uma variável global desse tipo de dados;"
+                },
+                {
+                  "label": "•",
+                  "text": "pilha.vet é um vetor usado para armazenar os elementos da pilha;"
+                },
+                {
+                  "label": "•",
+                  "text": "pilha.dim é a capacidade máxima da pilha (número de elementos do vetor);"
+                },
+                {
+                  "label": "•",
+                  "text": "pilha.n é o número de elementos armazenados na pilha."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Supondo que desejamos uma implementação eficiente, em qual elemento deve ser encontrado o topo da pilha não vazia?"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Algoritmos",
+          "prompt": "Qual será a saída da função a seguir se os parâmetros de entrada forem a=200 e b=-50?\ndef fun(a, b):\n    if (a < 0 and b < 0) or (a > 0 and b > 0):\n        passo = 1\n    else:\n        passo = -1\n    res = 0\n    for i in range(abs(a)):\n        for j in range(abs(b)):\n            res += passo\n    return res",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "250."
+            },
+            {
+              "id": "B",
+              "text": "150."
+            },
+            {
+              "id": "C",
+              "text": "10.000."
+            },
+            {
+              "id": "D",
+              "text": "-10.000."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-15",
+            "steps": [
+              "A transcrição está corrompida na condição e nas atribuições de passo, de modo que não é possível executar literalmente a função apresentada.",
+              "Os limites legíveis dos laços são abs(200) = 200 e abs(−50) = 50, produzindo 200 × 50 = 10.000 execuções de res += passo.",
+              "Como res começa em zero, o resultado desses laços é 10.000 × passo. O resultado −10.000 indicado pelo gabarito corresponde a passo = −1 para essas entradas."
+            ],
+            "conclusion": "Alternativa D: −10.000, conforme o gabarito; a confirmação completa depende da atribuição de passo, que está ilegível na transcrição.",
+            "distractors": "A e B não correspondem às 10.000 acumulações com passo = −1, enquanto C corresponderia a passo = +1.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual será a saída da função a seguir se os parâmetros de entrada forem a=200 e b=-50?"
+            },
+            {
+              "type": "code",
+              "text": "def fun(a, b):\n    if (a < 0 and b < 0) or (a > 0 and b > 0):\n        passo = 1\n    else:\n        passo = -1\n    res = 0\n    for i in range(abs(a)):\n        for j in range(abs(b)):\n            res += passo\n    return res"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Algoritmos",
+          "prompt": "Considere a inserção de um elemento v em uma fila implementada com lista simplesmente encadeada em C:\nstruct No {\n    float info;        // valor da chave\n    struct No *prox;   // próximo nó da lista\n};\n\nstruct Fila {\n    struct No* ini;    // início da lista\n    struct No* fim;    // fim da lista\n};\n\nvoid fila_insere(struct Fila* f, float v) {\n    struct No* n = malloc(sizeof(struct No));\n    if (n == NULL) return;\n    n->info = v;\n    n->prox = NULL;\n    if (f->fim != NULL) {\n        f->fim->prox = n;\n    } else {\n        f->ini = n;\n    }\n    f->fim = n;\n}\nO que acontece quando a fila está vazia antes da inserção?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "ini e fim passam a apontar para o novo nó."
+            },
+            {
+              "id": "B",
+              "text": "Apenas ini aponta para o novo nó."
+            },
+            {
+              "id": "C",
+              "text": "Apenas fim aponta para o novo nó."
+            },
+            {
+              "id": "D",
+              "text": "O novo nó é descartado, pois a fila está vazia."
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-16",
+            "steps": [
+              "Quando a fila está vazia, f->fim é NULL. Considerando que a alocação do novo nó tenha sucesso, a execução prossegue.",
+              "A condição f->fim != NULL é falsa, então o bloco else executa f->ini = n.",
+              "Depois do condicional, a instrução f->fim = n também é executada. Portanto, os dois ponteiros passam a referenciar o mesmo novo nó."
+            ],
+            "conclusion": "Alternativa A: ini e fim passam a apontar para o novo nó.",
+            "distractors": "B e C ignoram uma das duas atribuições executadas; D é falsa porque uma fila vazia recebe o novo nó, e o retorno antecipado ocorre apenas se a alocação falhar.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a inserção de um elemento v em uma fila implementada com lista simplesmente encadeada em C:"
+            },
+            {
+              "type": "code",
+              "text": "struct No {\n    float info;        // valor da chave\n    struct No *prox;   // próximo nó da lista\n};\n\nstruct Fila {\n    struct No* ini;    // início da lista\n    struct No* fim;    // fim da lista\n};\n\nvoid fila_insere(struct Fila* f, float v) {\n    struct No* n = malloc(sizeof(struct No));\n    if (n == NULL) return;\n    n->info = v;\n    n->prox = NULL;\n    if (f->fim != NULL) {\n        f->fim->prox = n;\n    } else {\n        f->ini = n;\n    }\n    f->fim = n;\n}"
+            },
+            {
+              "type": "p",
+              "text": "O que acontece quando a fila está vazia antes da inserção?"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas.\nConsidere que as chaves dessa árvore devem necessariamente ser valores inteiros e que a árvore não admite inserção de chaves repetidas. Considere que os valores de x, y, z, s e t são tais que é possível inserir a chave 10 nessa árvore. Qual será o percurso pré-ordem da árvore após a inserção da chave 10?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": true,
+          "solution": {
+            "method": "Conferência visual da prova original",
+            "steps": [
+              "A extração automática não recuperou com segurança todas as alternativas ou o diagrama desta questão.",
+              "Abra a prova original na área de Fontes oficiais para conferir o enunciado completo."
+            ],
+            "conclusion": "Item em revisão — ainda não é respondível.",
+            "distractors": "O item permanece fora dos simulados até a conferência visual."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas."
+            },
+            {
+              "type": "p",
+              "text": "Considere que as chaves dessa árvore devem necessariamente ser valores inteiros e que a árvore não admite inserção de chaves repetidas. Considere que os valores de x, y, z, s e t são tais que é possível inserir a chave 10 nessa árvore. Qual será o percurso pré-ordem da árvore após a inserção da chave 10?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-02-17-1.webp",
+              "page": 10,
+              "width": 663,
+              "height": 461,
+              "alt": "Figura da questão 17 — Mestrado 2026/02, página 10",
+              "caption": "Figura original · página 10"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "Considere um grafo ponderado e direcionado que possui um número finito de vértices e de arestas. Assinale a alternativa incorreta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Se houver algum caminho entre dois vértices u e v, é possível encontrá-lo com uma busca em profundidade a partir de u."
+            },
+            {
+              "id": "B",
+              "text": "É possível utilizar a busca em largura para verificar se o grafo é fortemente conexo."
+            },
+            {
+              "id": "C",
+              "text": "Se houver pelo menos um caminho entre dois vértices, o algoritmo de Dijkstra encontrará o valor do caminho mínimo, contanto que todos os pesos sejam não negativos."
+            },
+            {
+              "id": "D",
+              "text": "O algoritmo de Floyd-Warshall encontra o valor do caminho mínimo entre cada par de vértices e identifica os vértices que não são alcançáveis uns a partir dos outros para quaisquer pesos."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-02-18",
+            "steps": [
+              "Uma busca em profundidade a partir de u visita todos os vértices alcançáveis a partir dele; portanto, pode encontrar um caminho até v, caso exista.",
+              "É possível verificar a conexão forte executando uma busca em largura a partir de cada vértice e conferindo se todas alcançam todos os demais.",
+              "Dijkstra calcula corretamente as distâncias mínimas a partir de uma origem quando todos os pesos são não negativos.",
+              "Floyd-Warshall admite pesos negativos, mas um ciclo de peso negativo pode tornar inexistente um valor mínimo finito para os caminhos afetados: percorrer repetidamente esse ciclo reduz o custo sem limite.",
+              "Assim, a afirmação de que Floyd-Warshall encontra valores de caminhos mínimos para quaisquer pesos é incorreta."
+            ],
+            "conclusion": "Alternativa D, pois não ressalva a possibilidade de ciclos de peso negativo.",
+            "distractors": "A, B e C não devem ser marcadas porque descrevem propriedades válidas: alcançabilidade por busca em profundidade, verificação de conexão forte por buscas em largura e correção de Dijkstra com pesos não negativos.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere um grafo ponderado e direcionado que possui um número finito de vértices e de arestas. Assinale a alternativa incorreta."
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Estruturas de dados",
+          "prompt": "A figura a seguir representa um grafo ponderado e não direcionado com 4 vértices e 5 arestas. Qual das alternativas é um subgrafo encontrado pelo algoritmo de Prim durante o processamento do grafo acima?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": true,
+          "solution": {
+            "method": "Conferência visual da prova original",
+            "steps": [
+              "A extração automática não recuperou com segurança todas as alternativas ou o diagrama desta questão.",
+              "Abra a prova original na área de Fontes oficiais para conferir o enunciado completo."
+            ],
+            "conclusion": "Item em revisão — ainda não é respondível.",
+            "distractors": "O item permanece fora dos simulados até a conferência visual."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A figura a seguir representa um grafo ponderado e não direcionado com 4 vértices e 5 arestas. Qual das alternativas é um subgrafo encontrado pelo algoritmo de Prim durante o processamento do grafo acima?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-02-19-1.webp",
+              "page": 11,
+              "width": 1331,
+              "height": 1003,
+              "alt": "Figura da questão 19 — Mestrado 2026/02, página 11",
+              "caption": "Figura original · página 11"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Algoritmos",
+          "prompt": "Seja G = (V, E) um digrafo no qual V é um conjunto de vértices e E é um conjunto de arestas. Construímos um grafo Gᵀ a partir de G com os seguintes passos:\n1. Gᵀ é inicialmente vazio;\n2. Cada vértice v ∈ V é inserido em Gᵀ;\n3. Para cada aresta (u, v) ∈ E, inserimos uma aresta (v, u) em Gᵀ.\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O grafo Gᵀ é chamado grafo transposto de G e pode ser usado, por exemplo, para verificar se G é fortemente conexo."
+            },
+            {
+              "id": "B",
+              "text": "O grafo Gᵀ é chamado grafo transposto de G e pode ser usado, por exemplo, para encontrar distâncias mínimas em grafos com pesos negativos usando algoritmos que não são capazes de lidar com pesos negativos em G."
+            },
+            {
+              "id": "C",
+              "text": "O grafo Gᵀ é chamado grafo simétrico e pode ser usado para identificar se os vértices de G possuem vizinhança simétrica entre si."
+            },
+            {
+              "id": "D",
+              "text": "O grafo Gᵀ é chamado grafo simétrico e só pode ser calculado para grafos não direcionados."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Seja G = (V, E) um digrafo no qual V é um conjunto de vértices e E é um conjunto de arestas. Construímos um grafo Gᵀ a partir de G com os seguintes passos:"
+            },
+            {
+              "type": "list",
+              "style": "number",
+              "items": [
+                {
+                  "label": "1.",
+                  "text": "Gᵀ é inicialmente vazio;"
+                },
+                {
+                  "label": "2.",
+                  "text": "Cada vértice v ∈ V é inserido em Gᵀ;"
+                },
+                {
+                  "label": "3.",
+                  "text": "Para cada aresta (u, v) ∈ E, inserimos uma aresta (v, u) em Gᵀ."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-01",
+      "label": "Mestrado 2026/01",
+      "examUrl": "https://drive.google.com/file/d/1shVppMY4lUK2DVS3lbmF5VAIl-b8aXq2/view?usp=sharing",
+      "keyUrl": "https://drive.google.com/file/d/1xxU3OnzvpzOyYhT93twE6mI3CHujbqxy/view?usp=sharing",
+      "title": "Edital 098/2025",
+      "subtitle": "Prova de conceitos · 05 fev 2026",
+      "subjects": [
+        "Estruturas de dados",
+        "Algoritmos",
+        "Grafos"
+      ],
+      "thumbnail": "/evidence/2026-01.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Algoritmos",
+          "prompt": "Considere a função seguinte, desenvolvida na linguagem C:\nint f(int n) {\n    int count = 0;\n    for (int i = 0; i < 10; i++) {\n        for (int j = 1; j <= n; j++) {\n            for (int k = 0; k < n; k++) {\n                count++;\n            }\n        }\n    }\n    return count;\n}\nQual será o valor retornado por f para qualquer n ≥ 0?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "n²"
+            },
+            {
+              "id": "B",
+              "text": "n³"
+            },
+            {
+              "id": "C",
+              "text": "10n²"
+            },
+            {
+              "id": "D",
+              "text": "n² + 10"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-1",
+            "steps": [
+              "O laço de i executa 10 vezes, para i de 0 a 9.",
+              "Para cada valor de i, o laço de j executa n vezes, para j de 1 a n.",
+              "Para cada par de valores de i e j, o laço de k executa n vezes, incrementando count uma vez por execução.",
+              "Logo, o total de incrementos é 10 × n × n = 10n²; para n = 0, os laços internos não executam e o resultado é 0.",
+              "Essa é a contagem matemática pretendida; em C, ela corresponde ao valor retornado quando não ocorre overflow de int."
+            ],
+            "conclusion": "Alternativa C: 10n².",
+            "distractors": "A ignora as 10 repetições externas; B trata o laço externo como se executasse n vezes; D soma 10 em vez de multiplicar a quantidade de execuções internas por 10.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função seguinte, desenvolvida na linguagem C:"
+            },
+            {
+              "type": "code",
+              "text": "int f(int n) {\n    int count = 0;\n    for (int i = 0; i < 10; i++) {\n        for (int j = 1; j <= n; j++) {\n            for (int k = 0; k < n; k++) {\n                count++;\n            }\n        }\n    }\n    return count;\n}"
+            },
+            {
+              "type": "p",
+              "text": "Qual será o valor retornado por f para qualquer n ≥ 0?"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere uma tabela hash de tamanho m = 10, que utiliza encadeamento separado para tratar colisões. A função hash usada é:\nh(k) = k mod 10\nSuponha que as seguintes chaves inteiras sejam inseridas nesta ordem:\n22, 42, 31, 52, 62, 14, 72\nApós todas as inserções, qual será o tamanho da maior lista encadeada presente na tabela?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2"
+            },
+            {
+              "id": "B",
+              "text": "3"
+            },
+            {
+              "id": "C",
+              "text": "4"
+            },
+            {
+              "id": "D",
+              "text": "5"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-2",
+            "steps": [
+              "Aplicando h(k) = k mod 10, temos h(22) = 2, h(42) = 2, h(31) = 1, h(52) = 2, h(62) = 2, h(14) = 4 e h(72) = 2.",
+              "No encadeamento separado, as chaves com o mesmo índice ficam na mesma lista.",
+              "A lista do índice 2 contém as cinco chaves 22, 42, 52, 62 e 72.",
+              "As listas dos índices 1 e 4 contêm uma chave cada; portanto, o maior tamanho é 5."
+            ],
+            "conclusion": "Alternativa D: 5.",
+            "distractors": "A, B e C indicam tamanhos menores que a quantidade de cinco chaves que colidem no índice 2.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma tabela hash de tamanho m = 10, que utiliza encadeamento separado para tratar colisões. A função hash usada é:"
+            },
+            {
+              "type": "code",
+              "text": "h(k) = k mod 10"
+            },
+            {
+              "type": "p",
+              "text": "Suponha que as seguintes chaves inteiras sejam inseridas nesta ordem:"
+            },
+            {
+              "type": "code",
+              "text": "22, 42, 31, 52, 62, 14, 72"
+            },
+            {
+              "type": "p",
+              "text": "Após todas as inserções, qual será o tamanho da maior lista encadeada presente na tabela?"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "Considere o grafo ponderado e direcionado abaixo, com pesos não negativos:\nAplicando o algoritmo de Dijkstra a partir do vértice A, utilizando uma fila de prioridades (min-heap) para selecionar o próximo vértice, qual será a ordem em que os vértices são removidos da fila de prioridades (do primeiro ao último)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A, C, B, E, D"
+            },
+            {
+              "id": "B",
+              "text": "A, C, E, B, D"
+            },
+            {
+              "id": "C",
+              "text": "A, B, C, E, D"
+            },
+            {
+              "id": "D",
+              "text": "A, C, B, D, E"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-3",
+            "steps": [
+              "Dijkstra inicializa a distância de A com 0 e as dos demais vértices com infinito; assim, A é o primeiro vértice selecionado.",
+              "A cada seleção, o min-heap fornece o vértice com a menor distância provisória, e as arestas que saem dele são usadas para atualizar as distâncias.",
+              "A figura do grafo não foi fornecida, de modo que não é possível calcular as atualizações nem verificar a ordem dos demais vértices.",
+              "O gabarito informado indica a sequência A, C, B, E, D."
+            ],
+            "conclusion": "Alternativa A, conforme o gabarito fornecido; a simulação completa depende da figura ausente.",
+            "distractors": "Em comparação com a sequência do gabarito, B coloca E antes de B, C coloca B antes de C e D coloca D antes de E, mas a ausência do grafo impede verificar essas diferenças pelos pesos.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o grafo ponderado e direcionado abaixo, com pesos não negativos:"
+            },
+            {
+              "type": "p",
+              "text": "Aplicando o algoritmo de Dijkstra a partir do vértice A, utilizando uma fila de prioridades (min-heap) para selecionar o próximo vértice, qual será a ordem em que os vértices são removidos da fila de prioridades (do primeiro ao último)?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-3-1.webp",
+              "page": 2,
+              "width": 414,
+              "height": 329,
+              "alt": "Figura da questão 3 — Mestrado 2026/01, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a árvore binária de busca (BST) a seguir, em que cada nó armazena um número inteiro:\nDois novos nós com chaves 37 e 67 são inseridos nesta ordem (primeiro 37, depois 67), seguindo as regras de inserção de uma BST. Após as duas inserções, qual é a sequência resultante do caminhamento em pós-ordem?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "19, 31, 41, 37, 47, 53, 73, 67, 89"
+            },
+            {
+              "id": "B",
+              "text": "19, 47, 37, 41, 31, 67, 89, 73, 53"
+            },
+            {
+              "id": "C",
+              "text": "19, 37, 47, 41, 31, 67, 89, 73, 53"
+            },
+            {
+              "id": "D",
+              "text": "19, 37, 47, 41, 31, 89, 67, 73, 53"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-4",
+            "steps": [
+              "Na inserção em uma BST, uma chave menor segue para a subárvore esquerda e uma chave maior segue para a direita, até encontrar uma posição vazia.",
+              "O caminhamento em pós-ordem visita a subárvore esquerda, depois a direita e, por último, a raiz.",
+              "A figura da árvore não foi fornecida; portanto, não é possível determinar os percursos de inserção de 37 e 67 nem reconstruir o caminhamento completo.",
+              "Segundo o gabarito, a sequência resultante é 19, 37, 47, 41, 31, 67, 89, 73, 53."
+            ],
+            "conclusion": "Alternativa C, conforme o gabarito fornecido; a verificação completa depende da figura ausente.",
+            "distractors": "Comparadas à sequência do gabarito, A altera a ordem de diversos nós, B troca a ordem de 37 e 47 e D troca a ordem de 67 e 89, mas a ausência da árvore impede justificar essas diferenças pela estrutura original.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore binária de busca (BST) a seguir, em que cada nó armazena um número inteiro:"
+            },
+            {
+              "type": "p",
+              "text": "Dois novos nós com chaves 37 e 67 são inseridos nesta ordem (primeiro 37, depois 67), seguindo as regras de inserção de uma BST. Após as duas inserções, qual é a sequência resultante do caminhamento em pós-ordem?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-4-1.webp",
+              "page": 2,
+              "width": 636,
+              "height": 280,
+              "alt": "Figura da questão 4 — Mestrado 2026/01, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Algoritmos",
+          "prompt": "Considere as afirmações abaixo sobre a eficiência de operações em diferentes estruturas de dados:\nI. Se uma lista encadeada estiver ordenada, o acesso aos elementos tem a mesma eficiência de uma árvore balanceada, pois pode-se usar busca binária para a pesquisa.\nII. Uma tabela hash com encadeamento separado requer mais memória do que uma tabela hash com sondagem linear ou quadrática de igual tamanho, mesmo quando os elementos armazenados nas duas são idênticos.\nIII. Se a árvore de busca binária não for balanceada, a pesquisa pode ser tão ineficiente (em número de acessos) quanto a pesquisa linear em um vetor não ordenado.\nIV. Uma árvore AVL pode ser tão eficiente (em número de acessos) quanto a pesquisa binária em um vetor ordenado e ainda tem a vantagem de permitir inserção e remoção eficientes.\nQuais afirmações são verdadeiras?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I, II e III"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II, III e IV"
+            },
+            {
+              "id": "C",
+              "text": "Apenas I, II e IV"
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as afirmações abaixo sobre a eficiência de operações em diferentes estruturas de dados:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Se uma lista encadeada estiver ordenada, o acesso aos elementos tem a mesma eficiência de uma árvore balanceada, pois pode-se usar busca binária para a pesquisa."
+                },
+                {
+                  "label": "II.",
+                  "text": "Uma tabela hash com encadeamento separado requer mais memória do que uma tabela hash com sondagem linear ou quadrática de igual tamanho, mesmo quando os elementos armazenados nas duas são idênticos."
+                },
+                {
+                  "label": "III.",
+                  "text": "Se a árvore de busca binária não for balanceada, a pesquisa pode ser tão ineficiente (em número de acessos) quanto a pesquisa linear em um vetor não ordenado."
+                },
+                {
+                  "label": "IV.",
+                  "text": "Uma árvore AVL pode ser tão eficiente (em número de acessos) quanto a pesquisa binária em um vetor ordenado e ainda tem a vantagem de permitir inserção e remoção eficientes."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Quais afirmações são verdadeiras?"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Algoritmos",
+          "prompt": "Considere os seguintes cenários:\nI. Desfazer/refazer operações em um editor de texto.\nII. Gerenciamento de requisições em uma impressora compartilhada.\nIII. Inserção e remoção frequente de elementos em posições arbitrárias.\nA alternativa que melhor representa a associação correta entre cenário e estrutura de dados é:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "I – Fila, II – Pilha, III – Vetor"
+            },
+            {
+              "id": "B",
+              "text": "I – Pilha, II – Fila, III – Lista encadeada"
+            },
+            {
+              "id": "C",
+              "text": "I – Lista, II – Pilha, III – Fila"
+            },
+            {
+              "id": "D",
+              "text": "I – Pilha, II – Lista, III – Fila"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-6",
+            "steps": [
+              "No cenário I, desfazer deve recuperar primeiro a operação mais recente, seguindo a ordem LIFO; pilhas também podem guardar as operações disponíveis para refazer.",
+              "No cenário II, uma fila atende às requisições de impressão na ordem de chegada, seguindo a ordem FIFO.",
+              "No cenário III, uma lista encadeada permite inserir e remover elementos ajustando ligações, sem deslocar os demais elementos como em um vetor.",
+              "Na lista encadeada, localizar uma posição pode exigir percorrer a lista; a vantagem está na alteração das ligações após localizar o ponto da operação."
+            ],
+            "conclusion": "Alternativa B: I – Pilha, II – Fila, III – Lista encadeada.",
+            "distractors": "A inverte as estruturas adequadas para I e II e usa vetor em III; C não associa pilha a I nem fila a II; D acerta I, mas não associa fila a II nem lista encadeada a III.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere os seguintes cenários:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Desfazer/refazer operações em um editor de texto."
+                },
+                {
+                  "label": "II.",
+                  "text": "Gerenciamento de requisições em uma impressora compartilhada."
+                },
+                {
+                  "label": "III.",
+                  "text": "Inserção e remoção frequente de elementos em posições arbitrárias."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "A alternativa que melhor representa a associação correta entre cenário e estrutura de dados é:"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Estruturas de dados",
+          "prompt": "Qual será o resultado do primeiro particionamento obtido pelo algoritmo de ordenação Quick Sort ao ordenar de maneira crescente o vetor abaixo se a estratégia de particionamento adotada for o algoritmo de Hoare e o pivô for escolhido a partir do elemento central?\n42, 67, 23, 54, 42, 18, 16, 45, 58",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "16, 18, 23, 42, 42, 54, 67, 45, 58"
+            },
+            {
+              "id": "B",
+              "text": "42, 16, 23, 18, 42, 54, 67, 45, 58"
+            },
+            {
+              "id": "C",
+              "text": "42, 23, 18, 16, 42, 45, 54, 58, 67"
+            },
+            {
+              "id": "D",
+              "text": "16, 18, 23, 42, 54, 67, 42, 45, 58"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual será o resultado do primeiro particionamento obtido pelo algoritmo de ordenação Quick Sort ao ordenar de maneira crescente o vetor abaixo se a estratégia de particionamento adotada for o algoritmo de Hoare e o pivô for escolhido a partir do elemento central?"
+            },
+            {
+              "type": "code",
+              "text": "42, 67, 23, 54, 42, 18, 16, 45, 58"
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Complexidade",
+          "prompt": "Selecione a alternativa que preenche corretamente o espaços vazios do código abaixo para que a função buscaBin seja uma implementação correta do algoritmo de busca binária.\nint buscaBin(int vetor[], int tamanho, int chave) {\n    int i = 0;\n    int j = I;\n    while (II) {\n        int meio = (i + j) / 2;\n        if (vetor[meio] == chave)\n            return meio;\n        if (vetor[meio] < chave)\n            III;\n        else\n            IV;\n    }\n    return -1;\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "I: tamanho - 1\nII: j >= i\nIII: i = meio + 1\nIV: j = meio",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "I: tamanho\nII: j >= i\nIII: i = meio + 1\nIV: j = meio - 1",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "I: tamanho - 1\nII: j >= i\nIII: i = meio + 1\nIV: j = meio - 1",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "I: tamanho - 1\nII: i <= j\nIII: i = meio - 1\nIV: j = meio + 1",
+              "code": true
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-8",
+            "steps": [
+              "Na busca binária, que pressupõe o vetor ordenado, o intervalo inicial deve abranger os índices de 0 a tamanho − 1; logo, I é tamanho − 1.",
+              "O intervalo ainda contém candidatos enquanto i ≤ j, condição equivalente a j ≥ i; logo, II é j >= i.",
+              "Se vetor[meio] < chave, o meio e os índices anteriores são descartados, fazendo i = meio + 1; essa é a expressão III.",
+              "Se vetor[meio] > chave, o meio e os índices posteriores são descartados, fazendo j = meio − 1; essa é a expressão IV.",
+              "As atualizações reduzem o intervalo a cada tentativa sem sucesso; se ele ficar vazio, a função retorna −1."
+            ],
+            "conclusion": "Alternativa C: I = tamanho − 1; II = j >= i; III = i = meio + 1; IV = j = meio − 1.",
+            "distractors": "A mantém o meio no intervalo ao fazer j = meio e pode impedir o término; B inclui o índice inválido tamanho; D atualiza os limites no sentido contrário ao descarte correto.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Selecione a alternativa que preenche corretamente o espaços vazios do código abaixo para que a função buscaBin seja uma implementação correta do algoritmo de busca binária."
+            },
+            {
+              "type": "code",
+              "text": "int buscaBin(int vetor[], int tamanho, int chave) {\n    int i = 0;\n    int j = I;\n    while (II) {\n        int meio = (i + j) / 2;\n        if (vetor[meio] == chave)\n            return meio;\n        if (vetor[meio] < chave)\n            III;\n        else\n            IV;\n    }\n    return -1;\n}"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Estruturas de dados",
+          "prompt": "Insira as chaves 4, 8, 15, 22, 5 e 12 (nessa ordem) em uma tabela de espalhamento com tamanho m = 7, utilizando endereçamento aberto pelo método da divisão (também conhecido como congruência linear ou hashing by division) e sondagem quadrática (também conhecido como quadratic probing). Assinale a alternativa que mostra o conteúdo final da tabela.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "12, 8, 15, vazio, 4, 22, 5"
+            },
+            {
+              "id": "B",
+              "text": "vazio, 8, 15, 22, 5, 4, 12"
+            },
+            {
+              "id": "C",
+              "text": "vazio, 8, 15, 22, 4, 5, 12"
+            },
+            {
+              "id": "D",
+              "text": "Nenhuma das anteriores"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Insira as chaves 4, 8, 15, 22, 5 e 12 (nessa ordem) em uma tabela de espalhamento com tamanho m = 7, utilizando endereçamento aberto pelo método da divisão (também conhecido como congruência linear ou hashing by division) e sondagem quadrática (também conhecido como quadratic probing). Assinale a alternativa que mostra o conteúdo final da tabela."
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Algoritmos",
+          "prompt": "Sabendo que o operador ~, denominado operador de complemento bit-a-bit (bitwise NOT), “inverte” todos os bits de um número inteiro em C, o que o programa a seguir imprime?\n#include <stdio.h>\n\nint main(void) {\n    int d = 42;\n    printf(\"%d\\n\", ~d + 1);\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "-42"
+            },
+            {
+              "id": "B",
+              "text": "42"
+            },
+            {
+              "id": "C",
+              "text": "43"
+            },
+            {
+              "id": "D",
+              "text": "Nenhuma das anteriores"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sabendo que o operador ~, denominado operador de complemento bit-a-bit (bitwise NOT), “inverte” todos os bits de um número inteiro em C, o que o programa a seguir imprime?"
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n\nint main(void) {\n    int d = 42;\n    printf(\"%d\\n\", ~d + 1);\n}"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Algoritmos",
+          "prompt": "Insira as chaves 4, 3, 6, 2, 5, 7 e 1 (nessa ordem) em uma árvore B de ordem m = 3 (grau máximo da página/nó). Qual das alternativas é um desenho que corresponde à árvore resultante?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [],
+          "correct": null,
+          "annulled": true,
+          "needsReview": true,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Insira as chaves 4, 3, 6, 2, 5, 7 e 1 (nessa ordem) em uma árvore B de ordem m = 3 (grau máximo da página/nó). Qual das alternativas é um desenho que corresponde à árvore resultante?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-11-1.webp",
+              "page": 6,
+              "width": 608,
+              "height": 1386,
+              "alt": "Figura da questão 11 — Mestrado 2026/01, página 6",
+              "caption": "Figura original · página 6"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Estruturas de dados",
+          "prompt": "O que a função em C a seguir faz?\nConsidere que unsigned é o tipo de dados para armazenar números inteiros sem sinal.\nunsigned f(unsigned A, unsigned B) {\n    if (A < B)\n        return 0;\n    else\n        return 1 + f(A - B, B);\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Verifica o máximo divisor comum (mdc) entre A e B"
+            },
+            {
+              "id": "B",
+              "text": "Verifica se B é maior que A"
+            },
+            {
+              "id": "C",
+              "text": "Calcula a divisão inteira de A por B"
+            },
+            {
+              "id": "D",
+              "text": "Nada, pois o código tem um erro"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "O que a função em C a seguir faz?"
+            },
+            {
+              "type": "p",
+              "text": "Considere que unsigned é o tipo de dados para armazenar números inteiros sem sinal."
+            },
+            {
+              "type": "code",
+              "text": "unsigned f(unsigned A, unsigned B) {\n    if (A < B)\n        return 0;\n    else\n        return 1 + f(A - B, B);\n}"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Complexidade",
+          "prompt": "Qual alternativa a seguir implementa corretamente as operações de inserção e remoção de elementos em uma lista para que ela funcione como uma fila?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "def insere(lista, elemento):\n    lista.insert(elemento)\n\ndef remove(lista, elemento):\n    lista.pop()",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "def insere(lista, elemento):\n    lista.insert(-1, elemento)\n\ndef remove(lista, elemento):\n    lista.pop()",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "def insere(lista, elemento):\n    lista.append(elemento)\n\ndef remove(lista, elemento):\n    lista.pop(0)",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "def insere(lista, elemento):\n    lista.append(elemento, 0)\n\ndef remove(lista, elemento):\n    lista.remove(0)",
+              "code": true
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-13",
+            "steps": [
+              "Uma fila segue a regra FIFO: o primeiro elemento inserido deve ser o primeiro removido.",
+              "Na alternativa C, lista.append(elemento) insere o elemento no final da lista.",
+              "lista.pop(0) remove o elemento do início, preservando a ordem de chegada dos elementos."
+            ],
+            "conclusion": "Alternativa C: inserir no final e remover do início implementa uma fila.",
+            "distractors": "A usa insert sem o índice exigido e remove do final; B insere antes do último elemento e remove do final, sem preservar FIFO; D usa append com argumentos inválidos e remove(0) busca o valor 0, não o elemento da posição 0.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual alternativa a seguir implementa corretamente as operações de inserção e remoção de elementos em uma lista para que ela funcione como uma fila?"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Estruturas de dados",
+          "prompt": "Qual alternativa a seguir implementa corretamente uma função que recebe como entrada uma matriz quadrada de tamanho N×N e verifica se ela é a matriz identidade?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "int ident(int N, int mat[][N]) {\n    int flag = 0;\n    for (int i = 0; i < N; i++) {\n        if (mat[i][i] == 1)\n            flag = 1;\n        for (int j = i + 1; j < N; j++)\n            if (mat[i][j] == 0 || mat[j][i] == 0)\n                flag = 1;\n    }\n    return flag;\n}",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "int ident(int N, int mat[][N]) {\n    int flag = 0;\n    for (int i = 0; i < N; i++) {\n        for (int j = i + 1; j < N; j++)\n            if (i == j && mat[i][j] == 1)\n                flag = 1;\n            else if (mat[i][j] == 0)\n                flag = 1;\n    }\n    return flag;\n}",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "int ident(int N, int mat[][N]) {\n    int flag = 1;\n    for (int i = 0; i < N; i++) {\n        if (mat[i][i] != 1)\n            flag = 0;\n        for (int j = i + 1; j < N; j++)\n            if (mat[i][j] != 0 || mat[j][i] != 0)\n                flag = 0;\n    }\n    return flag;\n}",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "int ident(int N, int mat[][N]) {\n    int flag = 1;\n    for (int i = 0; i < N; i++) {\n        for (int j = i + 1; j < N; j++)\n            if (i == j && mat[i][j] == 0)\n                flag = 0;\n            else if (i != j && mat[i][j] != 0)\n                flag = 0;\n            else\n                flag = 1;\n    }\n    return flag;\n}",
+              "code": true
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-14",
+            "steps": [
+              "Uma matriz identidade tem valor 1 em todas as posições da diagonal principal e valor 0 nas demais posições.",
+              "Na alternativa C, flag começa em 1 e passa a 0 se algum mat[i][i] for diferente de 1.",
+              "Para cada j > i, o código verifica mat[i][j] e mat[j][i], cobrindo as posições acima e abaixo da diagonal.",
+              "Se qualquer uma dessas posições for diferente de 0, flag passa a 0 e não volta a 1; portanto, o retorno é 1 somente se todas as condições forem satisfeitas."
+            ],
+            "conclusion": "Alternativa C: verifica toda a diagonal e todas as posições fora dela corretamente.",
+            "distractors": "A aceita a matriz ao encontrar condições isoladas corretas, sem rejeitar as incorretas; B nunca verifica a diagonal nem a parte inferior, pois j começa em i + 1; D também ignora essas posições e pode restaurar flag para 1 após detectar um erro.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual alternativa a seguir implementa corretamente uma função que recebe como entrada uma matriz quadrada de tamanho N×N e verifica se ela é a matriz identidade?"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Algoritmos",
+          "prompt": "Considere as afirmações abaixo sobre implementações eficientes para pilhas e filas.\nI. Se uma pilha for implementada com uma lista armazenada em vetor, o topo da pilha deve estar no fim da lista.\nII. Se uma lista simplesmente encadeada for usada, então o topo da pilha deve estar no início da lista.\nIII. Ao implementar filas, se uma lista duplamente encadeada circular for usada, então o início/a frente da fila pode ser tanto o primeiro nó quanto o último nó da lista.\nIV. Ao implementar filas, se uma lista simplesmente encadeada for usada, então o primeiro nó deve ser considerado o início/a frente da fila e o último nó deve ser considerado o fim.\nQuais afirmações são verdadeiras?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I, II e IV"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II, III e IV"
+            },
+            {
+              "id": "C",
+              "text": "Apenas I e II"
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as afirmações abaixo sobre implementações eficientes para pilhas e filas."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Se uma pilha for implementada com uma lista armazenada em vetor, o topo da pilha deve estar no fim da lista."
+                },
+                {
+                  "label": "II.",
+                  "text": "Se uma lista simplesmente encadeada for usada, então o topo da pilha deve estar no início da lista."
+                },
+                {
+                  "label": "III.",
+                  "text": "Ao implementar filas, se uma lista duplamente encadeada circular for usada, então o início/a frente da fila pode ser tanto o primeiro nó quanto o último nó da lista."
+                },
+                {
+                  "label": "IV.",
+                  "text": "Ao implementar filas, se uma lista simplesmente encadeada for usada, então o primeiro nó deve ser considerado o início/a frente da fila e o último nó deve ser considerado o fim."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Quais afirmações são verdadeiras?"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Algoritmos",
+          "prompt": "Você está programando o motor de um aplicativo de streaming de música. A fila de reprodução atual é uma lista duplamente encadeada, na qual cada música é um nó que possui os ponteiros “próxima” e “anterior”. Considere a seguinte sequência de músicas na fila:\nO usuário decide remover a [Música B] da lista. Para que a lista continue funcionando corretamente (permitindo que o usuário mude da Música A diretamente para a C, e volte da C para a A) quais alterações de ponteiros são estritamente necessárias?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Alterar o ponteiro “próxima” da Música A para apontar para a Música C e alterar o ponteiro \"anterior\" da Música B para apontar para NULL."
+            },
+            {
+              "id": "B",
+              "text": "Alterar o ponteiro “próxima” da Música A para apontar para a Música C e alterar o ponteiro \"anterior\" da Música C para apontar para a Música A."
+            },
+            {
+              "id": "C",
+              "text": "Alterar o ponteiro \"anterior\" da Música C para apontar para a Música A e o ponteiro “próxima” da Música C para apontar para NULL."
+            },
+            {
+              "id": "D",
+              "text": "Nenhuma: basta excluir o objeto Música B da memória e os ponteiros da Música A e da Música C se ajustarão automaticamente por estarem em uma lista duplamente encadeada."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-16",
+            "steps": [
+              "Para retirar B do caminho de ida, o ponteiro próxima de A deve passar a apontar para C.",
+              "Para retirar B do caminho de volta, o ponteiro anterior de C deve passar a apontar para A.",
+              "Essas duas alterações conectam A e C nos dois sentidos, sem depender de B."
+            ],
+            "conclusion": "Alternativa B: A.próxima = C e C.anterior = A.",
+            "distractors": "A não corrige o ponteiro anterior de C; C não corrige o ponteiro próxima de A e altera desnecessariamente o próximo de C; D é incorreta porque excluir um nó não atualiza automaticamente os ponteiros dos demais.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Você está programando o motor de um aplicativo de streaming de música. A fila de reprodução atual é uma lista duplamente encadeada, na qual cada música é um nó que possui os ponteiros “próxima” e “anterior”. Considere a seguinte sequência de músicas na fila:"
+            },
+            {
+              "type": "p",
+              "text": "O usuário decide remover a [Música B] da lista. Para que a lista continue funcionando corretamente (permitindo que o usuário mude da Música A diretamente para a C, e volte da C para a A) quais alterações de ponteiros são estritamente necessárias?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-16-1.webp",
+              "page": 10,
+              "width": 671,
+              "height": 129,
+              "alt": "Figura da questão 16 — Mestrado 2026/01, página 10",
+              "caption": "Figura original · página 10"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Estruturas de dados",
+          "prompt": "Um editor de imagens possui uma funcionalidade “balde” que preenche uma região de pixels com uma nova cor, como mostrado na figura abaixo. Todos os pixels que tinham cor branca sob o ponteiro do mouse foram coloridos de cinza. Essa funcionalidade é implementada com os seguintes passos:\n1. Uma lista inicialmente vazia é criada\n2. As coordenadas do pixel inicial são inseridas na lista\n3. Enquanto a lista não estiver vazia…\n3a. O último elemento da lista é removido\n3b. O pixel nas coordenadas desse último elemento é colorido com a cor de preenchimento do “balde”\n3c. As coordenadas dos quatro pixels adjacentes ao pixel que foi colorido que tiverem cor igual à cor do pixel inicial são inseridas no fim da lista\nA forma como a lista é utilizada nesse algoritmo descreve uma estrutura de dados clássica. Que estrutura de dados é essa?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Fila"
+            },
+            {
+              "id": "B",
+              "text": "Pilha"
+            },
+            {
+              "id": "C",
+              "text": "Árvore"
+            },
+            {
+              "id": "D",
+              "text": "Heap"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-17",
+            "steps": [
+              "O passo 3c insere as coordenadas dos pixels no fim da lista.",
+              "O passo 3a remove o último elemento, isto é, o elemento inserido mais recentemente entre os que permanecem na lista.",
+              "Inserir e remover pela mesma extremidade caracteriza a regra LIFO: último a entrar, primeiro a sair."
+            ],
+            "conclusion": "Alternativa B: a lista é utilizada como uma pilha.",
+            "distractors": "A exigiria remoção por ordem de chegada, não do último inserido; C exigiria uma organização hierárquica não descrita; D exigiria uma regra de prioridade, também ausente.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um editor de imagens possui uma funcionalidade “balde” que preenche uma região de pixels com uma nova cor, como mostrado na figura abaixo. Todos os pixels que tinham cor branca sob o ponteiro do mouse foram coloridos de cinza. Essa funcionalidade é implementada com os seguintes passos:"
+            },
+            {
+              "type": "list",
+              "style": "number",
+              "items": [
+                {
+                  "label": "1.",
+                  "text": "Uma lista inicialmente vazia é criada"
+                },
+                {
+                  "label": "2.",
+                  "text": "As coordenadas do pixel inicial são inseridas na lista"
+                },
+                {
+                  "label": "3.",
+                  "text": "Enquanto a lista não estiver vazia…"
+                },
+                {
+                  "label": "3a.",
+                  "text": "O último elemento da lista é removido",
+                  "level": 1
+                },
+                {
+                  "label": "3b.",
+                  "text": "O pixel nas coordenadas desse último elemento é colorido com a cor de preenchimento do “balde”",
+                  "level": 1
+                },
+                {
+                  "label": "3c.",
+                  "text": "As coordenadas dos quatro pixels adjacentes ao pixel que foi colorido que tiverem cor igual à cor do pixel inicial são inseridas no fim da lista",
+                  "level": 1
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "A forma como a lista é utilizada nesse algoritmo descreve uma estrutura de dados clássica. Que estrutura de dados é essa?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-17-1.webp",
+              "page": 10,
+              "width": 489,
+              "height": 227,
+              "alt": "Figura da questão 17 — Mestrado 2026/01, página 10",
+              "caption": "Figura original · página 10"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas.\nAssinale a alternativa verdadeira. Considere que todas as chaves devem ser inteiras e que a árvore não admite chaves repetidas.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Existem apenas dois valores possíveis para a chave x."
+            },
+            {
+              "id": "B",
+              "text": "Um possível valor de s é 10."
+            },
+            {
+              "id": "C",
+              "text": "O único valor possível de t é 6."
+            },
+            {
+              "id": "D",
+              "text": "É impossível afirmar qualquer coisa sobre os valores das chaves desconhecidas."
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-18",
+            "steps": [
+              "Em uma árvore de busca binária sem repetições, as chaves da subárvore esquerda são menores que a chave do nó, e as da direita são maiores.",
+              "As posições de uma incógnita e de seus ancestrais determinam limites estritos para seus valores; a exigência de chaves inteiras restringe os candidatos aos inteiros dentro desses limites.",
+              "A figura da árvore não foi fornecida, então não é possível determinar os limites de x nem demonstrar que há exatamente dois valores possíveis."
+            ],
+            "conclusion": "Alternativa A, conforme o gabarito oficial; a confirmação pela árvore depende da figura ausente.",
+            "distractors": "Sem a figura, não é possível refutar especificamente B e C nem avaliar todas as restrições mencionadas em D; essas alternativas apenas não correspondem ao gabarito fornecido.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas."
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa verdadeira. Considere que todas as chaves devem ser inteiras e que a árvore não admite chaves repetidas."
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-18-1.webp",
+              "page": 11,
+              "width": 604,
+              "height": 483,
+              "alt": "Figura da questão 18 — Mestrado 2026/01, página 11",
+              "caption": "Figura original · página 11"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a árvore AVL balanceada a seguir.\nApós remover a chave 9 e aplicar as rotações necessárias, qual será a chave localizada na raiz da árvore?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "5"
+            },
+            {
+              "id": "C",
+              "text": "8"
+            },
+            {
+              "id": "D",
+              "text": "10"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-19",
+            "steps": [
+              "A remoção de uma chave de uma AVL pode alterar as alturas das subárvores e provocar desequilíbrio.",
+              "As rotações necessárias dependem da estrutura da árvore e das alturas resultantes após remover a chave 9.",
+              "Como a figura não foi fornecida, não é possível simular a remoção e as rotações para demonstrar qual chave chega à raiz."
+            ],
+            "conclusion": "Alternativa B: raiz com chave 5, conforme o gabarito oficial; a demonstração depende da figura ausente.",
+            "distractors": "As alternativas A, C e D não correspondem ao gabarito, mas não é possível justificar por que 3, 8 e 10 não ficam na raiz sem conhecer a árvore inicial.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore AVL balanceada a seguir."
+            },
+            {
+              "type": "p",
+              "text": "Após remover a chave 9 e aplicar as rotações necessárias, qual será a chave localizada na raiz da árvore?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2026-01-19-1.webp",
+              "page": 12,
+              "width": 914,
+              "height": 589,
+              "alt": "Figura da questão 19 — Mestrado 2026/01, página 12",
+              "caption": "Figura original · página 12"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Algoritmos",
+          "prompt": "Analise o código a seguir e responda o que se pede:\nint f(int n) {\n    if (n == 0)\n        return 1;\n    return n * f(n - 1);\n}\nQual valor é retornado por f(4)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "10"
+            },
+            {
+              "id": "B",
+              "text": "16"
+            },
+            {
+              "id": "C",
+              "text": "24"
+            },
+            {
+              "id": "D",
+              "text": "120"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2026-01-20",
+            "steps": [
+              "O caso base retorna f(0) = 1.",
+              "Aplicando a chamada recursiva, f(4) = 4 × f(3) = 4 × 3 × f(2) = 4 × 3 × 2 × f(1).",
+              "Como f(1) = 1 × f(0) = 1, temos f(4) = 4 × 3 × 2 × 1 = 24."
+            ],
+            "conclusion": "Alternativa C: f(4) retorna 24.",
+            "distractors": "A corresponde à soma 1 + 2 + 3 + 4, mas o código multiplica; B corresponde a 4², operação não realizada; D corresponde a 5!, enquanto a chamada calcula 4!.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Analise o código a seguir e responda o que se pede:"
+            },
+            {
+              "type": "code",
+              "text": "int f(int n) {\n    if (n == 0)\n        return 1;\n    return n * f(n - 1);\n}"
+            },
+            {
+              "type": "p",
+              "text": "Qual valor é retornado por f(4)?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2025-02",
+      "label": "Mestrado e Doutorado 2025/02",
+      "examUrl": "https://drive.google.com/file/d/1cZ8WHwtn2w5ss20QuuPsJD1AfpaVKYAa/view?usp=sharing",
+      "keyUrl": "https://drive.google.com/file/d/108eCXIqBQu-Pj8WRLtJf1qwW2KgLc3mU/view?usp=sharing",
+      "title": "Edital 048/2025",
+      "subtitle": "Prova de conceitos · 15 ago 2025",
+      "subjects": [
+        "Estruturas de dados",
+        "Algoritmos",
+        "Grafos"
+      ],
+      "thumbnail": "/evidence/2025-02.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Estruturas de dados",
+          "prompt": "Um navegador mantém um histórico ativo de páginas visitadas usando uma pilha:\n• Visitar(\"Página\") → adiciona a página informada no topo da pilha.\n• Voltar() → remove a página que está no topo da pilha, voltando para a anterior.\nConsidere a seguinte sequência de comandos:\nVisitar(\"UFAM\")\nVisitar(\"PPGI\")\nVisitar(\"Edital\")\nVoltar()\nVisitar(\"Biblioteca\")\nVoltar()\nAo final dessa sequência, quantas páginas permanecem no histórico ativo do navegador?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "1"
+            },
+            {
+              "id": "B",
+              "text": "2"
+            },
+            {
+              "id": "C",
+              "text": "3"
+            },
+            {
+              "id": "D",
+              "text": "4"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-1",
+            "steps": [
+              "Uma pilha remove primeiro o último elemento inserido; abaixo, o topo fica à direita.",
+              "Após visitar UFAM, PPGI e Edital, a pilha contém [UFAM, PPGI, Edital].",
+              "Voltar() remove Edital, deixando [UFAM, PPGI].",
+              "Visitar(\"Biblioteca\") produz [UFAM, PPGI, Biblioteca].",
+              "O último Voltar() remove Biblioteca, restando [UFAM, PPGI], com 2 páginas."
+            ],
+            "conclusion": "Alternativa B: 2 páginas.",
+            "distractors": "A indica uma remoção a mais, C desconsidera uma das remoções e D conta todas as visitas sem descontar os comandos Voltar().",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um navegador mantém um histórico ativo de páginas visitadas usando uma pilha:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Visitar(\"Página\") → adiciona a página informada no topo da pilha."
+                },
+                {
+                  "label": "•",
+                  "text": "Voltar() → remove a página que está no topo da pilha, voltando para a anterior."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Considere a seguinte sequência de comandos:"
+            },
+            {
+              "type": "code",
+              "text": "Visitar(\"UFAM\")\nVisitar(\"PPGI\")\nVisitar(\"Edital\")\nVoltar()\nVisitar(\"Biblioteca\")\nVoltar()"
+            },
+            {
+              "type": "p",
+              "text": "Ao final dessa sequência, quantas páginas permanecem no histórico ativo do navegador?"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Algoritmos",
+          "prompt": "Um consultório mantém a lista de espera de pacientes usando uma lista encadeada simples, qual:\n• Inserir no fim → adiciona um novo paciente após o último da fila.\n• Remover no início → remove o paciente que está no início da fila (próximo a ser atendido).\nInicialmente, a lista está vazia. Então ocorre a seguinte sequência de eventos:\n1. Chegam: Ana, João, Maria, Pedro (nesta ordem).\n2. Dois pacientes são atendidos.\n3. Chegam: Carla e Lucas (nesta ordem).\nQual é a ordem da lista neste momento? Considere que o primeiro nome é o que está no início da lista encadeada.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Maria, Pedro, Carla, Lucas"
+            },
+            {
+              "id": "B",
+              "text": "Ana, João, Carla, Lucas"
+            },
+            {
+              "id": "C",
+              "text": "Carla, Lucas, Maria, Pedro"
+            },
+            {
+              "id": "D",
+              "text": "Lucas, Carla, Pedro, Maria"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-2",
+            "steps": [
+              "Inserir no fim e remover no início preserva a ordem de chegada dos pacientes.",
+              "Após as primeiras chegadas, a lista é [Ana, João, Maria, Pedro].",
+              "Os dois atendimentos removem Ana e João, deixando [Maria, Pedro].",
+              "Carla e Lucas são inseridos no fim, nessa ordem, formando [Maria, Pedro, Carla, Lucas]."
+            ],
+            "conclusion": "Alternativa A: Maria, Pedro, Carla, Lucas.",
+            "distractors": "B mantém os pacientes já atendidos e exclui os que aguardavam, C coloca os novos pacientes antes dos antigos e D inverte a ordem correta da lista.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um consultório mantém a lista de espera de pacientes usando uma lista encadeada simples, qual:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Inserir no fim → adiciona um novo paciente após o último da fila."
+                },
+                {
+                  "label": "•",
+                  "text": "Remover no início → remove o paciente que está no início da fila (próximo a ser atendido)."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Inicialmente, a lista está vazia. Então ocorre a seguinte sequência de eventos:"
+            },
+            {
+              "type": "list",
+              "style": "number",
+              "items": [
+                {
+                  "label": "1.",
+                  "text": "Chegam: Ana, João, Maria, Pedro (nesta ordem)."
+                },
+                {
+                  "label": "2.",
+                  "text": "Dois pacientes são atendidos."
+                },
+                {
+                  "label": "3.",
+                  "text": "Chegam: Carla e Lucas (nesta ordem)."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Qual é a ordem da lista neste momento? Considere que o primeiro nome é o que está no início da lista encadeada."
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Grafos",
+          "prompt": "Um call center processa pedidos em uma fila, na qual:\n• Novo(código) → insere o pedido no fim da fila.\n• Atender() → remove o pedido que está no início da fila (o mais antigo).\nA fila inicialmente contém:\n[101, 102, 103]\nDurante o expediente, as seguintes ações ocorrem:\nAtender()\nNovo(104)\nNovo(105)\nAtender()\nNovo(106)\nQual será o conteúdo final da fila? Considere que o primeiro elemento representa o início da fila",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "[103, 104, 105, 106]"
+            },
+            {
+              "id": "B",
+              "text": "[104, 105, 106]"
+            },
+            {
+              "id": "C",
+              "text": "[103, 104, 106]"
+            },
+            {
+              "id": "D",
+              "text": "[104, 106]"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-3",
+            "steps": [
+              "A fila atende primeiro o pedido mais antigo, removendo sempre o elemento do início.",
+              "O primeiro Atender() transforma [101, 102, 103] em [102, 103].",
+              "Novo(104) e Novo(105) acrescentam pedidos ao fim: [102, 103, 104, 105].",
+              "O segundo Atender() remove 102, deixando [103, 104, 105].",
+              "Novo(106) produz a fila final [103, 104, 105, 106]."
+            ],
+            "conclusion": "Alternativa A: [103, 104, 105, 106].",
+            "distractors": "B remove indevidamente o pedido 103, C exclui o pedido 105 sem atendimento e D exclui indevidamente tanto 103 quanto 105.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um call center processa pedidos em uma fila, na qual:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Novo(código) → insere o pedido no fim da fila."
+                },
+                {
+                  "label": "•",
+                  "text": "Atender() → remove o pedido que está no início da fila (o mais antigo)."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "A fila inicialmente contém:"
+            },
+            {
+              "type": "code",
+              "text": "[101, 102, 103]"
+            },
+            {
+              "type": "p",
+              "text": "Durante o expediente, as seguintes ações ocorrem:"
+            },
+            {
+              "type": "code",
+              "text": "Atender()\nNovo(104)\nNovo(105)\nAtender()\nNovo(106)"
+            },
+            {
+              "type": "p",
+              "text": "Qual será o conteúdo final da fila? Considere que o primeiro elemento representa o início da fila"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Estruturas de dados",
+          "prompt": "Um sistema de biblioteca armazena livros em uma árvore binária de busca não balanceada. A inserção dos livros ocorre sempre de acordo com o código numérico\nA sequência de inserção é:\n50, 30, 70, 20, 40, 60, 80\nSe a árvore for visitada em um percurso pré-ordem, qual será a sequência em que os códigos numéricos dos livros serão encontrados?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "20, 30, 40, 50, 60, 70, 80"
+            },
+            {
+              "id": "B",
+              "text": "80, 70, 60, 50, 40, 30, 20"
+            },
+            {
+              "id": "C",
+              "text": "50, 30, 20, 40, 70, 60, 80"
+            },
+            {
+              "id": "D",
+              "text": "30, 20, 40, 50, 60, 70, 80"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-4",
+            "steps": [
+              "Na árvore binária de busca, valores menores ficam à esquerda e maiores à direita; 50 é a raiz.",
+              "As inserções de 30 e 70 criam, respectivamente, os filhos esquerdo e direito de 50.",
+              "20 e 40 tornam-se filhos esquerdo e direito de 30; 60 e 80 tornam-se filhos esquerdo e direito de 70.",
+              "O percurso pré-ordem visita raiz, subárvore esquerda e subárvore direita.",
+              "Assim, visita-se 50, depois 30, 20, 40 e, por fim, 70, 60, 80."
+            ],
+            "conclusion": "Alternativa C: 50, 30, 20, 40, 70, 60, 80.",
+            "distractors": "A corresponde ao percurso em ordem, B ao percurso em ordem inversa e D não começa pela raiz, contrariando a pré-ordem.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema de biblioteca armazena livros em uma árvore binária de busca não balanceada. A inserção dos livros ocorre sempre de acordo com o código numérico"
+            },
+            {
+              "type": "p",
+              "text": "A sequência de inserção é:"
+            },
+            {
+              "type": "code",
+              "text": "50, 30, 70, 20, 40, 60, 80"
+            },
+            {
+              "type": "p",
+              "text": "Se a árvore for visitada em um percurso pré-ordem, qual será a sequência em que os códigos numéricos dos livros serão encontrados?"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Algoritmos",
+          "prompt": "Um sistema armazena identificadores de acesso em uma tabela hash com tamanho 7 (índices de 0 a 6).\n• A função de hash utilizada é h(x) = x % 7 (resto da divisão por 7).\n• O método de tratamento de colisões é a sondagem linear.\n• A função da sondagem linear é h’(x, i) = (h(x) + i) % 7.\n• Considere que a tabela começa vazia.\nInsira, nessa ordem, os valores:\n10, 21, 4, 18, 25\nQuantas colisões ocorrem durante essas inserções?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "1"
+            },
+            {
+              "id": "B",
+              "text": "2"
+            },
+            {
+              "id": "C",
+              "text": "3"
+            },
+            {
+              "id": "D",
+              "text": "4"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema armazena identificadores de acesso em uma tabela hash com tamanho 7 (índices de 0 a 6)."
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "A função de hash utilizada é h(x) = x % 7 (resto da divisão por 7)."
+                },
+                {
+                  "label": "•",
+                  "text": "O método de tratamento de colisões é a sondagem linear."
+                },
+                {
+                  "label": "•",
+                  "text": "A função da sondagem linear é h’(x, i) = (h(x) + i) % 7."
+                },
+                {
+                  "label": "•",
+                  "text": "Considere que a tabela começa vazia."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Insira, nessa ordem, os valores:"
+            },
+            {
+              "type": "code",
+              "text": "10, 21, 4, 18, 25"
+            },
+            {
+              "type": "p",
+              "text": "Quantas colisões ocorrem durante essas inserções?"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Grafos",
+          "prompt": "Considere que desejamos ordenar em ordem crescente um vetor de preços usando Quicksort. Considere ainda que o conteúdo do vetor, após o primeiro particionamento e antes da primeira divisão, é o seguinte:\n12, 8, 7, 10, 14, 15, 18\nConhecendo o funcionamento do algoritmo Quick Sort, qual das seguintes opções pode pode ter sido o valor do pivô?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "10"
+            },
+            {
+              "id": "B",
+              "text": "14"
+            },
+            {
+              "id": "C",
+              "text": "12"
+            },
+            {
+              "id": "D",
+              "text": "8"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere que desejamos ordenar em ordem crescente um vetor de preços usando Quicksort. Considere ainda que o conteúdo do vetor, após o primeiro particionamento e antes da primeira divisão, é o seguinte:"
+            },
+            {
+              "type": "code",
+              "text": "12, 8, 7, 10, 14, 15, 18"
+            },
+            {
+              "type": "p",
+              "text": "Conhecendo o funcionamento do algoritmo Quick Sort, qual das seguintes opções pode pode ter sido o valor do pivô?"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere o vetor abaixo, que será ordenado em ordem crescente usando o algoritmo Merge Sort:\n[42, 17, 8, 99, 23, 4, 16, 50, 31]\nO Merge Sort será implementado sem otimizações (sempre divide o vetor exatamente ao meio e intercala as metades), seguindo estas regras:\n1. Divide recursivamente até obter sublistas de tamanho 1.\n2. Durante a intercalação, se dois elementos são iguais, mantém primeiro o que veio da sublista da esquerda (estabilidade).\n3. Cada intercalação é feita totalmente, produzindo uma sublista ordenada, antes de passar à próxima.\nA execução é acompanhada passo a passo. Queremos saber o estado exato do vetor imediatamente após concluir a intercalação da sublista que originalmente ocupava as posições 0 a 4 do vetor inicial.\nAtenção:\n• Esse momento ocorre antes de começar a intercalação da parte direita (posições 5 a 8).\n• As posições 0 a 4 estarão ordenadas entre si, mas o restante do vetor (posições 5 a 8) ainda estará na mesma ordem original.\nQual será o vetor nesse momento?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "[8, 17, 23, 42, 99, 4, 16, 50, 31]"
+            },
+            {
+              "id": "B",
+              "text": "[8, 17, 23, 42, 99, 16, 4, 50, 31]"
+            },
+            {
+              "id": "C",
+              "text": "[8, 17, 42, 23, 99, 4, 16, 31, 50]"
+            },
+            {
+              "id": "D",
+              "text": "[17, 8, 23, 42, 99, 4, 16, 50, 31]"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-7",
+            "steps": [
+              "A sublista das posições 0 a 4 é [42, 17, 8, 99, 23].",
+              "O Merge Sort divide essa sublista até obter elementos individuais e intercala as partes em ordem crescente.",
+              "Ao concluir a intercalação dessa sublista, as posições 0 a 4 contêm [8, 17, 23, 42, 99].",
+              "Pela condição do enunciado, as posições 5 a 8 ainda preservam a ordem original: [4, 16, 50, 31].",
+              "Unindo as duas partes, o vetor nesse momento é [8, 17, 23, 42, 99, 4, 16, 50, 31]."
+            ],
+            "conclusion": "Alternativa A: [8, 17, 23, 42, 99, 4, 16, 50, 31].",
+            "distractors": "B altera a ordem original da parte direita, C deixa a parte esquerda desordenada e também altera a direita, e D deixa a parte esquerda desordenada.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o vetor abaixo, que será ordenado em ordem crescente usando o algoritmo Merge Sort:"
+            },
+            {
+              "type": "code",
+              "text": "[42, 17, 8, 99, 23, 4, 16, 50, 31]"
+            },
+            {
+              "type": "p",
+              "text": "O Merge Sort será implementado sem otimizações (sempre divide o vetor exatamente ao meio e intercala as metades), seguindo estas regras:"
+            },
+            {
+              "type": "list",
+              "style": "number",
+              "items": [
+                {
+                  "label": "1.",
+                  "text": "Divide recursivamente até obter sublistas de tamanho 1."
+                },
+                {
+                  "label": "2.",
+                  "text": "Durante a intercalação, se dois elementos são iguais, mantém primeiro o que veio da sublista da esquerda (estabilidade)."
+                },
+                {
+                  "label": "3.",
+                  "text": "Cada intercalação é feita totalmente, produzindo uma sublista ordenada, antes de passar à próxima."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "A execução é acompanhada passo a passo. Queremos saber o estado exato do vetor imediatamente após concluir a intercalação da sublista que originalmente ocupava as posições 0 a 4 do vetor inicial."
+            },
+            {
+              "type": "p",
+              "text": "Atenção:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Esse momento ocorre antes de começar a intercalação da parte direita (posições 5 a 8)."
+                },
+                {
+                  "label": "•",
+                  "text": "As posições 0 a 4 estarão ordenadas entre si, mas o restante do vetor (posições 5 a 8) ainda estará na mesma ordem original."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Qual será o vetor nesse momento?"
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Algoritmos",
+          "prompt": "Você vai inserir, nesta ordem, as chaves abaixo em uma árvore rubro-negra inicialmente vazia, usando as regras padrão (novo nó nasce vermelho; raiz sempre preta; rotações e recolorações conforme os casos de violação do vermelho-vermelho; árvore é binária de busca):\n41, 38, 31, 12, 19, 8\nApós todas as inserções e correções, quais nós ficam vermelhos no estado final?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "{8, 19}"
+            },
+            {
+              "id": "B",
+              "text": "{12, 31}"
+            },
+            {
+              "id": "C",
+              "text": "{31, 38}"
+            },
+            {
+              "id": "D",
+              "text": "{38, 41}"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-8",
+            "steps": [
+              "41 é inserido como raiz e fica preto; 38 entra vermelho à esquerda de 41, sem violação.",
+              "31 entra vermelho à esquerda de 38, criando uma violação vermelho-vermelho em configuração esquerda-esquerda; uma rotação à direita em 41 e recolorações deixam 38 preto, com filhos 31 e 41 vermelhos.",
+              "12 entra vermelho à esquerda de 31; como o pai 31 e o tio 41 são vermelhos, ambos ficam pretos, e a raiz 38 permanece preta após a correção.",
+              "19 entra vermelho à direita de 12, formando uma configuração esquerda-direita; uma rotação à esquerda em 12, seguida de uma rotação à direita em 31 e recolorações, deixa 19 preto, com filhos 12 e 31 vermelhos.",
+              "8 entra vermelho à esquerda de 12; como o pai 12 e o tio 31 são vermelhos, eles ficam pretos e o avô 19 fica vermelho. Como o pai de 19 é 38 preto, não há nova violação."
+            ],
+            "conclusion": "Alternativa A: os nós vermelhos finais são {8, 19}.",
+            "distractors": "B contém 12 e 31, que ficam pretos na última recoloração, C inclui 31 preto e a raiz 38 preta, e D inclui 38 e 41, ambos pretos no estado final.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Você vai inserir, nesta ordem, as chaves abaixo em uma árvore rubro-negra inicialmente vazia, usando as regras padrão (novo nó nasce vermelho; raiz sempre preta; rotações e recolorações conforme os casos de violação do vermelho-vermelho; árvore é binária de busca):"
+            },
+            {
+              "type": "code",
+              "text": "41, 38, 31, 12, 19, 8"
+            },
+            {
+              "type": "p",
+              "text": "Após todas as inserções e correções, quais nós ficam vermelhos no estado final?"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Grafos",
+          "prompt": "Uma tabela hash tem tamanho m = 11 (índices 0 a 10).\n• A função de hash primária é h(k) = k % 11.\n• A resolução de colisões usa sondagem quadrática com: h’(k, i) = (h(k) + i²) % 11\n• A tabela inicia vazia.\nInsira, nessa ordem, as chaves:\n22, 1, 13, 11, 24, 33\nEm qual índice a chave 33 ficará armazenada ao final?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "7"
+            },
+            {
+              "id": "C",
+              "text": "9"
+            },
+            {
+              "id": "D",
+              "text": "10"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-9",
+            "steps": [
+              "A sondagem testa h'(k, i) = (k % 11 + i²) % 11, começando com i = 0 e avançando quando há colisão.",
+              "22 ocupa o índice 0, 1 ocupa o índice 1 e 13 ocupa o índice 2, pois seus restos por 11 são 0, 1 e 2.",
+              "Para 11, os índices 0 e 1 estão ocupados; com i = 2, o índice é (0 + 4) % 11 = 4, onde a chave é inserida.",
+              "Para 24, o índice inicial 2 está ocupado; com i = 1, o índice é (2 + 1) % 11 = 3, onde a chave é inserida.",
+              "Para 33, h(33) = 0; as tentativas com i = 0, 1 e 2 chegam aos índices ocupados 0, 1 e 4. Com i = 3, chega-se a (0 + 9) % 11 = 9, que está livre."
+            ],
+            "conclusion": "Alternativa C: a chave 33 fica no índice 9.",
+            "distractors": "A indica o índice 4, já ocupado por 11, enquanto B e D indicam índices que não são alcançados antes da primeira posição livre, o índice 9.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Uma tabela hash tem tamanho m = 11 (índices 0 a 10)."
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "A função de hash primária é h(k) = k % 11."
+                },
+                {
+                  "label": "•",
+                  "text": "A resolução de colisões usa sondagem quadrática com: h’(k, i) = (h(k) + i²) % 11"
+                },
+                {
+                  "label": "•",
+                  "text": "A tabela inicia vazia."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Insira, nessa ordem, as chaves:"
+            },
+            {
+              "type": "code",
+              "text": "22, 1, 13, 11, 24, 33"
+            },
+            {
+              "type": "p",
+              "text": "Em qual índice a chave 33 ficará armazenada ao final?"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Estruturas de dados",
+          "prompt": "Uma árvore AVL armazena inteiros e faz rebalanceamentos automáticos após cada inserção. Regras usadas:\n• Inserção segue a ordem da árvore binária de busca.\n• Se o fator de balanceamento (altura esquerda − altura direita) de algum nó ficar fora de {−1, 0, 1}, aplica-se a rotação necessária (incluindo casos LL, RR, LR, RL).\nConsidere as inserções, nesta ordem:\n30, 5, 10, 42, 15, 20\nQual será a chave na raiz da árvore após todas as inserções e rebalanceamentos?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "5"
+            },
+            {
+              "id": "B",
+              "text": "15"
+            },
+            {
+              "id": "C",
+              "text": "20"
+            },
+            {
+              "id": "D",
+              "text": "30"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-10",
+            "steps": [
+              "Insira 30 como raiz e 5 como seu filho esquerdo; ao inserir 10 à direita de 5, ocorre o caso LR em 30.",
+              "Faça uma rotação à esquerda em 5 e uma à direita em 30: a raiz passa a ser 10, com filhos 5 e 30.",
+              "Insira 42 à direita de 30 e 15 à esquerda de 30; a árvore permanece balanceada.",
+              "Insira 20 à direita de 15. O nó 10 fica com fator de balanceamento −2, e seu filho direito, 30, fica com fator +1: caso RL.",
+              "Faça uma rotação à direita em 30 e uma à esquerda em 10. A nova raiz é 15, com subárvore esquerda contendo 10 e 5 e subárvore direita contendo 30, 20 e 42."
+            ],
+            "conclusion": "Alternativa B: a chave na raiz é 15.",
+            "distractors": "A, C e D indicam, respectivamente, 5, 20 e 30, mas nenhuma dessas chaves ocupa a raiz após o rebalanceamento RL final.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Uma árvore AVL armazena inteiros e faz rebalanceamentos automáticos após cada inserção. Regras usadas:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Inserção segue a ordem da árvore binária de busca."
+                },
+                {
+                  "label": "•",
+                  "text": "Se o fator de balanceamento (altura esquerda − altura direita) de algum nó ficar fora de {−1, 0, 1}, aplica-se a rotação necessária (incluindo casos LL, RR, LR, RL)."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Considere as inserções, nesta ordem:"
+            },
+            {
+              "type": "code",
+              "text": "30, 5, 10, 42, 15, 20"
+            },
+            {
+              "type": "p",
+              "text": "Qual será a chave na raiz da árvore após todas as inserções e rebalanceamentos?"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Algoritmos",
+          "prompt": "Um editor de imagens mantém um histórico de ações usando uma pilha para implementar a função Desfazer.\n• Aplicar(filtro) → coloca o filtro no topo da pilha.\n• Desfazer() → remove o filtro no topo da pilha, voltando para o estado anterior.\nUm designer está editando uma foto e executa a seguinte sequência:\nAplicar(\"Brilho+10\")\nAplicar(\"Saturação+20\")\nAplicar(\"Desfoque\")\nDesfazer()\nAplicar(\"Contraste-15\")\nDesfazer()\nDesfazer()\nQual é o conteúdo final da pilha de filtros?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "[] (nenhum filtro aplicado)"
+            },
+            {
+              "id": "B",
+              "text": "[\"Brilho+10\"]"
+            },
+            {
+              "id": "C",
+              "text": "[\"Brilho+10\", \"Saturação+20\"]"
+            },
+            {
+              "id": "D",
+              "text": "[\"Saturação+20\"]"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-11",
+            "steps": [
+              "A pilha segue a regra LIFO: o último filtro inserido é o primeiro removido.",
+              "Após as três primeiras aplicações, a pilha é [\"Brilho+10\", \"Saturação+20\", \"Desfoque\"], com o topo à direita.",
+              "O primeiro Desfazer remove \"Desfoque\"; a aplicação seguinte produz [\"Brilho+10\", \"Saturação+20\", \"Contraste-15\"].",
+              "Os dois últimos comandos Desfazer removem, nessa ordem, \"Contraste-15\" e \"Saturação+20\", restando apenas \"Brilho+10\"."
+            ],
+            "conclusion": "Alternativa B: [\"Brilho+10\"].",
+            "distractors": "A remove indevidamente todos os filtros, C mantém \"Saturação+20\" apesar do último Desfazer, e D mantém esse filtro enquanto elimina incorretamente \"Brilho+10\".",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um editor de imagens mantém um histórico de ações usando uma pilha para implementar a função Desfazer."
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Aplicar(filtro) → coloca o filtro no topo da pilha."
+                },
+                {
+                  "label": "•",
+                  "text": "Desfazer() → remove o filtro no topo da pilha, voltando para o estado anterior."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Um designer está editando uma foto e executa a seguinte sequência:"
+            },
+            {
+              "type": "code",
+              "text": "Aplicar(\"Brilho+10\")\nAplicar(\"Saturação+20\")\nAplicar(\"Desfoque\")\nDesfazer()\nAplicar(\"Contraste-15\")\nDesfazer()\nDesfazer()"
+            },
+            {
+              "type": "p",
+              "text": "Qual é o conteúdo final da pilha de filtros?"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Grafos",
+          "prompt": "Um serviço de streaming mantém um catálogo de filmes ordenado alfabeticamente pelo título. Para encontrar rapidamente um filme, o sistema usa busca binária. O catálogo (ordenado) é:\n[\"Avatar\", \"Duna\", \"Gladiador\", \"Interestelar\", \"Matrix\", \"Oppenheimer\", \"Titanic\"]\nO usuário procura pelo filme \"Matrix\". Na busca binária, qual é a sequência de títulos verificados até encontrar o filme?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Interestelar → Matrix"
+            },
+            {
+              "id": "B",
+              "text": "Avatar → Duna →Gladiador → Interestelar → Matrix"
+            },
+            {
+              "id": "C",
+              "text": "Avatar → Titanic → Interestelar → Matrix"
+            },
+            {
+              "id": "D",
+              "text": "Interestelar → Oppenheimer → Matrix"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-12",
+            "steps": [
+              "Com índices de 0 a 6, o elemento central é o de índice 3: \"Interestelar\".",
+              "Como \"Matrix\" vem depois de \"Interestelar\", a busca continua no intervalo de índices 4 a 6, cujo centro é 5: \"Oppenheimer\".",
+              "Como \"Matrix\" vem antes de \"Oppenheimer\", resta o índice 4, que contém \"Matrix\"."
+            ],
+            "conclusion": "Alternativa D: Interestelar → Oppenheimer → Matrix.",
+            "distractors": "A pula a comparação com o centro do intervalo restante, B realiza uma busca sequencial, e C começa pelas extremidades em vez de pelo elemento central.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um serviço de streaming mantém um catálogo de filmes ordenado alfabeticamente pelo título. Para encontrar rapidamente um filme, o sistema usa busca binária. O catálogo (ordenado) é:"
+            },
+            {
+              "type": "code",
+              "text": "[\"Avatar\", \"Duna\", \"Gladiador\", \"Interestelar\", \"Matrix\", \"Oppenheimer\", \"Titanic\"]"
+            },
+            {
+              "type": "p",
+              "text": "O usuário procura pelo filme \"Matrix\". Na busca binária, qual é a sequência de títulos verificados até encontrar o filme?"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere uma árvore binária de busca não balanceada inicialmente vazia. Insira as seguintes chaves, na ordem dada:\n50, 30, 70, 20, 40, 60, 80, 35, 45\nEm seguida, remova a chave 30. Qual das alternativas representa uma das possíveis ordens de caminhamento pré-ordem da árvore resultante?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "35, 45, 40, 20, 60, 80, 70, 50"
+            },
+            {
+              "id": "B",
+              "text": "20, 35, 40, 45, 50, 60, 70, 80"
+            },
+            {
+              "id": "C",
+              "text": "50, 35, 20, 40, 45, 70, 60, 80"
+            },
+            {
+              "id": "D",
+              "text": "50, 40, 35, 20, 45, 70, 60, 80"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-13",
+            "steps": [
+              "As inserções formam uma árvore com raiz 50; à esquerda, 30 tem filhos 20 e 40, e 40 tem filhos 35 e 45; à direita, 70 tem filhos 60 e 80.",
+              "O nó 30 tem dois filhos e pode ser substituído por seu sucessor em ordem, o menor elemento de sua subárvore direita: 35.",
+              "Coloque 35 no lugar de 30 e remova o nó 35 de sua posição original, à esquerda de 40.",
+              "No caminhamento pré-ordem, visite raiz, subárvore esquerda e subárvore direita, obtendo 50, 35, 20, 40, 45, 70, 60, 80."
+            ],
+            "conclusion": "Alternativa C: 50, 35, 20, 40, 45, 70, 60, 80.",
+            "distractors": "A e B não começam pela raiz 50, como exige a pré-ordem, e D não corresponde à remoção de 30 por substituição pelo sucessor 35 ou pelo predecessor 20.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma árvore binária de busca não balanceada inicialmente vazia. Insira as seguintes chaves, na ordem dada:"
+            },
+            {
+              "type": "code",
+              "text": "50, 30, 70, 20, 40, 60, 80, 35, 45"
+            },
+            {
+              "type": "p",
+              "text": "Em seguida, remova a chave 30. Qual das alternativas representa uma das possíveis ordens de caminhamento pré-ordem da árvore resultante?"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Algoritmos",
+          "prompt": "Uma biblioteca digital armazena IDs de livros em uma tabela hash de tamanho m = 7 usando:\n• Função hash: h(k) = k % 7\n• Sondagem linear: hᵢ(k) = (h(k) + i) mod 7\n• Remoção: quando um livro é excluído, o índice recebe uma marca de tombstone (vaga especial que pode ser reutilizada, mas não interrompe buscas).\nA tabela começa vazia e recebe as seguintes operações, nesta ordem:\nInserir 10\nInserir 24\nInserir 31\nInserir 18\nRemover 24\nInserir 38\nBuscar 24\nSabendo que a operação Buscar 24 retorna \"não encontrado\", em qual índice o 38 está armazenado ao final?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "4"
+            },
+            {
+              "id": "C",
+              "text": "5"
+            },
+            {
+              "id": "D",
+              "text": "6"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-14",
+            "steps": [
+              "Como 10 % 7 = 3, insira 10 no índice 3.",
+              "Como 24 % 7 = 3, há colisão com 10; a sondagem linear coloca 24 no índice 4.",
+              "Como 31 % 7 = 3, os índices 3 e 4 estão ocupados, então 31 vai para o índice 5; como 18 % 7 = 4, 18 vai para o índice 6.",
+              "Remover 24 deixa uma marca de tombstone no índice 4.",
+              "Como 38 % 7 = 3, a inserção encontra 10 no índice 3 e reutiliza o tombstone do índice 4; a busca por 24 percorre os índices 3, 4, 5 e 6 e termina no índice vazio 0, sem encontrá-lo."
+            ],
+            "conclusion": "Alternativa B: 38 está armazenado no índice 4.",
+            "distractors": "A aponta o índice 3, ocupado por 10, enquanto C e D apontam os índices 5 e 6, ocupados por 31 e 18.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Uma biblioteca digital armazena IDs de livros em uma tabela hash de tamanho m = 7 usando:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                {
+                  "label": "•",
+                  "text": "Função hash: h(k) = k % 7"
+                },
+                {
+                  "label": "•",
+                  "text": "Sondagem linear: hᵢ(k) = (h(k) + i) mod 7"
+                },
+                {
+                  "label": "•",
+                  "text": "Remoção: quando um livro é excluído, o índice recebe uma marca de tombstone (vaga especial que pode ser reutilizada, mas não interrompe buscas)."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "A tabela começa vazia e recebe as seguintes operações, nesta ordem:"
+            },
+            {
+              "type": "code",
+              "text": "Inserir 10\nInserir 24\nInserir 31\nInserir 18\nRemover 24\nInserir 38\nBuscar 24"
+            },
+            {
+              "type": "p",
+              "text": "Sabendo que a operação Buscar 24 retorna \"não encontrado\", em qual índice o 38 está armazenado ao final?"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Grafos",
+          "prompt": "Qual alternativa a seguir é uma implementação correta de um algoritmo recursivo para encontrar o maior elemento de uma lista?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "def maior(lista):\n    res = list[0]\n    for i in range(1, len(lista)):\n        if lista[i] > res:\n            res = lista[i]\n    return res",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "def maior(lista):\n    if len(lista) == 1:\n        return lista[0]\n    primeiro = lista[0]\n    resto = lista[1:]\n    return max(primeiro, resto)",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "def maior(lista):\n    if len(lista) == 1:\n        return lista[0]\n    primeiro = lista[0]\n    resto = lista[1:]\n    if primeiro > resto:\n        return primeiro\n    else:\n        return maior(resto)",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "def maior(lista):\n    if len(lista) == 1:\n        return lista[0]\n    primeiro = lista[0]\n    resto = lista[1:]\n    return max(primeiro, maior(resto))",
+              "code": true
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-15",
+            "steps": [
+              "Para uma lista com um elemento, o caso base retorna lista[0], que é seu maior elemento.",
+              "Para uma lista maior, separe o primeiro elemento e o restante: primeiro = lista[0] e resto = lista[1:].",
+              "A chamada maior(resto) resolve recursivamente o problema para uma lista menor.",
+              "Retorne max(primeiro, maior(resto)), comparando o primeiro elemento com o maior do restante; esse procedimento está na alternativa D e funciona para listas não vazias."
+            ],
+            "conclusion": "Alternativa D: return max(primeiro, maior(resto)).",
+            "distractors": "A usa um laço, não recursão, e ainda referencia list[0] em vez de lista[0]; B compara o primeiro elemento com uma lista sem calcular seu máximo; C também compara diretamente um elemento com uma lista.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual alternativa a seguir é uma implementação correta de um algoritmo recursivo para encontrar o maior elemento de uma lista?"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Estruturas de dados",
+          "prompt": "Um sistema de aeroporto mantém os horários de decolagem (em minutos após 00:00) em um vetor ordenado. A busca por um voo específico usa busca binária iterativa com limites inclusivos esq e dir e cálculo do meio meio = (esq + dir) // 2.\nVetor de horários:\n[510, 540, 555, 600, 615, 660, 705, 720, 735, 780]\nO passageiro procura o voo que decola às 12:15 (ou seja, 735 minutos). Na execução da busca binária, qual é a sequência de valores comparados, o número de iterações até encontrar, e o índice retornado?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "615 → 720 → 735; 3 iterações; índice 8"
+            },
+            {
+              "id": "B",
+              "text": "600 → 660 → 705 → 735; 4 iterações; índice 8"
+            },
+            {
+              "id": "C",
+              "text": "660 → 705 → 720 → 735; 4 iterações; índice 8"
+            },
+            {
+              "id": "D",
+              "text": "615 → 705 → 735; 3 iterações; índice 7"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-16",
+            "steps": [
+              "Os índices vão de 0 a 9, e o alvo é 12 × 60 + 15 = 735 minutos.",
+              "Na primeira iteração, esq = 0 e dir = 9: meio = (0 + 9) // 2 = 4, cujo valor é 615; como 735 > 615, atualize esq para 5.",
+              "Na segunda iteração, meio = (5 + 9) // 2 = 7, cujo valor é 720; como 735 > 720, atualize esq para 8.",
+              "Na terceira iteração, meio = (8 + 9) // 2 = 8, cujo valor é 735; o alvo foi encontrado e o índice retornado é 8."
+            ],
+            "conclusion": "Alternativa A: 615 → 720 → 735; 3 iterações; índice 8.",
+            "distractors": "B e C usam valores centrais incompatíveis com os limites e a fórmula fornecidos, enquanto D erra a segunda comparação e retorna o índice 7, que contém 720.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema de aeroporto mantém os horários de decolagem (em minutos após 00:00) em um vetor ordenado. A busca por um voo específico usa busca binária iterativa com limites inclusivos esq e dir e cálculo do meio meio = (esq + dir) // 2."
+            },
+            {
+              "type": "p",
+              "text": "Vetor de horários:"
+            },
+            {
+              "type": "code",
+              "text": "[510, 540, 555, 600, 615, 660, 705, 720, 735, 780]"
+            },
+            {
+              "type": "p",
+              "text": "O passageiro procura o voo que decola às 12:15 (ou seja, 735 minutos). Na execução da busca binária, qual é a sequência de valores comparados, o número de iterações até encontrar, e o índice retornado?"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Algoritmos",
+          "prompt": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas.\nAssinale a alternativa verdadeira. Considere que todas as chaves devem ser inteiras e que a árvore não admite chaves repetidas.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Um possível valor de s é 14."
+            },
+            {
+              "id": "B",
+              "text": "Se y=5, então um possível valor de x é 8."
+            },
+            {
+              "id": "C",
+              "text": "O único valor possível de t é 6."
+            },
+            {
+              "id": "D",
+              "text": "Se y=5, então necessariamente t=6."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-17",
+            "steps": [
+              "Em uma árvore de busca binária sem chaves repetidas, todas as chaves da subárvore esquerda são menores que a chave do nó, e todas as da direita são maiores.",
+              "Para determinar os valores possíveis das incógnitas, seria necessário aplicar essas desigualdades às posições dos nós na figura.",
+              "A figura da árvore não foi fornecida; portanto, não é possível deduzir os limites de x, s e t nem demonstrar que y=5 implica t=6."
+            ],
+            "conclusion": "Alternativa D, conforme o gabarito oficial, mas sua verificação depende da figura ausente.",
+            "distractors": "A, B e C são incorretas segundo o gabarito, mas não é possível explicar por que seus valores não se aplicam sem conhecer a estrutura da árvore.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore de busca binária a seguir. Observe que algumas chaves foram substituídas por incógnitas."
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa verdadeira. Considere que todas as chaves devem ser inteiras e que a árvore não admite chaves repetidas."
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2025-02-17-1.webp",
+              "page": 9,
+              "width": 604,
+              "height": 483,
+              "alt": "Figura da questão 17 — Mestrado e Doutorado 2025/02, página 9",
+              "caption": "Figura original · página 9"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Grafos",
+          "prompt": "Um sistema de controle de estoque ordena códigos de produtos usando um algoritmo que funciona assim:\n1. Percorre o vetor da esquerda para a direita, mantendo a parte inicial sempre ordenada.\n2. Para ordenar o próximo elemento, desloca para a direita todos os elementos maiores até encontrar a posição correta.\n3. Insere o elemento na posição encontrada, mantendo a ordenação.\n4. É eficiente para listas pequenas ou quase ordenadas, mas lento para listas grandes desordenadas.\n5. O algoritmo é estável, in-place e não usa pivôs.\nQual é o algoritmo de ordenação descrito?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Merge Sort"
+            },
+            {
+              "id": "B",
+              "text": "Quick Sort"
+            },
+            {
+              "id": "C",
+              "text": "Heap Sort"
+            },
+            {
+              "id": "D",
+              "text": "Insertion Sort"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-18",
+            "steps": [
+              "O Insertion Sort mantém um prefixo ordenado e considera, a cada iteração, o próximo elemento do vetor.",
+              "Para inserir esse elemento, desloca para a direita os elementos maiores e coloca a chave na posição liberada.",
+              "Ao deslocar apenas elementos estritamente maiores, preserva a ordem relativa dos iguais, sendo estável; também opera no próprio vetor, com espaço auxiliar constante.",
+              "Seu custo é linear no melhor caso, para um vetor já ordenado, e quadrático no pior caso, o que corresponde ao desempenho descrito."
+            ],
+            "conclusion": "Alternativa D: Insertion Sort.",
+            "distractors": "A intercala partes ordenadas, B particiona usando pivôs e C utiliza um heap, em vez de inserir cada elemento no prefixo ordenado por deslocamentos.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema de controle de estoque ordena códigos de produtos usando um algoritmo que funciona assim:"
+            },
+            {
+              "type": "list",
+              "style": "number",
+              "items": [
+                {
+                  "label": "1.",
+                  "text": "Percorre o vetor da esquerda para a direita, mantendo a parte inicial sempre ordenada."
+                },
+                {
+                  "label": "2.",
+                  "text": "Para ordenar o próximo elemento, desloca para a direita todos os elementos maiores até encontrar a posição correta."
+                },
+                {
+                  "label": "3.",
+                  "text": "Insere o elemento na posição encontrada, mantendo a ordenação."
+                },
+                {
+                  "label": "4.",
+                  "text": "É eficiente para listas pequenas ou quase ordenadas, mas lento para listas grandes desordenadas."
+                },
+                {
+                  "label": "5.",
+                  "text": "O algoritmo é estável, in-place e não usa pivôs."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Qual é o algoritmo de ordenação descrito?"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Estruturas de dados",
+          "prompt": "Um sistema de autenticação mantém registros de usuários em uma Árvore Rubro-Negra (ARN). Durante a inserção do valor 40, a árvore passou a ter a seguinte configuração (apenas os nós relevantes mostrados, N representa nó nulo/preto):\n          (50, preto)\n         /           \\\n(30, vermelho)     (70, preto)\n  /          \\\n(20, preto)  (40, vermelho)\nProblema detectado: o nó (30, vermelho) tem um filho (40, vermelho), violando a regra de que um nó vermelho não pode ter filho vermelho. O desenvolvedor implementou quatro possíveis funções de correção. Qual delas corrige o problema seguindo o algoritmo de inserção da ARN?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "if (pai->cor == VERMELHO && tio->cor == VERMELHO) {\n    pai->cor = PRETO;\n    tio->cor = PRETO;\n    avo->cor = VERMELHO;\n}",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "if (pai->cor == VERMELHO && tio->cor == PRETO && no == pai->dir) {\n    rotacaoEsquerda(pai);\n    no = pai;\n}",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "if (pai->cor == VERMELHO && tio->cor == PRETO && no == pai->esq) {\n    rotacaoDireita(avo);\n    trocarCores(pai, avo);\n}",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "if (pai->cor == PRETO && tio->cor == PRETO) {\n    rotacaoEsquerda(avo);\n}",
+              "code": true
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema de autenticação mantém registros de usuários em uma Árvore Rubro-Negra (ARN). Durante a inserção do valor 40, a árvore passou a ter a seguinte configuração (apenas os nós relevantes mostrados, N representa nó nulo/preto):"
+            },
+            {
+              "type": "code",
+              "text": "          (50, preto)\n         /           \\\n(30, vermelho)     (70, preto)\n  /          \\\n(20, preto)  (40, vermelho)"
+            },
+            {
+              "type": "p",
+              "text": "Problema detectado: o nó (30, vermelho) tem um filho (40, vermelho), violando a regra de que um nó vermelho não pode ter filho vermelho. O desenvolvedor implementou quatro possíveis funções de correção. Qual delas corrige o problema seguindo o algoritmo de inserção da ARN?"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Algoritmos",
+          "prompt": "Um sistema de listas de músicas mantém as faixas em uma lista duplamente encadeada. Durante a implementação da função removerMusica(No *musica), o desenvolvedor identificou que, ao remover um nó que não é nem o primeiro nem o último, a lista ficava corrompida (links quebrados). Considere a estrutura:\ntypedef struct No {\n    char titulo[50];\n    struct No *prev;\n    struct No *next;\n} No;\nQual dos trechos de código abaixo corrige corretamente o problema ao remover um nó intermediário?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "if (musica->prev != NULL)\n    musica->prev->next = musica->next;\nif (musica->next != NULL)\n    musica->next->prev = musica->prev;\nfree(musica);",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "musica->prev->next = NULL;\nmusica->next->prev = NULL;\nfree(musica);",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "if (musica->next != NULL)\n    musica->next->next = musica->prev;\nif (musica->prev != NULL)\n    musica->prev->prev = musica->next;\nfree(musica);",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "free(musica->prev);\nfree(musica->next);\nfree(musica);",
+              "code": true
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-02-20",
+            "steps": [
+              "Para remover um nó intermediário, seus dois vizinhos precisam passar a apontar um para o outro.",
+              "A atribuição musica->prev->next = musica->next faz o próximo do antecessor apontar para o sucessor.",
+              "A atribuição musica->next->prev = musica->prev faz o anterior do sucessor apontar para o antecessor.",
+              "Depois de restabelecer os dois links, free(musica) libera somente o nó removido; as verificações contra NULL são satisfeitas para um nó intermediário."
+            ],
+            "conclusion": "Alternativa A: reconecta corretamente os vizinhos antes de liberar musica.",
+            "distractors": "B rompe as ligações ao atribuir NULL, C altera os campos e nós errados, e D libera também os vizinhos, que deveriam permanecer na lista.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Um sistema de listas de músicas mantém as faixas em uma lista duplamente encadeada. Durante a implementação da função removerMusica(No *musica), o desenvolvedor identificou que, ao remover um nó que não é nem o primeiro nem o último, a lista ficava corrompida (links quebrados). Considere a estrutura:"
+            },
+            {
+              "type": "code",
+              "text": "typedef struct No {\n    char titulo[50];\n    struct No *prev;\n    struct No *next;\n} No;"
+            },
+            {
+              "type": "p",
+              "text": "Qual dos trechos de código abaixo corrige corretamente o problema ao remover um nó intermediário?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2025-01",
+      "label": "Mestrado e Doutorado 2025/01",
+      "examUrl": "https://drive.google.com/file/d/1dgMdVquQk6bRWwjP9fcgbMBJM17lqfj9/view?usp=sharing",
+      "keyUrl": "https://drive.google.com/file/d/19Sx7b9HZzHn8irWWpFcB6j-gz96wTTT3/view?usp=sharing",
+      "title": "Edital 092/2024",
+      "subtitle": "Prova de conceitos · 30 jan 2025",
+      "subjects": [
+        "Estruturas de dados",
+        "Algoritmos",
+        "Complexidade"
+      ],
+      "thumbnail": "/evidence/2025-01.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Estruturas de dados",
+          "prompt": "Ao compilar e executar o programa a seguir escrito em linguagem de programação C, quantas vezes será impressa a string Teste?\n#include <stdio.h>\n\nint main(void) {\n    int i, j;\n    for (i = 2; i <= 4; i++) {\n        for (j = 1; j < 3; j++) {\n            printf(\"Teste\\n\");\n        }\n    }\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "6"
+            },
+            {
+              "id": "B",
+              "text": "3"
+            },
+            {
+              "id": "C",
+              "text": "4"
+            },
+            {
+              "id": "D",
+              "text": "5"
+            },
+            {
+              "id": "E",
+              "text": "8"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-1",
+            "steps": [
+              "O laço externo executa para i=2, i=3 e i=4, totalizando 3 iterações.",
+              "Em cada iteração externa, o laço interno executa para j=1 e j=2, totalizando 2 chamadas de printf.",
+              "Como cada chamada imprime uma ocorrência de Teste, o total é 3 × 2 = 6."
+            ],
+            "conclusion": "Alternativa A: a string Teste será impressa 6 vezes.",
+            "distractors": "B, C, D e E apresentam contagens diferentes de 6 e não correspondem ao produto das quantidades de iterações dos dois laços.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Ao compilar e executar o programa a seguir escrito em linguagem de programação C, quantas vezes será impressa a string Teste?"
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n\nint main(void) {\n    int i, j;\n    for (i = 2; i <= 4; i++) {\n        for (j = 1; j < 3; j++) {\n            printf(\"Teste\\n\");\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Algoritmos",
+          "prompt": "Considere que o algoritmo de ordenação Insertion Sort foi empregado para ordenar, de maneira crescente, o vetor (4, 3, 2, 1). Analise as afirmativas abaixo.\nI. A configuração (4, 4, 2, 1) jamais pode ocorrer durante os passos da ordenação;\nII. A configuração (2, 3, 4, 1) necessariamente ocorre durante os passos da ordenação;\nIII. A configuração (1, 4, 3, 2) jamais ocorre durante os passos da ordenação.\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmativas I e II são verdadeiras."
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmativas II e III são verdadeiras."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmativas I e III são verdadeiras."
+            },
+            {
+              "id": "D",
+              "text": "Apenas a afirmativa I é verdadeira."
+            },
+            {
+              "id": "E",
+              "text": "Apenas a afirmativa II é verdadeira."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere que o algoritmo de ordenação Insertion Sort foi empregado para ordenar, de maneira crescente, o vetor (4, 3, 2, 1). Analise as afirmativas abaixo."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "A configuração (4, 4, 2, 1) jamais pode ocorrer durante os passos da ordenação;"
+                },
+                {
+                  "label": "II.",
+                  "text": "A configuração (2, 3, 4, 1) necessariamente ocorre durante os passos da ordenação;"
+                },
+                {
+                  "label": "III.",
+                  "text": "A configuração (1, 4, 3, 2) jamais ocorre durante os passos da ordenação."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "Ao compilar e executar o programa a seguir escrito em linguagem de programação C, o que será impresso?\n#include <stdio.h>\n\nint main(void) {\n    int x, i, cont = 0;\n    x = 18;\n    for (i = 1; i <= x; i++) {\n        if ((x % i) == 0) {\n            cont = cont + 1;\n        }\n    }\n    printf(\"%d\", cont);\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "6"
+            },
+            {
+              "id": "B",
+              "text": "7"
+            },
+            {
+              "id": "C",
+              "text": "5"
+            },
+            {
+              "id": "D",
+              "text": "8"
+            },
+            {
+              "id": "E",
+              "text": "4"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-3",
+            "steps": [
+              "O laço percorre todos os inteiros i de 1 até 18.",
+              "A condição x % i == 0 é verdadeira exatamente quando i divide 18 sem deixar resto.",
+              "Os divisores positivos de 18 são 1, 2, 3, 6, 9 e 18, totalizando 6.",
+              "Como cont começa em zero e aumenta uma vez por divisor, printf imprime 6."
+            ],
+            "conclusion": "Alternativa A: será impresso 6.",
+            "distractors": "B, C, D e E não se aplicam porque 18 possui exatamente 6 divisores positivos, e não 7, 5, 8 ou 4.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Ao compilar e executar o programa a seguir escrito em linguagem de programação C, o que será impresso?"
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n\nint main(void) {\n    int x, i, cont = 0;\n    x = 18;\n    for (i = 1; i <= x; i++) {\n        if ((x % i) == 0) {\n            cont = cont + 1;\n        }\n    }\n    printf(\"%d\", cont);\n}"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a seguinte sequência de operações em uma pilha inicialmente vazia, considerando que Push implementa a operação de empilhar um elemento e Pop a operação de desempilhar um elemento:\nPush(4);\nPop();\nPush(2);\nPush(3);\nPop();\nPush(1);\nPop();\nPop();\nPush(6);\nPush(7);\nApós todas as operações serem realizadas, qual será o número de elementos na pilha?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "1"
+            },
+            {
+              "id": "C",
+              "text": "4"
+            },
+            {
+              "id": "D",
+              "text": "10"
+            },
+            {
+              "id": "E",
+              "text": "2"
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-4",
+            "steps": [
+              "Representando a pilha da base para o topo, Push(4) produz [4] e Pop() retorna à pilha vazia.",
+              "Push(2) e Push(3) produzem [2, 3]; o Pop() seguinte remove 3, deixando [2].",
+              "Push(1) produz [2, 1]; os dois Pop() seguintes removem 1 e depois 2, esvaziando a pilha.",
+              "Push(6) e Push(7) deixam a pilha final [6, 7], com 2 elementos."
+            ],
+            "conclusion": "Alternativa E: restam 2 elementos na pilha.",
+            "distractors": "A, B, C e D não se aplicam porque há 6 operações Push e 4 operações Pop válidas, resultando em 6 − 4 = 2 elementos.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a seguinte sequência de operações em uma pilha inicialmente vazia, considerando que Push implementa a operação de empilhar um elemento e Pop a operação de desempilhar um elemento:"
+            },
+            {
+              "type": "code",
+              "text": "Push(4);\nPop();\nPush(2);\nPush(3);\nPop();\nPush(1);\nPop();\nPop();\nPush(6);\nPush(7);"
+            },
+            {
+              "type": "p",
+              "text": "Após todas as operações serem realizadas, qual será o número de elementos na pilha?"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Algoritmos",
+          "prompt": "Considere as seguintes afirmações sobre pilhas e filas:\nI. Uma forma de implementar pilhas é usando um vetor alocado dinamicamente. Sempre que a pilha ficar cheia, o vetor pode ser redimensionado (realocado).\nII. Se a fila for armazenada em uma lista simplesmente ligada, então uma forma eficiente de implementar é realizando inserções no final e remoções no início da lista, guardando sempre um ponteiro para o primeiro nó e um ponteiro para o último nó.\nIII. Se a pilha for armazenada em uma lista duplamente encadeada, então as operações de inserção e remoção serão eficientes tanto se elas forem realizadas no início quanto no final da lista.\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmativas I e II são verdadeiras."
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmativas II e III são verdadeiras."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmativas I e III são verdadeiras."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmativas são verdadeiras."
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma afirmativa é verdadeira."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as seguintes afirmações sobre pilhas e filas:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Uma forma de implementar pilhas é usando um vetor alocado dinamicamente. Sempre que a pilha ficar cheia, o vetor pode ser redimensionado (realocado)."
+                },
+                {
+                  "label": "II.",
+                  "text": "Se a fila for armazenada em uma lista simplesmente ligada, então uma forma eficiente de implementar é realizando inserções no final e remoções no início da lista, guardando sempre um ponteiro para o primeiro nó e um ponteiro para o último nó."
+                },
+                {
+                  "label": "III.",
+                  "text": "Se a pilha for armazenada em uma lista duplamente encadeada, então as operações de inserção e remoção serão eficientes tanto se elas forem realizadas no início quanto no final da lista."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Complexidade",
+          "prompt": "A seguir é apresentada uma árvore AVL com 9 nós. Considere as seguintes afirmativas acerca dessa árvore e de árvores AVL em geral.\nI. Esta árvore é incorreta, pois o nó que contém a chave 8 está desbalanceado.\nII. É possível inserir ao menos uma chave nessa árvore sem que seja necessário realizar rotações.\nIII. Se a chave 4 for inserida na árvore, será necessário realizar uma rotação simples que altera a raiz da árvore, a qual contém atualmente o nó com valor 6, para que ela permaneça balanceada.\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "As afirmativas I e II são verdadeiras."
+            },
+            {
+              "id": "B",
+              "text": "As afirmativas II e III são verdadeiras."
+            },
+            {
+              "id": "C",
+              "text": "Apenas a afirmativa I é verdadeira."
+            },
+            {
+              "id": "D",
+              "text": "Apenas a afirmativa II é verdadeira."
+            },
+            {
+              "id": "E",
+              "text": "Apenas a afirmativa III é verdadeira."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A seguir é apresentada uma árvore AVL com 9 nós. Considere as seguintes afirmativas acerca dessa árvore e de árvores AVL em geral."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Esta árvore é incorreta, pois o nó que contém a chave 8 está desbalanceado."
+                },
+                {
+                  "label": "II.",
+                  "text": "É possível inserir ao menos uma chave nessa árvore sem que seja necessário realizar rotações."
+                },
+                {
+                  "label": "III.",
+                  "text": "Se a chave 4 for inserida na árvore, será necessário realizar uma rotação simples que altera a raiz da árvore, a qual contém atualmente o nó com valor 6, para que ela permaneça balanceada."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2025-01-6-1.webp",
+              "page": 3,
+              "width": 316,
+              "height": 329,
+              "alt": "Figura da questão 6 — Mestrado e Doutorado 2025/01, página 3",
+              "caption": "Figura original · página 3"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Estruturas de dados",
+          "prompt": "Qual é a altura máxima de qualquer árvore AVL com 9 nós, considerando aqui que a altura de uma árvore com um único nó é zero e com dois nós é 1?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "5"
+            },
+            {
+              "id": "C",
+              "text": "3"
+            },
+            {
+              "id": "D",
+              "text": "6"
+            },
+            {
+              "id": "E",
+              "text": "9"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-7",
+            "steps": [
+              "Em uma AVL, as alturas das subárvores de cada nó diferem no máximo em 1.",
+              "Se N(h) é o número mínimo de nós para altura h, então N(0)=1, N(1)=2 e N(h)=1+N(h−1)+N(h−2): para minimizar os nós, as subárvores têm alturas h−1 e h−2.",
+              "Calculando os mínimos, obtemos N(2)=4, N(3)=7 e N(4)=12.",
+              "Uma AVL de altura 3 com 9 nós é possível: uma raiz com duas subárvores AVL de 4 nós e altura 2 totaliza 1+4+4=9 nós.",
+              "Como altura 4 exige pelo menos 12 nós, uma AVL com 9 nós não pode atingir essa altura nem alturas maiores."
+            ],
+            "conclusion": "Alternativa C: a altura máxima é 3.",
+            "distractors": "A, B, D e E propõem alturas de pelo menos 4, que exigem no mínimo 12 nós em uma AVL e, portanto, são impossíveis com 9 nós.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual é a altura máxima de qualquer árvore AVL com 9 nós, considerando aqui que a altura de uma árvore com um único nó é zero e com dois nós é 1?"
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Algoritmos",
+          "prompt": "Considere que o particionamento realizado em um vetor pelo algoritmo Quicksort deve garantir que ao final o vetor esteja corretamente ordenado e considere uma implementação na qual a escolha do pivô é feita de forma aleatória a partir de um dos elementos do vetor. O vetor abaixo apresenta o resultado do primeiro particionamento do Quicksort em um processo de ordenação de forma crescente, feito portanto considerando o vetor completo como intervalo.\n3 7 2 5 4 7 8 8\nSelecione a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O valor do pivô que gerou a partição pode ter sido apenas 3 ou 8, não podendo ter sido 2, 4, 5 e nem 7."
+            },
+            {
+              "id": "B",
+              "text": "O valor do pivô que gerou a partição pode ter sido apenas 4 ou 5, não podendo ter sido 2, 3, 7 e nem 8."
+            },
+            {
+              "id": "C",
+              "text": "O valor do pivô que gerou a partição pode ter sido apenas 7 ou 8, não podendo ter sido 2, 3, 4 e nem 5."
+            },
+            {
+              "id": "D",
+              "text": "O valor do pivô que gerou a partição pode ter sido apenas o 8, não podendo ter sido 2, 3, 4, 5 e nem 7"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das alternativas anteriores está correta"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-8",
+            "steps": [
+              "No particionamento para ordem crescente, o pivô deve separar valores menores ou iguais a ele à esquerda e maiores ou iguais a ele à direita; essas partes ainda não precisam estar ordenadas internamente.",
+              "O valor 3 não serve, pois há um 2 à sua direita; o valor 2 não serve, pois há valores maiores à sua esquerda.",
+              "Os valores 4 e 5 não servem, pois ambos têm um 7 à esquerda, violando a separação exigida.",
+              "O segundo 7 pode ser o pivô: à esquerda estão 3, 7, 2, 5 e 4, todos menores ou iguais a 7, e à direita estão 8 e 8.",
+              "O valor 8 também pode ser o pivô, pois uma de suas ocorrências separa valores menores ou iguais a 8 à esquerda e somente valores iguais a 8, ou nenhum elemento, à direita."
+            ],
+            "conclusion": "Alternativa C: o pivô pode ter sido apenas 7 ou 8.",
+            "distractors": "A inclui indevidamente 3 e exclui 7; B inclui 4 e 5, que não respeitam a partição; D exclui o possível pivô 7; E não se aplica porque C está correta.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere que o particionamento realizado em um vetor pelo algoritmo Quicksort deve garantir que ao final o vetor esteja corretamente ordenado e considere uma implementação na qual a escolha do pivô é feita de forma aleatória a partir de um dos elementos do vetor. O vetor abaixo apresenta o resultado do primeiro particionamento do Quicksort em um processo de ordenação de forma crescente, feito portanto considerando o vetor completo como intervalo."
+            },
+            {
+              "type": "code",
+              "text": "3 7 2 5 4 7 8 8"
+            },
+            {
+              "type": "p",
+              "text": "Selecione a alternativa correta."
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Complexidade",
+          "prompt": "Considerando que você está ordenando um vetor com 1 bilhão de posições e considerando o pior dos cenários em termos de número de comparações envolvendo chaves para cada algoritmo, ao considerarmos apenas QuickSort, MergeSort, Ordenação por Inserção e Ordenação por Seleção",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O quicksort faz menos comparações de valores envolvendo valores das chaves de ordenação dos elementos que os outros três citados nas opções"
+            },
+            {
+              "id": "B",
+              "text": "O Mergesort faz menos comparações envolvendo valores das chaves de ordenação dos elementos que os outros três citados nas opções"
+            },
+            {
+              "id": "C",
+              "text": "Ordenação por Inserção faz menos comparações envolvendo valores das chaves de ordenação dos elementos que os outros três citados nas opções"
+            },
+            {
+              "id": "D",
+              "text": "Ordenação por seleção faz menos comparações envolvendo valores das chaves de ordenação dos elementos que os outros três citados nas opções"
+            },
+            {
+              "id": "E",
+              "text": "Há um empate entre os algoritmos Quicksort e Mergesort no número de comparações envolvendo valores das chaves de ordenação dos elementos, sendo os dois melhores que Ordenação por Inserção e Ordenação por seleção"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-9",
+            "steps": [
+              "No pior caso, o QuickSort realiza Θ(n²) comparações, quando suas partições ficam sucessivamente muito desequilibradas.",
+              "A ordenação por inserção também realiza Θ(n²) comparações no pior caso, e a ordenação por seleção realiza n(n − 1)/2 comparações.",
+              "O MergeSort divide o vetor em partes e as intercala, mantendo Θ(n log₂ n) comparações mesmo no pior caso.",
+              "Para n = 10⁹, log₂ n é aproximadamente 30; assim, o crescimento n log₂ n é muito menor que n²."
+            ],
+            "conclusion": "Alternativa B: o MergeSort faz menos comparações no pior caso.",
+            "distractors": "A, C e D escolhem algoritmos com pior caso quadrático, enquanto E afirma um empate inexistente entre o pior caso do QuickSort e o do MergeSort.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considerando que você está ordenando um vetor com 1 bilhão de posições e considerando o pior dos cenários em termos de número de comparações envolvendo chaves para cada algoritmo, ao considerarmos apenas QuickSort, MergeSort, Ordenação por Inserção e Ordenação por Seleção"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere o seguinte programa (pseudocódigo) e indique qual das alternativas é a verdadeira.\n#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct No {\n    int dado;\n    struct No* prox;\n} No;\n\nNo* criarNo(int valor) {\n    No* novo = malloc(sizeof(No));\n    novo->dado = valor;\n    novo->prox = NULL;\n    return novo;\n}\n\nvoid inserirNo(No** cabeca, int valor) {\n    No* novo = criarNo(valor);\n    novo->prox = *cabeca;\n    *cabeca = novo;\n}\n\nint main() {\n    No* lista = NULL;\n    inserirNo(&lista, 10);\n    inserirNo(&lista, 20);\n    inserirNo(&lista, 30);\n    printf(\"Lista criada com os elementos!\\n\");\n    return 0;\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O programa não utiliza alocação dinâmica de memória para criar o nós da lista encadeada. Os elementos são inseridos no início da lista. A lista é representada por um ponteiro para o primeiro nó. Não há liberação explícita da memória alocada para os nós."
+            },
+            {
+              "id": "B",
+              "text": "O programa utiliza alocação dinâmica de memória para criar o nós da lista encadeada. Os elementos são inseridos no fim da lista. A lista é representada por um ponteiro para o primeiro nó. Não há liberação explícita da memória alocada para os nós."
+            },
+            {
+              "id": "C",
+              "text": "O programa utiliza alocação dinâmica de memória para criar o nós da lista encadeada. Os elementos são inseridos no início da lista. A lista é representada por um ponteiro para o primeiro nó. Há liberação explícita da memória alocada para os nós."
+            },
+            {
+              "id": "D",
+              "text": "O programa utiliza alocação dinâmica de memória para criar o nós da lista encadeada. Os elementos são inseridos no início da lista. A lista é representada por um ponteiro para o primeiro nó. Não há liberação explícita da memória alocada para os nós."
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das opções anteriores é verdadeira."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-10",
+            "steps": [
+              "A instrução malloc(sizeof(No)) aloca dinamicamente a memória de cada novo nó.",
+              "Em inserirNo, novo->prox = *cabeca liga o novo nó ao antigo primeiro nó, e *cabeca = novo atualiza o início da lista.",
+              "As inserções de 10, 20 e 30 produzem a lista 30 → 20 → 10 → NULL, confirmando a inserção no início.",
+              "A variável lista é um ponteiro para o primeiro nó, e o programa não contém chamadas a free para liberar explicitamente os nós."
+            ],
+            "conclusion": "Alternativa D: há alocação dinâmica, inserção no início, representação pelo ponteiro para o primeiro nó e ausência de liberação explícita.",
+            "distractors": "A nega o uso de alocação dinâmica; B afirma inserção no fim; C afirma uma liberação explícita inexistente; E não se aplica porque D está correta.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o seguinte programa (pseudocódigo) e indique qual das alternativas é a verdadeira."
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct No {\n    int dado;\n    struct No* prox;\n} No;\n\nNo* criarNo(int valor) {\n    No* novo = malloc(sizeof(No));\n    novo->dado = valor;\n    novo->prox = NULL;\n    return novo;\n}\n\nvoid inserirNo(No** cabeca, int valor) {\n    No* novo = criarNo(valor);\n    novo->prox = *cabeca;\n    *cabeca = novo;\n}\n\nint main() {\n    No* lista = NULL;\n    inserirNo(&lista, 10);\n    inserirNo(&lista, 20);\n    inserirNo(&lista, 30);\n    printf(\"Lista criada com os elementos!\\n\");\n    return 0;\n}"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Algoritmos",
+          "prompt": "Considerando o seguinte programa (pseudocódigo) indique qual das afirmações é a verdadeira.\n#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct No {\n    int dado;\n    struct No* prox;\n} No;\n\nNo* criarNo(int valor) {\n    No* novo = malloc(sizeof(No));\n    novo->dado = valor;\n    novo->prox = NULL;\n    return novo;\n}\n\nvoid inserirNo(No** cabeca, int valor) {\n    No* novo = criarNo(valor);\n    if (*cabeca == NULL) {\n        *cabeca = novo;\n    } else {\n        No* atual = *cabeca;\n        while (atual->prox != NULL) {\n            atual = atual->prox;\n        }\n        atual->prox = novo;\n    }\n}\n\nint main() {\n    No* lista = NULL;\n    inserirNo(&lista, 10);\n    inserirNo(&lista, 20);\n    inserirNo(&lista, 30);\n    return 0;\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Ao inserir o elemento 30 na lista, na terceira chamada da função inserirNo feita na função main, a linha de comando destacada em negrito, com o comando while, é executada 3 vezes. De forma geral, a quantidade de vezes que esta linha é executada depende da quantidade de elementos na lista."
+            },
+            {
+              "id": "B",
+              "text": "Ao inserir o elemento 30 na lista, na terceira chamada da função inserirNo feita na função main, a linha de comando destacada em negrito, com o comando while, é executada 2 vezes. De forma geral, a quantidade de vezes que esta linha é executada depende da quantidade de elementos na lista."
+            },
+            {
+              "id": "C",
+              "text": "Ao inserir o elemento 30 na lista, na terceira chamada da função inserirNo feita na função main, a linha de comando destacada em negrito, com o comando while, é executada 3 vezes. Ao inserir o elemento 30 na lista o loop while executa 3 vezes. De forma geral, a quantidade de vezes que este loop executa não depende da quantidade de elementos já inseridos na lista."
+            },
+            {
+              "id": "D",
+              "text": "Ao inserir o elemento 30 na lista, na terceira chamada da função inserirNo feita na função main, a linha de comando destacada em negrito, com o comando while, é executada 0 vezes."
+            },
+            {
+              "id": "E",
+              "text": "Ao inserir o elemento 30 na lista, na terceira chamada da função inserirNo feita na função main, a linha de comando destacada em negrito, com o comando while, é executada 1 vez."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-11",
+            "steps": [
+              "Antes da terceira inserção, a lista é 10 → 20 → NULL, pois inserirNo acrescenta os nós ao fim.",
+              "Para inserir 30, atual começa no nó 10; a primeira avaliação de atual->prox != NULL é verdadeira, e o corpo move atual para o nó 20.",
+              "A segunda avaliação da condição é falsa, pois o próximo do nó 20 é NULL; o laço termina e atual->prox = novo liga o nó 30 ao final.",
+              "Portanto, a linha do while é avaliada duas vezes, embora seu corpo execute apenas uma vez; em uma lista não vazia com k nós, essa condição é avaliada k vezes."
+            ],
+            "conclusion": "Alternativa B: a condição do while é executada duas vezes, e essa quantidade depende do tamanho da lista.",
+            "distractors": "A e C indicam três avaliações, e C ainda nega a dependência do tamanho da lista; D indica zero avaliações; E confunde a única execução do corpo com as duas avaliações da condição.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considerando o seguinte programa (pseudocódigo) indique qual das afirmações é a verdadeira."
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct No {\n    int dado;\n    struct No* prox;\n} No;\n\nNo* criarNo(int valor) {\n    No* novo = malloc(sizeof(No));\n    novo->dado = valor;\n    novo->prox = NULL;\n    return novo;\n}\n\nvoid inserirNo(No** cabeca, int valor) {\n    No* novo = criarNo(valor);\n    if (*cabeca == NULL) {\n        *cabeca = novo;\n    } else {\n        No* atual = *cabeca;\n        while (atual->prox != NULL) {\n            atual = atual->prox;\n        }\n        atual->prox = novo;\n    }\n}\n\nint main() {\n    No* lista = NULL;\n    inserirNo(&lista, 10);\n    inserirNo(&lista, 20);\n    inserirNo(&lista, 30);\n    return 0;\n}"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Complexidade",
+          "prompt": "Considerando o seguinte programa (pseudocódigo) indique qual das afirmações é a verdadeira.\n#include <stdio.h>\n\nint buscaBinaria(int vetor[], int tamanho, int valor) {\n    int inicio = 0;\n    int fim = tamanho - 1;\n    while (inicio <= fim) {\n        int meio = (inicio + fim) / 2;\n        if (vetor[meio] == valor) {\n            return meio;\n        }\n        if (vetor[meio] < valor) {\n            inicio = meio + 1;\n        } else {\n            fim = meio - 1;\n        }\n    }\n    return -1;\n}\n\nint main() {\n    int vetor[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};\n    int tamanho = sizeof(vetor) / sizeof(vetor[0]);\n    int valor = 15;\n    int resultado = buscaBinaria(vetor, tamanho, valor);\n    printf(\"%d\\n\", resultado);\n    return 0;\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A linha em negrito, loop while, será executada 2 vezes e o programa imprime 15."
+            },
+            {
+              "id": "B",
+              "text": "A linha em negrito, loop while, será executada 3 vezes e o programa imprime 7."
+            },
+            {
+              "id": "C",
+              "text": "A linha em negrito, loop while, será executada 2 vezes e o programa imprime 7."
+            },
+            {
+              "id": "D",
+              "text": "A linha em negrito, loop while, 3 vezes e o programa imprime -1."
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das afirmações anteriores é verdadeira"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-12",
+            "steps": [
+              "O vetor possui 10 elementos, com índices de 0 a 9; inicialmente, inicio = 0 e fim = 9.",
+              "Na primeira iteração, meio = (0 + 9) / 2 = 4, com divisão inteira; vetor[4] = 9 é menor que 15, então inicio passa a 5.",
+              "Na segunda iteração, meio = (5 + 9) / 2 = 7; vetor[7] = 15, então a função retorna imediatamente o índice 7.",
+              "O retorno ocorre dentro do laço, sem uma terceira avaliação do while, e printf imprime 7."
+            ],
+            "conclusion": "Alternativa C: o while é executado duas vezes e o programa imprime 7.",
+            "distractors": "A confunde o valor procurado com seu índice; B indica uma terceira execução inexistente; D indica três execuções e uma busca sem sucesso; E não se aplica porque C está correta.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considerando o seguinte programa (pseudocódigo) indique qual das afirmações é a verdadeira."
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n\nint buscaBinaria(int vetor[], int tamanho, int valor) {\n    int inicio = 0;\n    int fim = tamanho - 1;\n    while (inicio <= fim) {\n        int meio = (inicio + fim) / 2;\n        if (vetor[meio] == valor) {\n            return meio;\n        }\n        if (vetor[meio] < valor) {\n            inicio = meio + 1;\n        } else {\n            fim = meio - 1;\n        }\n    }\n    return -1;\n}\n\nint main() {\n    int vetor[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};\n    int tamanho = sizeof(vetor) / sizeof(vetor[0]);\n    int valor = 15;\n    int resultado = buscaBinaria(vetor, tamanho, valor);\n    printf(\"%d\\n\", resultado);\n    return 0;\n}"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a função em Python a seguir.\ndef funcao(n):\n    if n == 0:\n        return 0\n    return n % 10 + funcao(n // 10)\nQual o valor retornado pela função quando chamada da seguinte forma: funcao(42)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "6"
+            },
+            {
+              "id": "C",
+              "text": "8"
+            },
+            {
+              "id": "D",
+              "text": "24"
+            },
+            {
+              "id": "E",
+              "text": "40"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-13",
+            "steps": [
+              "Para n = 42, o resto 42 % 10 é 2 e a divisão inteira 42 // 10 é 4, portanto funcao(42) = 2 + funcao(4).",
+              "Para n = 4, temos 4 % 10 = 4 e 4 // 10 = 0, portanto funcao(4) = 4 + funcao(0).",
+              "O caso-base retorna funcao(0) = 0; substituindo os retornos, o resultado é 2 + 4 + 0 = 6."
+            ],
+            "conclusion": "Alternativa B: a função retorna 6.",
+            "distractors": "A, C, D e E apresentam valores diferentes da soma dos dígitos de 42, que é 6.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função em Python a seguir."
+            },
+            {
+              "type": "code",
+              "text": "def funcao(n):\n    if n == 0:\n        return 0\n    return n % 10 + funcao(n // 10)"
+            },
+            {
+              "type": "p",
+              "text": "Qual o valor retornado pela função quando chamada da seguinte forma: funcao(42)?"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Algoritmos",
+          "prompt": "Considere a função em Python a seguir.\ndef funcao(n, r=0):\n    if n == 0:\n        return r\n    return funcao(n // 10, r * 10 + n % 10)\nQual o retorno da função quando chamada da seguinte forma: funcao(42)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4"
+            },
+            {
+              "id": "B",
+              "text": "6"
+            },
+            {
+              "id": "C",
+              "text": "8"
+            },
+            {
+              "id": "D",
+              "text": "24"
+            },
+            {
+              "id": "E",
+              "text": "40"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-14",
+            "steps": [
+              "A chamada funcao(42) começa com r = 0 e gera funcao(4, 0 × 10 + 2), isto é, funcao(4, 2).",
+              "A chamada funcao(4, 2) gera funcao(0, 2 × 10 + 4), isto é, funcao(0, 24).",
+              "Como n = 0, o caso-base retorna o acumulador r = 24; a função inverte a ordem dos dígitos."
+            ],
+            "conclusion": "Alternativa D: a função retorna 24.",
+            "distractors": "A, B, C e E não correspondem ao acumulador final 24; em particular, 6 seria a soma dos dígitos, não a operação realizada por esta função.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função em Python a seguir."
+            },
+            {
+              "type": "code",
+              "text": "def funcao(n, r=0):\n    if n == 0:\n        return r\n    return funcao(n // 10, r * 10 + n % 10)"
+            },
+            {
+              "type": "p",
+              "text": "Qual o retorno da função quando chamada da seguinte forma: funcao(42)?"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Complexidade",
+          "prompt": "Considere o grafo a seguir:\nAo executar o algoritmo de Dijkstra para calcular o caminho mínimo entre os vértices A e D, qual das alternativas abaixo representa uma possível ordem em que os vértices são visitados (i.e., o vértice é retirado da fila de vértices a visitar)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A-G-E-B-C-F-H-D"
+            },
+            {
+              "id": "B",
+              "text": "A-G-E-F-H-D"
+            },
+            {
+              "id": "C",
+              "text": "A-B-E-F-H-D"
+            },
+            {
+              "id": "D",
+              "text": "A-B-E-G-H-D"
+            },
+            {
+              "id": "E",
+              "text": "A-B-E-G-F-H-C-D"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o grafo a seguir:"
+            },
+            {
+              "type": "p",
+              "text": "Ao executar o algoritmo de Dijkstra para calcular o caminho mínimo entre os vértices A e D, qual das alternativas abaixo representa uma possível ordem em que os vértices são visitados (i.e., o vértice é retirado da fila de vértices a visitar)?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2025-01-15-1.webp",
+              "page": 8,
+              "width": 827,
+              "height": 352,
+              "alt": "Figura da questão 15 — Mestrado e Doutorado 2025/01, página 8",
+              "caption": "Figura original · página 8"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Estruturas de dados",
+          "prompt": "Assinale a opção que contém uma implementação correta, em C, de uma função que realiza a seguinte tarefa: “escreva uma função que recebe como entrada o valor de uma compra, aplicando desconto de 15% ao total se o valor inicial da compra for superior a 100 reais”.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "float calcula_preco(float valor_compra) {\n    if (valor_compra > 100)\n        valor_compra = valor_compra - (valor_compra * 15%);\n    return valor_compra;\n}",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "float calcula_preco(float valor_compra) {\n    if (valor_compra > 100)\n        valor_compra = valor_compra - (valor_compra * 0.85);\n    return valor_compra;\n}",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "float calcula_preco(float valor_compra) {\n    if (valor_compra > 100)\n        valor_compra = valor_compra - valor_compra * 1.15;\n    return valor_compra;\n}",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "float calcula_preco(float valor_compra) {\n    if (valor_compra > 100)\n        valor_compra = valor_compra / 1.15;\n    return valor_compra;\n}",
+              "code": true
+            },
+            {
+              "id": "E",
+              "text": "float calcula_preco(float valor_compra) {\n    if (valor_compra > 100)\n        valor_compra = valor_compra * 0.85;\n    return valor_compra;\n}",
+              "code": true
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-16",
+            "steps": [
+              "A condição valor_compra > 100 aplica o desconto somente quando a compra supera 100 reais; nos demais casos, o valor permanece inalterado.",
+              "Um desconto de 15% resulta em valor_final = valor_compra × (1 − 0,15) = valor_compra × 0,85.",
+              "Desconsiderando o cabeçalho institucional inserido no meio da alternativa E, sua função executa essa multiplicação e retorna o valor final."
+            ],
+            "conclusion": "Alternativa E: a função aplica corretamente o desconto de 15% para compras superiores a 100 reais.",
+            "distractors": "A usa 15%, que não é uma expressão percentual válida em C; B desconta 85%; C produz −0,15 vezes o valor original; D divide por 1,15, o que não equivale a descontar 15%.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Assinale a opção que contém uma implementação correta, em C, de uma função que realiza a seguinte tarefa: “escreva uma função que recebe como entrada o valor de uma compra, aplicando desconto de 15% ao total se o valor inicial da compra for superior a 100 reais”."
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Algoritmos",
+          "prompt": "Analise as afirmações a seguir sobre tabelas de espalhamento (hash).\nI. A sondagem linear (linear probing) pode causar aglomeração de chaves devido ao excesso de colisões em regiões muito próximas da posição de inserção original de uma chave qualquer.\nII. Uma estratégia importante para evitar que o algoritmo entre em loop infinito é sempre manter ao menos uma posição vazia na tabela. Assim, sempre será possível inserir uma chave na sua posição correta, independentemente da estratégia de resolução de colisão adotada.\nIII. Na sondagem quadrática (quadratic probing), é possível que a sondagem entre em loop infinito mesmo que a tabela ainda tenha várias posições vazias.\nAssinale a alternativa correta.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmações I e II são verdadeiras."
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmações II e III são verdadeiras."
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmações I e III são verdadeiras."
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações são verdadeiras."
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das afirmações é verdadeira."
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-17",
+            "steps": [
+              "A afirmação I é verdadeira: a sondagem linear examina posições consecutivas, favorecendo a formação de blocos de posições ocupadas, fenômeno chamado aglomeração primária.",
+              "A afirmação II é falsa: uma posição vazia não garante a inserção independentemente da estratégia, pois a sequência de sondagem pode não visitar todas as posições da tabela.",
+              "A afirmação III é verdadeira: na sondagem quadrática, a sequência pode repetir posições ocupadas sem alcançar posições vazias; sem um limite de tentativas, isso pode gerar um loop infinito."
+            ],
+            "conclusion": "Alternativa C: apenas as afirmações I e III são verdadeiras.",
+            "distractors": "A, B e D consideram a afirmação II verdadeira, enquanto E desconsidera a veracidade das afirmações I e III.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Analise as afirmações a seguir sobre tabelas de espalhamento (hash)."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "A sondagem linear (linear probing) pode causar aglomeração de chaves devido ao excesso de colisões em regiões muito próximas da posição de inserção original de uma chave qualquer."
+                },
+                {
+                  "label": "II.",
+                  "text": "Uma estratégia importante para evitar que o algoritmo entre em loop infinito é sempre manter ao menos uma posição vazia na tabela. Assim, sempre será possível inserir uma chave na sua posição correta, independentemente da estratégia de resolução de colisão adotada."
+                },
+                {
+                  "label": "III.",
+                  "text": "Na sondagem quadrática (quadratic probing), é possível que a sondagem entre em loop infinito mesmo que a tabela ainda tenha várias posições vazias."
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta."
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "O código abaixo imprime como resultado:\n#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct tipoNo {\n    int d;\n    struct tipoNo *prox;\n} tipoNo;\n\ntypedef struct tipoLista {\n    tipoNo *ea;\n    tipoNo *eb;\n} tipoLista;\n\nvoid funcao(tipoLista *p, int num) {\n    tipoNo *aux;\n    aux = (tipoNo *) malloc(sizeof(tipoNo));\n    aux->d = num;\n    aux->prox = p->ea;\n    p->ea = aux;\n    p->eb = p->ea->prox;\n}\n\nvoid mostra(tipoLista *p) {\n    tipoNo *temp = p->eb;\n    while (temp) {\n        printf(\"%d \", temp->d);\n        temp = temp->prox;\n    }\n}\n\nint main() {\n    tipoLista l;\n    l.ea = NULL;\n    l.eb = NULL;\n    funcao(&l, 2);\n    funcao(&l, 4);\n    funcao(&l, 6);\n    funcao(&l, 8);\n    mostra(&l);\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2 4 6 8"
+            },
+            {
+              "id": "B",
+              "text": "8 6 4 2"
+            },
+            {
+              "id": "C",
+              "text": "6 4 2"
+            },
+            {
+              "id": "D",
+              "text": "2 4 6"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das alternativas anteriores"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-18",
+            "steps": [
+              "A função insere cada novo nó no início: aux->prox recebe o antigo início e p->ea passa a apontar para aux.",
+              "Após inserir 2, 4, 6 e 8, a lista encabeçada por ea fica 8 → 6 → 4 → 2 → NULL.",
+              "A cada inserção, p->eb recebe p->ea->prox; portanto, após a última inserção, eb aponta para o nó que contém 6.",
+              "A função mostra começa em eb e segue os ponteiros prox, imprimindo 6 4 2."
+            ],
+            "conclusion": "Alternativa C: a saída é 6 4 2.",
+            "distractors": "A apresenta a ordem de inserção, B percorre a lista desde ea, D omite 8 mas inverte a ordem efetiva do percurso, e E não se aplica porque C corresponde à saída.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "O código abaixo imprime como resultado:"
+            },
+            {
+              "type": "code",
+              "text": "#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct tipoNo {\n    int d;\n    struct tipoNo *prox;\n} tipoNo;\n\ntypedef struct tipoLista {\n    tipoNo *ea;\n    tipoNo *eb;\n} tipoLista;\n\nvoid funcao(tipoLista *p, int num) {\n    tipoNo *aux;\n    aux = (tipoNo *) malloc(sizeof(tipoNo));\n    aux->d = num;\n    aux->prox = p->ea;\n    p->ea = aux;\n    p->eb = p->ea->prox;\n}\n\nvoid mostra(tipoLista *p) {\n    tipoNo *temp = p->eb;\n    while (temp) {\n        printf(\"%d \", temp->d);\n        temp = temp->prox;\n    }\n}\n\nint main() {\n    tipoLista l;\n    l.ea = NULL;\n    l.eb = NULL;\n    funcao(&l, 2);\n    funcao(&l, 4);\n    funcao(&l, 6);\n    funcao(&l, 8);\n    mostra(&l);\n}"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Estruturas de dados",
+          "prompt": "Para gerar a sequência de Fibonacci usamos a relação de recorrência abaixo (I). Complete o pseudo-código (II) para que o cálculo da sequência de Fibonacci esteja correto utilizando uma das opções abaixo:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "n==0"
+            },
+            {
+              "id": "B",
+              "text": "n<=0"
+            },
+            {
+              "id": "C",
+              "text": "n==1"
+            },
+            {
+              "id": "D",
+              "text": "n<=2"
+            },
+            {
+              "id": "E",
+              "text": "n<=1"
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-19",
+            "steps": [
+              "O enunciado fornecido não apresenta a relação de recorrência nem o pseudocódigo indicados por (I) e (II), impedindo verificar diretamente a lacuna.",
+              "A condição n <= 1, apresentada na alternativa E, inclui os valores 0 e 1 quando n é um inteiro não negativo.",
+              "O gabarito oficial indica E, mas, sem os trechos ausentes, não é possível demonstrar a correção do pseudocódigo completo."
+            ],
+            "conclusion": "Alternativa E, conforme o gabarito oficial: n <= 1; a validação completa depende dos trechos ausentes.",
+            "distractors": "A testa apenas 0, B testa valores até 0, C testa apenas 1 e D inclui também 2; sem a recorrência e o pseudocódigo, não é possível justificar integralmente por que essas condições não se aplicam à lacuna.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Para gerar a sequência de Fibonacci usamos a relação de recorrência abaixo (I). Complete o pseudo-código (II) para que o cálculo da sequência de Fibonacci esteja correto utilizando uma das opções abaixo:"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Algoritmos",
+          "prompt": "Considere as afirmações abaixo sobre diferentes tipos de árvores binárias de pesquisa e marque uma das alternativas\nI) Os algoritmos de busca tanto em árvores sem balanceamento, quanto em árvores com balanceamento, têm o número máximo de comparações da chave de busca com valores na árvore, na pior das hipóteses, proporcional a altura da árvore, não importando se a árvore é sem balanceamento ou com balanceamento.\nII) Dependendo da ordem de inserção dos elementos, é possível que a altura de uma árvore sem balanceamento seja menor ou igual que a de uma árvore com balanceamento, mesmo que as duas contenham os mesmos elementos, todos inseridos na mesma ordem\nIII) O mesmo algoritmo de busca pode ser usado tanto para árvores com balanceamento quanto para árvores sem balanceamento",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas as afirmações I e II estão corretas"
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmações II e III estão corretas"
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmações I e III estão corretas"
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações estão corretas"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das alternativas anteriores (a,b,c ou d) está certa."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2025-01-20",
+            "steps": [
+              "A afirmação I é verdadeira: a busca percorre um caminho da raiz até um nó ou uma posição de término, com número máximo de comparações proporcional à altura da árvore.",
+              "A afirmação II é verdadeira: uma ordem de inserção pode produzir uma árvore sem balanceamento já bem distribuída, cuja altura seja igual à de uma árvore balanceada com os mesmos elementos; essa igualdade já satisfaz a afirmação.",
+              "A afirmação III é verdadeira: ambas preservam a propriedade de árvore binária de pesquisa, permitindo comparar a chave com o nó atual e seguir para a subárvore esquerda ou direita com o mesmo algoritmo."
+            ],
+            "conclusion": "Alternativa D: todas as afirmações estão corretas.",
+            "distractors": "A exclui indevidamente III, B exclui I, C exclui II e E rejeita D, embora as três afirmações sejam verdadeiras.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as afirmações abaixo sobre diferentes tipos de árvores binárias de pesquisa e marque uma das alternativas"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Os algoritmos de busca tanto em árvores sem balanceamento, quanto em árvores com balanceamento, têm o número máximo de comparações da chave de busca com valores na árvore, na pior das hipóteses, proporcional a altura da árvore, não importando se a árvore é sem balanceamento ou com balanceamento."
+                },
+                {
+                  "label": "II)",
+                  "text": "Dependendo da ordem de inserção dos elementos, é possível que a altura de uma árvore sem balanceamento seja menor ou igual que a de uma árvore com balanceamento, mesmo que as duas contenham os mesmos elementos, todos inseridos na mesma ordem"
+                },
+                {
+                  "label": "III)",
+                  "text": "O mesmo algoritmo de busca pode ser usado tanto para árvores com balanceamento quanto para árvores sem balanceamento"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2024-02",
+      "label": "Mestrado e Doutorado 2024/02",
+      "examUrl": "https://drive.google.com/file/d/15bdnFE6wyQmUFUEn7CpSmfGuB0cosl0a/view?usp=sharing",
+      "keyUrl": "https://drive.google.com/file/d/14h4rFRXHrmzQEDIvjXIlSKHz74VNuNwn/view?usp=sharing",
+      "title": "Edital 031/2024",
+      "subtitle": "Prova de conceitos · 17 jun 2024",
+      "subjects": [
+        "Algoritmos",
+        "Estruturas de dados",
+        "Complexidade"
+      ],
+      "thumbnail": "/evidence/2024-02.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Algoritmos",
+          "prompt": "Considere a função abaixo escrita em linguagem C e com o objetivo de ordenar um vetor de inteiros com n elementos de maneira crescente:\nvoid ordena(int v[], unsigned tamanhoDoVetor) {\n    int i, j, k;\n    for (i = 1; i < tamanhoDoVetor; i++) {\n        k = v[i];\n        for (j = i - 1; ((j >= 0) && (v[j] > k)); j--) {\n            v[j + 1] = v[j];\n        }\n        v[j] = k;\n    }\n}\nAssinale a alternativa correta:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O código ordena o vetor por inserção de maneira crescente"
+            },
+            {
+              "id": "B",
+              "text": "O código ordena o vetor de maneira crescente por seleção"
+            },
+            {
+              "id": "C",
+              "text": "É possível alterar o código em uma única linha para ordenar o vetor de maneira crescente por inserção"
+            },
+            {
+              "id": "D",
+              "text": "É possível alterar o código em uma única linha para ordenar o vetor de maneira crescente por seleção"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função abaixo escrita em linguagem C e com o objetivo de ordenar um vetor de inteiros com n elementos de maneira crescente:"
+            },
+            {
+              "type": "code",
+              "text": "void ordena(int v[], unsigned tamanhoDoVetor) {\n    int i, j, k;\n    for (i = 1; i < tamanhoDoVetor; i++) {\n        k = v[i];\n        for (j = i - 1; ((j >= 0) && (v[j] > k)); j--) {\n            v[j + 1] = v[j];\n        }\n        v[j] = k;\n    }\n}"
+            },
+            {
+              "type": "p",
+              "text": "Assinale a alternativa correta:"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Estruturas de dados",
+          "prompt": "Se um programador fez testes para avaliar o tempo de execução para entradas de tamanho 1000 em um programa O(n²) e obteve tempo de 1 minuto, quanto tempo demoraria para uma entrada de tamanho 2000?\n(considere que 1000 é suficientemente grande para desprezar fatores menores na função de custo e que o custo unitário por operação não variou com o tamanho do problema entre os dois experimentos)",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2 minutos"
+            },
+            {
+              "id": "B",
+              "text": "3 minutos"
+            },
+            {
+              "id": "C",
+              "text": "4 minutos"
+            },
+            {
+              "id": "D",
+              "text": "9 minutos"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-2",
+            "steps": [
+              "No modelo quadrático pressuposto pela questão, desprezando termos menores e mantendo o custo unitário, o tempo é aproximado por T(n) = c × n².",
+              "A razão entre os tempos é T(2000)/T(1000) = (2000/1000)² = 2² = 4.",
+              "Como T(1000) é 1 minuto, o tempo estimado para a nova entrada é 4 × 1 = 4 minutos."
+            ],
+            "conclusion": "Alternativa C: 4 minutos.",
+            "distractors": "A corresponde a crescimento linear ao dobrar a entrada, enquanto B e D não correspondem ao fator quadrático 4 calculado.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Se um programador fez testes para avaliar o tempo de execução para entradas de tamanho 1000 em um programa O(n²) e obteve tempo de 1 minuto, quanto tempo demoraria para uma entrada de tamanho 2000?"
+            },
+            {
+              "type": "p",
+              "text": "(considere que 1000 é suficientemente grande para desprezar fatores menores na função de custo e que o custo unitário por operação não variou com o tamanho do problema entre os dois experimentos)"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "Sobre as afirmativas abaixo:\nI) Se f(n) = log₂(n) então f(n) é O(log₁₀(n))\nII) Se um algoritmo tem função de custo T(n) = 3n então é correto afirmar que o algoritmo é O(n²)\nIII) Se um algoritmo A tem função de custo T₁(n) na classe de complexidade Ω(n) e um algoritmo B tem função de custo T₂(n) na classe de complexidade Ω(n²) então sabe-se com certeza que T₁(n) está na classe O(T₂(n)).",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I e II estão corretas"
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e III estão corretas"
+            },
+            {
+              "id": "C",
+              "text": "Apenas II e III estão corretas"
+            },
+            {
+              "id": "D",
+              "text": "Todas estão corretas"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-3",
+            "steps": [
+              "A afirmação I é verdadeira: pela mudança de base, log₂(n) = log₁₀(n)/log₁₀(2), de modo que os dois logaritmos diferem apenas por um fator constante.",
+              "A afirmação II é verdadeira: para n ≥ 1, 3n ≤ 3n²; portanto, 3n é O(n²), embora O(n) seja um limite superior mais preciso.",
+              "A afirmação III é falsa: Ω fornece apenas limites inferiores, não uma comparação garantida entre as duas funções; T1 pode crescer mais rapidamente que T2."
+            ],
+            "conclusion": "Alternativa A: apenas I e II estão corretas.",
+            "distractors": "B, C e D incluem a afirmação III, que é falsa; além disso, B exclui II e C exclui I, ambas verdadeiras.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre as afirmativas abaixo:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Se f(n) = log₂(n) então f(n) é O(log₁₀(n))"
+                },
+                {
+                  "label": "II)",
+                  "text": "Se um algoritmo tem função de custo T(n) = 3n então é correto afirmar que o algoritmo é O(n²)"
+                },
+                {
+                  "label": "III)",
+                  "text": "Se um algoritmo A tem função de custo T₁(n) na classe de complexidade Ω(n) e um algoritmo B tem função de custo T₂(n) na classe de complexidade Ω(n²) então sabe-se com certeza que T₁(n) está na classe O(T₂(n))."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Algoritmos",
+          "prompt": "Dado o vetor abaixo, o qual é apresentado em uma tabela onde a primeira linha indica a posição dos elementos e a segunda linha os valores armazenados.\nposição:  0  1  2  3  4   5   6   7   8\nvalor:    2  4  6  8  10  12  14  16  18\nUma busca binária no mesmo compararia a chave 13 com os seguintes valores do vetor:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2, 6, 10, 14 e 18"
+            },
+            {
+              "id": "B",
+              "text": "10, 14 e 18"
+            },
+            {
+              "id": "C",
+              "text": "Nenhuma porque a chave não existe no vetor"
+            },
+            {
+              "id": "D",
+              "text": "10, 14 e 12"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-4",
+            "steps": [
+              "A busca binária começa no intervalo de índices [0, 8]. O índice central é ⌊(0 + 8)/2⌋ = 4, cujo valor é 10.",
+              "Como 13 > 10, a busca continua em [5, 8]. O novo índice central é ⌊(5 + 8)/2⌋ = 6, cujo valor é 14.",
+              "Como 13 < 14, resta o intervalo [5, 5]. Compara-se a chave com o valor 12.",
+              "Como 13 > 12, o limite inferior passa a 6 e supera o superior, 5. A busca termina sem encontrar a chave, após comparar 10, 14 e 12."
+            ],
+            "conclusion": "Alternativa D: 10, 14 e 12.",
+            "distractors": "A e B não seguem a sequência de pontos centrais da busca binária; C é incorreta porque uma chave ausente também exige comparações para que sua ausência seja constatada.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o vetor abaixo, o qual é apresentado em uma tabela onde a primeira linha indica a posição dos elementos e a segunda linha os valores armazenados."
+            },
+            {
+              "type": "code",
+              "text": "posição:  0  1  2  3  4   5   6   7   8\nvalor:    2  4  6  8  10  12  14  16  18"
+            },
+            {
+              "type": "p",
+              "text": "Uma busca binária no mesmo compararia a chave 13 com os seguintes valores do vetor:"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2024-02-4-1.webp",
+              "page": 2,
+              "width": 1260,
+              "height": 112,
+              "alt": "Figura da questão 4 — Mestrado e Doutorado 2024/02, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a árvore binária a seguir:\nSe ela for percorrida em-ordem (inorder), a sequência de nós visitados será:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4 15 8 42 23 16"
+            },
+            {
+              "id": "B",
+              "text": "4 8 15 16 23 42"
+            },
+            {
+              "id": "C",
+              "text": "42 15 4 8 23 16"
+            },
+            {
+              "id": "D",
+              "text": "42 15 23 4 8 16"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-5",
+            "steps": [
+              "O percurso em-ordem visita, recursivamente, a subárvore esquerda, o nó atual e a subárvore direita.",
+              "A figura da árvore não foi incluída no material fornecido; portanto, não é possível simular as visitas nem verificar a sequência a partir de sua estrutura.",
+              "O gabarito oficial indica a alternativa A, correspondente à sequência 4, 15, 8, 42, 23, 16."
+            ],
+            "conclusion": "Alternativa A, conforme o gabarito oficial; a verificação do percurso depende da figura ausente.",
+            "distractors": "B, C e D diferem da sequência indicada pelo gabarito, mas, sem a figura, não é possível explicar estruturalmente por que esses percursos não se aplicam.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a árvore binária a seguir:"
+            },
+            {
+              "type": "p",
+              "text": "Se ela for percorrida em-ordem (inorder), a sequência de nós visitados será:"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2024-02-5-1.webp",
+              "page": 2,
+              "width": 602,
+              "height": 400,
+              "alt": "Figura da questão 5 — Mestrado e Doutorado 2024/02, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Complexidade",
+          "prompt": "Sobre árvores vermelho e preto contento pelo menos 128 elementos, sabe-se que:\nI) Uma árvore vermelho e preto tem altura máxima inferior a 3 log₂(n), onde n é o número de chaves, pois ela é balanceada\nII) No pior caso, uma árvore vermelho e preto tem altura pior do que o pior caso de uma árvore binária de pesquisa\nIII) O balanceamento na árvore falha apenas para os casos de inserção em ordem crescente, situação em que a altura esperada da árvore pode chegar a passar da raiz quadrada do número de elementos quando o número de elementos for muito grande.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I é verdadeira"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II é verdadeira"
+            },
+            {
+              "id": "C",
+              "text": "Apenas III é verdadeira"
+            },
+            {
+              "id": "D",
+              "text": "Apenas I e II são verdadeiras"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-6",
+            "steps": [
+              "Uma árvore vermelho e preto com n chaves tem altura h ≤ 2 log₂(n + 1), mantendo altura logarítmica.",
+              "Para n ≥ 128, vale 2 log₂(n + 1) < 3 log₂(n); logo, a afirmação I é verdadeira.",
+              "Uma árvore binária de pesquisa sem balanceamento pode degenerar em uma cadeia, com altura n − 1, enquanto a vermelho e preto mantém altura O(log n). Assim, II é falsa.",
+              "O balanceamento também é mantido em inserções crescentes, por recolorações e rotações; não existe a falha descrita em III, que é falsa."
+            ],
+            "conclusion": "Alternativa A: apenas I é verdadeira.",
+            "distractors": "B e D incluem a afirmação II, que é falsa, e C considera verdadeira a afirmação III, embora inserções crescentes não eliminem a garantia de balanceamento.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre árvores vermelho e preto contento pelo menos 128 elementos, sabe-se que:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Uma árvore vermelho e preto tem altura máxima inferior a 3 log₂(n), onde n é o número de chaves, pois ela é balanceada"
+                },
+                {
+                  "label": "II)",
+                  "text": "No pior caso, uma árvore vermelho e preto tem altura pior do que o pior caso de uma árvore binária de pesquisa"
+                },
+                {
+                  "label": "III)",
+                  "text": "O balanceamento na árvore falha apenas para os casos de inserção em ordem crescente, situação em que a altura esperada da árvore pode chegar a passar da raiz quadrada do número de elementos quando o número de elementos for muito grande."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Algoritmos",
+          "prompt": "Considere as seguintes afirmações sobre a tarefa de pesquisa por chaves em uma coleção de elementos.\nI) A busca binária permite encontrar chaves eficientemente, mas não funciona se houver chaves repetidas na coleção\nII) Uma estrutura de dados pode ser usada para organizar os elementos, sacrificando custo espacial (memória) e ao mesmo tempo favorecendo o custo temporal\nIII) Se for necessário fazer muitas alterações na coleção (inserção, remoção e alteração de chaves), então a busca sequencial poderá ser melhor do que a busca binária no caso médio.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Todas as afirmações são verdadeiras"
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e II são verdadeiras"
+            },
+            {
+              "id": "C",
+              "text": "Apenas I e III são verdadeiras"
+            },
+            {
+              "id": "D",
+              "text": "Apenas II e III são verdadeiras"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as seguintes afirmações sobre a tarefa de pesquisa por chaves em uma coleção de elementos."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "A busca binária permite encontrar chaves eficientemente, mas não funciona se houver chaves repetidas na coleção"
+                },
+                {
+                  "label": "II)",
+                  "text": "Uma estrutura de dados pode ser usada para organizar os elementos, sacrificando custo espacial (memória) e ao mesmo tempo favorecendo o custo temporal"
+                },
+                {
+                  "label": "III)",
+                  "text": "Se for necessário fazer muitas alterações na coleção (inserção, remoção e alteração de chaves), então a busca sequencial poderá ser melhor do que a busca binária no caso médio."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Estruturas de dados",
+          "prompt": "Dentro das árvores AVL, considera-se uma árvore balanceada somente quando:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A diferença de altura da subárvore esquerda para a subárvore direita não exceda de 1, e as subárvores esquerda e direita também são balanceadas."
+            },
+            {
+              "id": "B",
+              "text": "Todos os nós da árvore têm 0 ou 2 subárvores, e a altura mínima da raiz é 2."
+            },
+            {
+              "id": "C",
+              "text": "Não existe diferença entre as alturas das subárvores dos nós."
+            },
+            {
+              "id": "D",
+              "text": "Todos os nós com chaves de busca menores que a chave da raiz encontram- se na subárvore esquerda."
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-8",
+            "steps": [
+              "Em uma árvore AVL, cada nó deve satisfazer |altura(esquerda) − altura(direita)| ≤ 1.",
+              "A condição deve valer em todos os nós; por isso, as subárvores esquerda e direita também precisam ser balanceadas.",
+              "A alternativa A expressa tanto o limite da diferença de alturas quanto a exigência recursiva de balanceamento."
+            ],
+            "conclusion": "Alternativa A.",
+            "distractors": "B impõe quantidade de filhos e altura que não definem uma AVL; C exige igualdade de alturas, embora diferença de 1 seja permitida; D descreve uma propriedade de busca, não de balanceamento.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dentro das árvores AVL, considera-se uma árvore balanceada somente quando:"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Complexidade",
+          "prompt": "Considere uma lista ligada na qual cada nó contém um campo info (um valor inteiro) e um campo prox (um ponteiro para o próximo nó). O início da lista é indicado simplesmente por um ponteiro para o primeiro elemento. A declaração a seguir especifica o tipo da lista e declara uma lista inicialmente vazia.\ntypedef struct lista Lista;\nstruct lista {\n    int info;\n    Lista *prox;\n} *uma_lista = NULL;\nQual das alternativas a seguir contém um código que insere corretamente um novo nó no início da lista?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "void insere(Lista *lista, int info) {\n    Lista *novo = malloc(sizeof(Lista));\n    novo->info = info;\n    novo->prox = *lista;\n    *lista = novo;\n}",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "void insere(Lista *lista, int info) {\n    Lista *novo = malloc(sizeof(Lista));\n    novo->info = info;\n    novo->prox = lista->prox;\n    *lista = novo;\n}",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "void insere(Lista **lista, int info) {\n    Lista *novo = malloc(sizeof(Lista));\n    novo->info = info;\n    novo->prox = *lista;\n    *lista = novo;\n}",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "void insere(Lista **lista, int info) {\n    Lista *novo = malloc(sizeof(Lista));\n    novo->info = info;\n    novo->prox = NULL;\n    if (*lista == NULL) {\n        *lista = novo;\n    } else {\n        *lista->prox = novo;\n    }\n}",
+              "code": true
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-9",
+            "steps": [
+              "Para alterar o ponteiro que indica o início da lista no chamador, a função deve receber seu endereço, usando o parâmetro Lista **lista.",
+              "Após alocar o novo nó, novo->info = info armazena o valor a inserir.",
+              "A atribuição novo->prox = *lista liga o novo nó ao antigo primeiro elemento; se a lista estiver vazia, esse ponteiro será NULL.",
+              "A atribuição *lista = novo atualiza o início da lista para o novo nó. Essa sequência aparece na alternativa C."
+            ],
+            "conclusion": "Alternativa C.",
+            "distractors": "A e B recebem Lista * e fazem atribuições incompatíveis ao usar *lista como ponteiro; D usa a expressão inválida *lista->prox e não liga o novo nó ao antigo início da lista.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma lista ligada na qual cada nó contém um campo info (um valor inteiro) e um campo prox (um ponteiro para o próximo nó). O início da lista é indicado simplesmente por um ponteiro para o primeiro elemento. A declaração a seguir especifica o tipo da lista e declara uma lista inicialmente vazia."
+            },
+            {
+              "type": "code",
+              "text": "typedef struct lista Lista;\nstruct lista {\n    int info;\n    Lista *prox;\n} *uma_lista = NULL;"
+            },
+            {
+              "type": "p",
+              "text": "Qual das alternativas a seguir contém um código que insere corretamente um novo nó no início da lista?"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Algoritmos",
+          "prompt": "Considere as seguintes afirmações sobre algoritmos de ordenação.\nI) O método da inserção (insertion sort) pode ser mais eficiente do que o quick sort se o vetor for pequeno e tiver poucos elementos fora de ordem.\nII) O quick sort é o melhor algoritmo de ordenação em situações típicas e, para vetores muito grandes, ele é sempre aconselhável em detrimento de outros algoritmos de ordenação.\nIII) O método da intercalação (merge sort) é eficiente, mas normalmente requer memória adicional para realizar a intercalação. É possível intercalar os elementos no próprio vetor, mas isso exige passos adicionais.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Todas as afirmações são verdadeiras"
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e II são verdadeiras"
+            },
+            {
+              "id": "C",
+              "text": "Apenas I e III são verdadeiras"
+            },
+            {
+              "id": "D",
+              "text": "Apenas II e III são verdadeiras"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-10",
+            "steps": [
+              "I é verdadeira: em vetores pequenos e quase ordenados, o insertion sort realiza poucos deslocamentos e pode superar o quick sort.",
+              "II é falsa: o quick sort não é sempre a melhor escolha, pois seu desempenho depende das partições e pode chegar a O(n²) no pior caso.",
+              "III é verdadeira: o merge sort normalmente utiliza memória auxiliar para intercalar; a intercalação no próprio vetor é possível, mas exige passos adicionais.",
+              "Portanto, somente I e III são verdadeiras."
+            ],
+            "conclusion": "Alternativa C: apenas I e III são verdadeiras.",
+            "distractors": "A, B e D incluem a afirmação II, cuja recomendação universal do quick sort é incorreta.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere as seguintes afirmações sobre algoritmos de ordenação."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "O método da inserção (insertion sort) pode ser mais eficiente do que o quick sort se o vetor for pequeno e tiver poucos elementos fora de ordem."
+                },
+                {
+                  "label": "II)",
+                  "text": "O quick sort é o melhor algoritmo de ordenação em situações típicas e, para vetores muito grandes, ele é sempre aconselhável em detrimento de outros algoritmos de ordenação."
+                },
+                {
+                  "label": "III)",
+                  "text": "O método da intercalação (merge sort) é eficiente, mas normalmente requer memória adicional para realizar a intercalação. É possível intercalar os elementos no próprio vetor, mas isso exige passos adicionais."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere a função em Python a seguir.\ndef chamada(n):\n    print(\"PPGI\")\n    if n <= 1:\n        return n\n    else:\n        return (chamada(n-1) + chamada(n-2))\nQuantas vezes a palavra PPGI é impressa na tela ao executar chamada(4)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "5"
+            },
+            {
+              "id": "C",
+              "text": "9"
+            },
+            {
+              "id": "D",
+              "text": "15"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-11",
+            "steps": [
+              "Cada execução da função imprime PPGI uma vez, inclusive quando n ≤ 1.",
+              "Se T(n) representa o número de impressões, então T(0) = T(1) = 1 e, para n > 1, T(n) = 1 + T(n − 1) + T(n − 2).",
+              "Calculando: T(2) = 1 + 1 + 1 = 3 e T(3) = 1 + 3 + 1 = 5.",
+              "Logo, T(4) = 1 + 5 + 3 = 9 impressões."
+            ],
+            "conclusion": "Alternativa C: 9.",
+            "distractors": "A e B correspondem às contagens para chamada(2) e chamada(3), não chamada(4); D superestima a contagem ao não respeitar o encerramento da recursão em n ≤ 1.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função em Python a seguir."
+            },
+            {
+              "type": "code",
+              "text": "def chamada(n):\n    print(\"PPGI\")\n    if n <= 1:\n        return n\n    else:\n        return (chamada(n-1) + chamada(n-2))"
+            },
+            {
+              "type": "p",
+              "text": "Quantas vezes a palavra PPGI é impressa na tela ao executar chamada(4)?"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Complexidade",
+          "prompt": "Considere a função em Python a seguir.\ndef chamada(n):\n    print(\"PPGI\")\n    if n <= 1:\n        return n\n    else:\n        return (chamada(n-1) + chamada(n-2))\nQual o retorno da execução chamada(4)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3"
+            },
+            {
+              "id": "B",
+              "text": "5"
+            },
+            {
+              "id": "C",
+              "text": "8"
+            },
+            {
+              "id": "D",
+              "text": "13"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-12",
+            "steps": [
+              "Os casos básicos retornam chamada(0) = 0 e chamada(1) = 1; o comando print apenas imprime \"PPGI\", sem alterar o retorno.",
+              "Para n > 1, o retorno é chamada(n−1) + chamada(n−2). Assim, chamada(2) = 1 + 0 = 1.",
+              "Calculando os próximos valores: chamada(3) = 1 + 1 = 2 e chamada(4) = 2 + 1 = 3."
+            ],
+            "conclusion": "Alternativa A: o retorno de chamada(4) é 3.",
+            "distractors": "B, C e D apresentam valores que não correspondem à soma chamada(3) + chamada(2), que é 3.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a função em Python a seguir."
+            },
+            {
+              "type": "code",
+              "text": "def chamada(n):\n    print(\"PPGI\")\n    if n <= 1:\n        return n\n    else:\n        return (chamada(n-1) + chamada(n-2))"
+            },
+            {
+              "type": "p",
+              "text": "Qual o retorno da execução chamada(4)?"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Algoritmos",
+          "prompt": "Sobre árvores vermelho-preto, considere as afirmações:\nI) A raiz é preta\nII) Toda subárvore nula é preta\nIII) Se um nó é preto, então os filhos são vermelhos\nSão verdadeiras:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas a afirmação I"
+            },
+            {
+              "id": "B",
+              "text": "Apenas as afirmações I e II"
+            },
+            {
+              "id": "C",
+              "text": "Apenas as afirmações II e III"
+            },
+            {
+              "id": "D",
+              "text": "Todas as afirmações"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-13",
+            "steps": [
+              "A afirmação I é verdadeira: a raiz de uma árvore vermelho-preto é preta.",
+              "A afirmação II é verdadeira: as subárvores nulas, representadas por folhas NIL, são consideradas pretas.",
+              "A afirmação III é falsa: um nó preto pode ter filhos pretos ou vermelhos; a restrição é que um nó vermelho tenha filhos pretos."
+            ],
+            "conclusion": "Alternativa B: apenas as afirmações I e II são verdadeiras.",
+            "distractors": "A omite a afirmação II, que é verdadeira, enquanto C e D incluem a afirmação III, que é falsa.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre árvores vermelho-preto, considere as afirmações:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "A raiz é preta"
+                },
+                {
+                  "label": "II)",
+                  "text": "Toda subárvore nula é preta"
+                },
+                {
+                  "label": "III)",
+                  "text": "Se um nó é preto, então os filhos são vermelhos"
+                }
+              ]
+            },
+            {
+              "type": "p",
+              "text": "São verdadeiras:"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Estruturas de dados",
+          "prompt": "As árvores rubro-negras têm como uma de suas características",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Todo nó vermelho (rubro) tem dois filhos pretos"
+            },
+            {
+              "id": "B",
+              "text": "A diferença de altura da subárvore esquerda para a subárvore direita não exceda de 1, e as subárvores esquerda e direita também são balanceadas"
+            },
+            {
+              "id": "C",
+              "text": "Todo nó preto (negro) tem, pelo menos, uma subárvore cuja raiz é vermelha (rubra)"
+            },
+            {
+              "id": "D",
+              "text": "A altura das subárvores é o fator usado para determinar o balanceamento, e pode exceder em 50% a diferença entre elas."
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-14",
+            "steps": [
+              "Uma propriedade das árvores rubro-negras proíbe que um nó vermelho tenha um filho vermelho.",
+              "Como cada nó é vermelho ou preto, os dois filhos de um nó vermelho devem ser pretos, incluindo as folhas nulas NIL."
+            ],
+            "conclusion": "Alternativa A: todo nó vermelho tem dois filhos pretos.",
+            "distractors": "B descreve o balanceamento de árvores AVL, C impõe uma exigência inexistente aos nós pretos e D apresenta um critério percentual que não define o balanceamento rubro-negro.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "As árvores rubro-negras têm como uma de suas características"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Complexidade",
+          "prompt": "A altura de uma árvore rubro negra com n nós é:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "de, no máximo, n * log(n)"
+            },
+            {
+              "id": "B",
+              "text": "de, no máximo, 2 * log(n+1)"
+            },
+            {
+              "id": "C",
+              "text": "no pior caso, n*n"
+            },
+            {
+              "id": "D",
+              "text": "de, no máximo, log(n-1)"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-15",
+            "steps": [
+              "Seja b a altura negra da raiz, isto é, a quantidade de nós pretos em um caminho até uma folha NIL, excluindo a raiz; esse valor é igual em todos esses caminhos.",
+              "Uma árvore com altura negra b possui pelo menos 2^b − 1 nós internos; logo, n ≥ 2^b − 1 e b ≤ log₂(n + 1).",
+              "Como não pode haver dois nós vermelhos consecutivos, a altura h é no máximo 2b.",
+              "Combinando as desigualdades, obtemos h ≤ 2 log₂(n + 1)."
+            ],
+            "conclusion": "Alternativa B: a altura é, no máximo, 2 × log₂(n + 1).",
+            "distractors": "A não apresenta o limite característico e não vale universalmente para árvores pequenas, C indica incorretamente um pior caso quadrático e D estabelece um limite menor que o garantido.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A altura de uma árvore rubro negra com n nós é:"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Algoritmos",
+          "prompt": "Considere o seguinte trecho de código em C:\nint main() {\n    int *ptr;\n    ptr = (int *)malloc(sizeof(int));\n    *ptr = 10;\n    printf(\"O valor armazenado em ptr é: %d\", *ptr);\n    free(ptr);\n    return 0;\n}\nO que o trecho de código faz?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Atribui o valor 10 a uma variável inteira, imprime o valor e depois libera a memória alocada."
+            },
+            {
+              "id": "B",
+              "text": "Aloca memória para um ponteiro, atribui o valor 10 a ele, imprime o valor e depois libera a memória alocada."
+            },
+            {
+              "id": "C",
+              "text": "Aloca dinamicamente memória para um inteiro, atribui o valor 10 a ele, imprime o valor e depois libera a memória alocada."
+            },
+            {
+              "id": "D",
+              "text": "Aloca memória para um ponteiro, imprime o endereço de memória alocado e depois libera a memória alocada."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o seguinte trecho de código em C:"
+            },
+            {
+              "type": "code",
+              "text": "int main() {\n    int *ptr;\n    ptr = (int *)malloc(sizeof(int));\n    *ptr = 10;\n    printf(\"O valor armazenado em ptr é: %d\", *ptr);\n    free(ptr);\n    return 0;\n}"
+            },
+            {
+              "type": "p",
+              "text": "O que o trecho de código faz?"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Estruturas de dados",
+          "prompt": "Qual é a principal diferença entre uma pilha e uma fila?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Uma pilha segue o princípio FIFO (First In, First Out), enquanto uma fila segue o princípio LIFO (Last In, First Out)."
+            },
+            {
+              "id": "B",
+              "text": "Uma pilha segue o princípio LIFO (Last In, First Out), enquanto uma fila segue o princípio FIFO (First In, First Out)."
+            },
+            {
+              "id": "C",
+              "text": "Pilhas e filas funcionam da mesma forma, não há diferença entre elas."
+            },
+            {
+              "id": "D",
+              "text": "Pilhas e filas não são estruturas de dados comuns na programação."
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-17",
+            "steps": [
+              "Na pilha, a remoção ocorre no topo, retirando primeiro o elemento inserido por último: princípio LIFO.",
+              "Na fila, a remoção ocorre na frente, retirando primeiro o elemento inserido primeiro: princípio FIFO.",
+              "Portanto, a diferença principal está na ordem de retirada dos elementos."
+            ],
+            "conclusion": "Alternativa B: pilhas seguem LIFO e filas seguem FIFO.",
+            "distractors": "A inverte os princípios, C ignora a diferença na ordem de remoção e D nega incorretamente que pilhas e filas sejam estruturas comuns na programação.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual é a principal diferença entre uma pilha e uma fila?"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "Na linguagem de programação C, quando um vetor é passado para uma sub- rotina/função como argumento, o que realmente é passado:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O endereço de memória do primeiro elemento do vetor"
+            },
+            {
+              "id": "B",
+              "text": "O endereço de memória do primeiro e do último elemento do vetor"
+            },
+            {
+              "id": "C",
+              "text": "Os valores dos elementos do vetor"
+            },
+            {
+              "id": "D",
+              "text": "O número de elementos na memória do vetor"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-18",
+            "steps": [
+              "Em C, ao usar um vetor como argumento de uma função, ele é convertido em um ponteiro para seu primeiro elemento.",
+              "Assim, o valor passado é o endereço desse primeiro elemento, e não uma cópia dos elementos nem o tamanho do vetor."
+            ],
+            "conclusion": "Alternativa A: é passado o endereço de memória do primeiro elemento do vetor.",
+            "distractors": "B acrescenta um endereço final que não é passado automaticamente, C supõe a cópia dos elementos e D supõe o envio automático do tamanho.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Na linguagem de programação C, quando um vetor é passado para uma sub- rotina/função como argumento, o que realmente é passado:"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Algoritmos",
+          "prompt": "Analise o código a seguir:\nint subrotina(int x) {\n    int i, z = 0;\n    for (i = 1; i < x; i++)\n        z += i;\n    return z;\n}\n\nint main() {\n    int z, i, x;\n    for (i = 1; i < 5; i++) {\n        printf(\"Informe um numero: \");\n        scanf(\"%d\", &z);\n        x = subrotina(z);\n        printf(\"%d\\n\", x);\n    }\n    return 0;\n}\nQual o resultado impresso na tela, considerando que o usuário informou os respectivos valores de entrada (9, 7, 6, 10)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "15, 105, 28, 3"
+            },
+            {
+              "id": "B",
+              "text": "28, 45, 91, 21"
+            },
+            {
+              "id": "C",
+              "text": "36, 21, 15, 45"
+            },
+            {
+              "id": "D",
+              "text": "36, 55, 78, 45"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-19",
+            "steps": [
+              "O laço de main executa quatro vezes, para i = 1, 2, 3 e 4, lendo as entradas 9, 7, 6 e 10 nessa ordem.",
+              "Em cada chamada, subrotina inicializa z = 0 e soma os inteiros de 1 até x − 1, pois a condição do laço é i < x.",
+              "A soma retornada é x(x − 1)/2; para x = 9, o resultado é 9 × 8/2 = 36.",
+              "Para as entradas restantes: 7 × 6/2 = 21, 6 × 5/2 = 15 e 10 × 9/2 = 45."
+            ],
+            "conclusion": "Alternativa C: os resultados numéricos impressos são 36, 21, 15 e 45.",
+            "distractors": "A, B e D não correspondem à sequência das somas de 1 até x − 1 para as entradas 9, 7, 6 e 10.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Analise o código a seguir:"
+            },
+            {
+              "type": "code",
+              "text": "int subrotina(int x) {\n    int i, z = 0;\n    for (i = 1; i < x; i++)\n        z += i;\n    return z;\n}\n\nint main() {\n    int z, i, x;\n    for (i = 1; i < 5; i++) {\n        printf(\"Informe um numero: \");\n        scanf(\"%d\", &z);\n        x = subrotina(z);\n        printf(\"%d\\n\", x);\n    }\n    return 0;\n}"
+            },
+            {
+              "type": "p",
+              "text": "Qual o resultado impresso na tela, considerando que o usuário informou os respectivos valores de entrada (9, 7, 6, 10)?"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Estruturas de dados",
+          "prompt": "Marque a alternativa CORRETA do programa em C que atende o seguinte enunciado: “Alguns restaurantes nos EUA cobram gorjeta de 18% para o garçom. Faça um programa em C que leia o valor gasto com as despesas realizadas em um restaurante e imprima o valor total com a gorjeta”:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "#include<stdio.h>\n\nint main(void) {\n    float PT, E;\n    printf(\"Informe o valor\");\n    scanf(\"%f\", &E);\n    PT = E + E * 1.18;\n    printf(\"Valor Total: %.2f\", PT);\n    return 0;\n}",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "#include<stdio.h>\n\nint main(void) {\n    float X, TG;\n    printf(\"Informe o valor\");\n    scanf(\"%f\", &X);\n    TG = X * 0.18;\n    printf(\"Valor Total: %.2f\", TG);\n    return 0;\n}",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "#include<stdio.h>\n\nint main(void) {\n    float K, W;\n    printf(\"Informe o valor\");\n    scanf(\"%f\", &K);\n    W = K + K * 0.18;\n    printf(\"Valor Total: %.2f\", W);\n    return 0;\n}",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "#include<stdio.h>\n\nint main(void) {\n    float PT, E;\n    printf(\"Informe o valor\");\n    scanf(\"%f\", &E);\n    PT = E * E * 18/100;\n    printf(\"Valor Total: %.2f\", PT);\n    return 0;\n}",
+              "code": true
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-02-20",
+            "steps": [
+              "A gorjeta de 18% corresponde ao valor gasto multiplicado por 0.18.",
+              "O total é a soma da despesa com a gorjeta: total = despesa + despesa * 0.18.",
+              "Na alternativa C, scanf(\"%f\", &K) lê a despesa, W = K + K * 0.18 calcula o total e printf(\"Valor Total: %.2f\", W) imprime esse total com duas casas decimais."
+            ],
+            "conclusion": "Alternativa C: calcula e imprime corretamente a despesa acrescida de 18%.",
+            "distractors": "A soma a despesa a 118% dela, resultando em 218%; B imprime apenas a gorjeta; D calcula 18% do quadrado da despesa, em vez de somar a gorjeta à despesa.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Marque a alternativa CORRETA do programa em C que atende o seguinte enunciado: “Alguns restaurantes nos EUA cobram gorjeta de 18% para o garçom. Faça um programa em C que leia o valor gasto com as despesas realizadas em um restaurante e imprima o valor total com a gorjeta”:"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2024-01",
+      "label": "Mestrado e Doutorado 2024/01",
+      "examUrl": "https://ppgi.ufam.edu.br/images/editais/2024_01/Prova_Processo_Seletivo2024_01.pdf",
+      "keyUrl": "https://ppgi.ufam.edu.br/images/editais/2024_01/5_GABARITO_DEFINITIVO.pdf",
+      "title": "Edital 071/2023",
+      "subtitle": "Prova de conceitos · 26 jan 2024",
+      "subjects": [
+        "Algoritmos",
+        "Estruturas de dados",
+        "Complexidade"
+      ],
+      "thumbnail": "/evidence/2024-01.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Algoritmos",
+          "prompt": "Considere o código abaixo cujo objetivo é ordenar um vetor de inteiros com n elementos de maneira crescente:\nvoid algoritmo(int v[], int n) {\n    int i, j, k, tmp;\n    for (i = 0; i < n-1; i++) {\n        k = i;\n        for (j = 0; j < n; j++) {\n            if (v[k] > v[j]) {\n                k = j\n            }\n        }\n        tmp = v[k];\n        v[k] = v[i];\n        v[i] = tmp;\n    }\n}",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O código ordena o vetor por seleção de maneira crescente"
+            },
+            {
+              "id": "B",
+              "text": "O código não ordena o vetor por seleção e não pode ser modificado para ordenar por seleção de maneira crescente com correção em uma única linha de código."
+            },
+            {
+              "id": "C",
+              "text": "O código pode ser alterado em uma única linha para ordenar o vetor de maneira crescente por seleção"
+            },
+            {
+              "id": "D",
+              "text": "O código ordena corretamente o vetor, mas não usa o algoritmo de seleção"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o código abaixo cujo objetivo é ordenar um vetor de inteiros com n elementos de maneira crescente:"
+            },
+            {
+              "type": "code",
+              "text": "void algoritmo(int v[], int n) {\n    int i, j, k, tmp;\n    for (i = 0; i < n-1; i++) {\n        k = i;\n        for (j = 0; j < n; j++) {\n            if (v[k] > v[j]) {\n                k = j\n            }\n        }\n        tmp = v[k];\n        v[k] = v[i];\n        v[i] = tmp;\n    }\n}"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Estruturas de dados",
+          "prompt": "Sobre o heapsort, é correto afirmar que:\nI) Seu custo no pior caso é O(n log n), onde n é o tamanho do vetor\nII) O algoritmo pode ser dividido em duas etapas, sendo a primeira usada para construir um heap e a segunda para usar o heap como forma eficiente de executar uma estratégia de ordenação por seleção\nIII) Tem custo máximo quadrático no pior caso",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I e II estão corretas"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II e III estão corretas"
+            },
+            {
+              "id": "C",
+              "text": "Apenas I está correta"
+            },
+            {
+              "id": "D",
+              "text": "Apenas III está correta"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-2",
+            "steps": [
+              "O heapsort constrói um heap e depois seleciona repetidamente seu elemento extremo, reorganizando o heap após cada retirada; portanto, II é verdadeira.",
+              "A construção do heap pode ser feita em O(n), e as retiradas com reorganização custam, ao todo, O(n log n). Assim, o pior caso do heapsort é O(n log n), confirmando I.",
+              "O custo de pior caso não é quadrático: sua ordem de crescimento é Θ(n log n), portanto III é falsa."
+            ],
+            "conclusion": "Alternativa A: apenas I e II estão corretas.",
+            "distractors": "B e D incluem III, que atribui incorretamente custo quadrático ao pior caso; C exclui II, embora a divisão em construção do heap e seleção esteja correta.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre o heapsort, é correto afirmar que:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Seu custo no pior caso é O(n log n), onde n é o tamanho do vetor"
+                },
+                {
+                  "label": "II)",
+                  "text": "O algoritmo pode ser dividido em duas etapas, sendo a primeira usada para construir um heap e a segunda para usar o heap como forma eficiente de executar uma estratégia de ordenação por seleção"
+                },
+                {
+                  "label": "III)",
+                  "text": "Tem custo máximo quadrático no pior caso"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "Em um heap binário de mínimo contendo N elementos e implementado em um vetor, sabendo-se que o elemento mínimo está na posição zero do vetor, a operação de remover o elemento da raiz (o da posição zero) e deixar a estrutura do heap correta ao final, com o restante das chaves formando um heap, pode ser implementada, na melhor maneira possível, a custo:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "N log N no pior caso"
+            },
+            {
+              "id": "B",
+              "text": "Log N no pior caso, mesmo sabendo-se que o custo de mover todos os elementos de um vetor para o lado é N"
+            },
+            {
+              "id": "C",
+              "text": "N no pior caso, mesmo sabendo-se que o custo de mover todos os elementos de um vetor para o lado é N"
+            },
+            {
+              "id": "D",
+              "text": "A custo O(1) no pior caso, pois sabemos que o elemento está na posição zero"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-3",
+            "steps": [
+              "Para remover a raiz, coloca-se o último elemento do vetor na posição zero e reduz-se o tamanho lógico do heap, sem deslocar todos os elementos.",
+              "Para restaurar o heap de mínimo, compara-se a nova raiz com seus filhos e troca-se com o menor deles quando necessário, repetindo a operação para baixo.",
+              "Um heap binário tem altura O(log N); como cada nível exige trabalho constante, a remoção custa O(log N) no pior caso."
+            ],
+            "conclusion": "Alternativa B: a remoção pode ser implementada em O(log N) no pior caso.",
+            "distractors": "A e C indicam custos superiores ao necessário para a melhor implementação; D ignora que restaurar a propriedade do heap pode exigir percorrer sua altura.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Em um heap binário de mínimo contendo N elementos e implementado em um vetor, sabendo-se que o elemento mínimo está na posição zero do vetor, a operação de remover o elemento da raiz (o da posição zero) e deixar a estrutura do heap correta ao final, com o restante das chaves formando um heap, pode ser implementada, na melhor maneira possível, a custo:"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Algoritmos",
+          "prompt": "Se um programador fez testes para avaliar o tempo de execução para entradas de tamanho 100 em um programa (n³) e obteve tempo de 1 minuto, quanto tempo demoraria para uma entrada de tamanho 300?\n(Considere que 100 é suficientemente grande para desprezar fatores menores na função de custo, e que o custo unitário por operação não variou com o tamanho do problema entre os dois experimentos.)",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3 minutos"
+            },
+            {
+              "id": "B",
+              "text": "9 minutos"
+            },
+            {
+              "id": "C",
+              "text": "27 minutos"
+            },
+            {
+              "id": "D",
+              "text": "300 minutos"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-4",
+            "steps": [
+              "Desprezando os termos de menor ordem e mantendo o custo unitário, o tempo é proporcional a n³.",
+              "O tamanho da entrada passa de 100 para 300, ou seja, é multiplicado por 3.",
+              "O tempo é multiplicado por 3³ = 27: T(300) = 1 minuto × 27 = 27 minutos."
+            ],
+            "conclusion": "Alternativa C: 27 minutos.",
+            "distractors": "A aplica crescimento linear, B aplica crescimento quadrático e D não corresponde à razão cúbica entre os tamanhos das entradas.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Se um programador fez testes para avaliar o tempo de execução para entradas de tamanho 100 em um programa (n³) e obteve tempo de 1 minuto, quanto tempo demoraria para uma entrada de tamanho 300?"
+            },
+            {
+              "type": "p",
+              "text": "(Considere que 100 é suficientemente grande para desprezar fatores menores na função de custo, e que o custo unitário por operação não variou com o tamanho do problema entre os dois experimentos.)"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Estruturas de dados",
+          "prompt": "Sobre as afirmativas abaixo:\nI) Todo algoritmo que não seja vazio tem custo (1)\nII) Todo algoritmo tem custo O(nⁿ)\nIII) Nenhum algoritmo que não seja vazio tem custo o(2) – “ó pequeno de 2”",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I e II estão corretas"
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e III estão corretas"
+            },
+            {
+              "id": "C",
+              "text": "Apenas II e III estão corretas"
+            },
+            {
+              "id": "D",
+              "text": "Todas estão corretas"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-5",
+            "steps": [
+              "Um algoritmo não vazio realiza ao menos uma operação, tendo custo limitado inferiormente por uma constante positiva; logo, I é verdadeira.",
+              "Não existe a garantia de que todo algoritmo tenha o limite superior indicado em II, pois um algoritmo pode executar uma quantidade de operações que cresça além desse limite; logo, II é falsa.",
+              "Ter custo o(2) exigiria que a razão entre o custo e a constante 2 tendesse a zero. Isso é incompatível com o custo mínimo positivo de um algoritmo não vazio; portanto, III é verdadeira."
+            ],
+            "conclusion": "Alternativa B: apenas I e III estão corretas.",
+            "distractors": "A, C e D incluem II, que estabelece indevidamente um limite superior universal para o custo dos algoritmos.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre as afirmativas abaixo:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Todo algoritmo que não seja vazio tem custo (1)"
+                },
+                {
+                  "label": "II)",
+                  "text": "Todo algoritmo tem custo O(nⁿ)"
+                },
+                {
+                  "label": "III)",
+                  "text": "Nenhum algoritmo que não seja vazio tem custo o(2) – “ó pequeno de 2”"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Complexidade",
+          "prompt": "Considere o vetor abaixo, o qual é apresentado em uma tabela onde a primeira linha indica a posição dos elementos e a segunda linha os valores armazenados.\nposição:  0  1  2  3  4   5   6   7   8\nvalor:    2  4  6  8  10  12  14  16  18\nUma busca binária nesse vetor compararia a chave 9 com os seguintes valores do vetor:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "2, 6, 10, 14 e 18"
+            },
+            {
+              "id": "B",
+              "text": "10, 4, 6 e 8"
+            },
+            {
+              "id": "C",
+              "text": "Nenhuma porque a chave não existe no vetor"
+            },
+            {
+              "id": "D",
+              "text": "10, 14 e 18"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-6",
+            "steps": [
+              "No intervalo de índices 0 a 8, o índice central é ⌊(0 + 8)/2⌋ = 4, cujo valor é 10; como 9 < 10, a busca continua entre 0 e 3.",
+              "O novo índice central é ⌊(0 + 3)/2⌋ = 1, cujo valor é 4; como 9 > 4, a busca continua entre 2 e 3.",
+              "O índice central passa a ser ⌊(2 + 3)/2⌋ = 2, cujo valor é 6; como 9 > 6, resta o índice 3.",
+              "O valor no índice 3 é 8; como 9 > 8, o intervalo fica vazio e a busca termina sem encontrar a chave. A sequência comparada é 10, 4, 6 e 8."
+            ],
+            "conclusion": "Alternativa B: os valores comparados são 10, 4, 6 e 8.",
+            "distractors": "A não segue a seleção dos índices centrais; C confunde ausência da chave com ausência de comparações; D segue para valores maiores após constatar que 9 é menor que 10.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o vetor abaixo, o qual é apresentado em uma tabela onde a primeira linha indica a posição dos elementos e a segunda linha os valores armazenados."
+            },
+            {
+              "type": "code",
+              "text": "posição:  0  1  2  3  4   5   6   7   8\nvalor:    2  4  6  8  10  12  14  16  18"
+            },
+            {
+              "type": "p",
+              "text": "Uma busca binária nesse vetor compararia a chave 9 com os seguintes valores do vetor:"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Algoritmos",
+          "prompt": "Sobre o custo das operações de busca por uma chave em árvores vermelho e preto, sabe-se que:\nI) Uma árvore vermelho e preto tem altura máxima log n, onde n é o número de chaves, pois a mesma é balanceada\nII) Uma árvore vermelho e preto tem altura máxima inferior a 3 log n, onde n é o número de chaves, pois a mesma é balanceada\nIII) Uma árvore vermelho e preto pode ser degenerada no pior caso, tendo custo de busca crescendo linearmente com o número de elementos, mas em situações muito raras, pois a mesma é balanceada",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I é verdadeira"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II é verdadeira"
+            },
+            {
+              "id": "C",
+              "text": "Apenas III é verdadeira"
+            },
+            {
+              "id": "D",
+              "text": "Apenas I e II são verdadeiras"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre o custo das operações de busca por uma chave em árvores vermelho e preto, sabe-se que:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "Uma árvore vermelho e preto tem altura máxima log n, onde n é o número de chaves, pois a mesma é balanceada"
+                },
+                {
+                  "label": "II)",
+                  "text": "Uma árvore vermelho e preto tem altura máxima inferior a 3 log n, onde n é o número de chaves, pois a mesma é balanceada"
+                },
+                {
+                  "label": "III)",
+                  "text": "Uma árvore vermelho e preto pode ser degenerada no pior caso, tendo custo de busca crescendo linearmente com o número de elementos, mas em situações muito raras, pois a mesma é balanceada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere uma pilha que inicialmente estava vazia e na qual inseriu-se as chaves 2, 4 e 6, 8 e 10 nessa ordem. Sobre uma operação de remoção de elemento da mesma (retirada padrão de uma pilha), considerando-se que a estrutura de dados usada é uma lista encadeada, pode-se afirmar que:\nI) A remoção retira a chave 2\nII) A remoção da chave 10\nIII) Custo computacional proporcional ao tamanho da pilha\nIV) Custo computacional constante, não importando o tamanho da pilha",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I e III estão corretas"
+            },
+            {
+              "id": "B",
+              "text": "Apenas I e IV estão corretas"
+            },
+            {
+              "id": "C",
+              "text": "Apenas II e III estão corretas"
+            },
+            {
+              "id": "D",
+              "text": "Apenas II e IV estão corretas"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-8",
+            "steps": [
+              "Uma pilha segue a regra LIFO: o último elemento inserido é o primeiro a ser removido.",
+              "As inserções foram 2, 4, 6, 8 e 10; portanto, o topo contém 10 e a remoção retira essa chave, tornando II verdadeira e I falsa.",
+              "Em uma implementação padrão com lista encadeada, o topo é acessado diretamente: basta atualizar o ponteiro do topo para o próximo nó e remover o nó anterior.",
+              "Essa operação não percorre a lista e custa O(1), independentemente do tamanho da pilha; assim, IV é verdadeira e III é falsa."
+            ],
+            "conclusion": "Alternativa D: apenas II e IV estão corretas.",
+            "distractors": "A e B afirmam incorretamente que a remoção retira 2; C atribui custo proporcional ao tamanho da pilha, embora a remoção padrão no topo tenha custo constante.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma pilha que inicialmente estava vazia e na qual inseriu-se as chaves 2, 4 e 6, 8 e 10 nessa ordem. Sobre uma operação de remoção de elemento da mesma (retirada padrão de uma pilha), considerando-se que a estrutura de dados usada é uma lista encadeada, pode-se afirmar que:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "A remoção retira a chave 2"
+                },
+                {
+                  "label": "II)",
+                  "text": "A remoção da chave 10"
+                },
+                {
+                  "label": "III)",
+                  "text": "Custo computacional proporcional ao tamanho da pilha"
+                },
+                {
+                  "label": "IV)",
+                  "text": "Custo computacional constante, não importando o tamanho da pilha"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Complexidade",
+          "prompt": "Sobre um vetor que se mantém de forma ordenada a cada inserção, remoção ou alteração feita, qual a alternativa verdadeira ao usarmos os algoritmos mais eficientes para cada operação:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A inserção tem custo linear no pior caso, a remoção tem custo linear no pior caso e a busca mais eficiente possível tem custo linear"
+            },
+            {
+              "id": "B",
+              "text": "A inserção tem custo linear no pior caso, a remoção tem custo linear no pior caso e a busca tem custo logarítmico no pior caso"
+            },
+            {
+              "id": "C",
+              "text": "A inserção tem custo logarítmico no pior caso, a remoção tem custo logarítmico no pior caso e a busca mais eficiente possível tem custo constante"
+            },
+            {
+              "id": "D",
+              "text": "A inserção tem custo linear no pior caso, a remoção tem custo logarítmico no pior caso e a busca mais eficiente possível tem custo logarítmico"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-9",
+            "steps": [
+              "Na inserção, localizar a posição correta não elimina a necessidade de deslocar elementos: no pior caso, inserir no início exige deslocar todo o vetor, com custo O(n).",
+              "Na remoção, excluir o primeiro elemento exige deslocar os demais para preencher a posição vazia, com custo O(n) no pior caso.",
+              "Como o vetor está ordenado, a busca binária reduz o intervalo de pesquisa pela metade a cada etapa, com custo O(log n) no pior caso."
+            ],
+            "conclusion": "Alternativa B: inserção e remoção lineares; busca logarítmica no pior caso.",
+            "distractors": "A ignora a possibilidade de busca binária; C desconsidera os deslocamentos e atribui custo constante à busca; D atribui custo logarítmico à remoção, embora ela possa exigir deslocamentos lineares.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre um vetor que se mantém de forma ordenada a cada inserção, remoção ou alteração feita, qual a alternativa verdadeira ao usarmos os algoritmos mais eficientes para cada operação:"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Algoritmos",
+          "prompt": "Sobre os algoritmos de ordenação quicksort, mergesort e inserção, é correto afirmar que:\nI) O quicksort é o que apresenta melhor desempenho no pior caso dentre os três algoritmos, sendo por isso o algoritmo mais usado\nII) A ordenação por inserção tende a ser a mais rápida em casos de ordenação de um vetor onde o número de elementos fora de ordem é menor que um décimo de log N, sendo N o número de elementos do vetor e N um valor grande\nIII) O mergesort é o que tem menor custo assintótico no pior caso quando comparamos os três algoritmos",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Apenas I é verdadeira"
+            },
+            {
+              "id": "B",
+              "text": "Apenas II é verdadeira"
+            },
+            {
+              "id": "C",
+              "text": "Apenas III é verdadeira"
+            },
+            {
+              "id": "D",
+              "text": "As alternativas A, B e C não são corretas"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sobre os algoritmos de ordenação quicksort, mergesort e inserção, é correto afirmar que:"
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I)",
+                  "text": "O quicksort é o que apresenta melhor desempenho no pior caso dentre os três algoritmos, sendo por isso o algoritmo mais usado"
+                },
+                {
+                  "label": "II)",
+                  "text": "A ordenação por inserção tende a ser a mais rápida em casos de ordenação de um vetor onde o número de elementos fora de ordem é menor que um décimo de log N, sendo N o número de elementos do vetor e N um valor grande"
+                },
+                {
+                  "label": "III)",
+                  "text": "O mergesort é o que tem menor custo assintótico no pior caso quando comparamos os três algoritmos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Estruturas de dados",
+          "prompt": "Marque a alternativa correta sobre os custos, no pior caso, dos melhores algoritmos conhecidos para inserir um elemento, remover um elemento e pesquisar por uma chave em um vetor que contenha n elementos, sendo a busca feita pelo campo usado para ordenar o vetor. Considere que o vetor sempre esteja ordenado antes da operação e permaneça ordenado após a operação. Pode-se dizer que as operações de inserção, remoção e busca nesse cenário têm, respectivamente, custo no pior caso:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O(n. log(n) ), O(n. log(n)) e O(log (n) )"
+            },
+            {
+              "id": "B",
+              "text": "O(n. log(n) ), O(n. log(n)) e O(n )"
+            },
+            {
+              "id": "C",
+              "text": "O(n), O(n) e O(n)"
+            },
+            {
+              "id": "D",
+              "text": "O(n), O(n) e O(log (n) )"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-11",
+            "steps": [
+              "Para inserir mantendo a ordenação, pode ser necessário deslocar os n elementos do vetor, resultando em O(n) no pior caso.",
+              "Para remover mantendo o vetor compacto e ordenado, pode ser necessário deslocar os n − 1 elementos restantes, também com custo O(n).",
+              "A busca pelo campo de ordenação permite usar busca binária, que reduz o intervalo pela metade e custa O(log n) no pior caso."
+            ],
+            "conclusion": "Alternativa D: O(n), O(n) e O(log n), respectivamente.",
+            "distractors": "A e B apresentam custos de inserção e remoção maiores que os necessários aos melhores algoritmos, enquanto B e C indicam busca linear apesar de ser possível usar busca binária.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Marque a alternativa correta sobre os custos, no pior caso, dos melhores algoritmos conhecidos para inserir um elemento, remover um elemento e pesquisar por uma chave em um vetor que contenha n elementos, sendo a busca feita pelo campo usado para ordenar o vetor. Considere que o vetor sempre esteja ordenado antes da operação e permaneça ordenado após a operação. Pode-se dizer que as operações de inserção, remoção e busca nesse cenário têm, respectivamente, custo no pior caso:"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Complexidade",
+          "prompt": "Considere que um vetor de 8 elementos está sendo ordenado de forma crescente pelo algoritmo quicksort, e que após a escolha do pivot (elemento usado como chave para o particionamento) e ao final do primeiro particionamento, o vetor tenha ficado com os seguintes valores:\n2 5 9 1 7 2 1 9\nDado o resultado, pode-se afirmar que:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O valor 2 pode ter sido o pivô que gerou a partição"
+            },
+            {
+              "id": "B",
+              "text": "O valor 9 pode ter sido o pivô que gerou a partição"
+            },
+            {
+              "id": "C",
+              "text": "O valor 1 pode ter sido o pivô que gerou a partição"
+            },
+            {
+              "id": "D",
+              "text": "O valor 7 pode ter sido o pivô que gerou a partição"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-12",
+            "steps": [
+              "No particionamento crescente, os valores menores que o pivô devem ficar do lado esquerdo e os maiores do lado direito; valores iguais podem aparecer em ambos os lados.",
+              "O último elemento é 9, e todos os elementos anteriores são menores ou iguais a ele; portanto, esse 9 pode ocupar a posição do pivô ao final do particionamento.",
+              "O particionamento não precisa ordenar internamente cada lado, de modo que a sequência anterior ao último 9 pode permanecer desordenada."
+            ],
+            "conclusion": "Alternativa B: o valor 9 pode ter sido o pivô.",
+            "distractors": "A e C não se aplicam porque nenhuma ocorrência de 2 ou 1 separa corretamente valores menores e maiores; D não se aplica porque há um 9 à esquerda de 7 e valores menores à sua direita.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere que um vetor de 8 elementos está sendo ordenado de forma crescente pelo algoritmo quicksort, e que após a escolha do pivot (elemento usado como chave para o particionamento) e ao final do primeiro particionamento, o vetor tenha ficado com os seguintes valores:"
+            },
+            {
+              "type": "code",
+              "text": "2 5 9 1 7 2 1 9"
+            },
+            {
+              "type": "p",
+              "text": "Dado o resultado, pode-se afirmar que:"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Algoritmos",
+          "prompt": "Considere uma tabela hash por encadeamento onde os elementos inseridos são números inteiros positivos. Considere que a tabela tem tamanho 5 e que a função de espalhamento (função de hash) calcula o resto da divisão do valor do elemento por 5 para determinar a posição de inserção na tabela. Quantas colisões de chaves teremos se a tabela estiver inicialmente vazia e inserirmos as chaves 2, 5, 9, 20 e 7?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Não há colisões"
+            },
+            {
+              "id": "B",
+              "text": "Uma colisão"
+            },
+            {
+              "id": "C",
+              "text": "Duas colisões"
+            },
+            {
+              "id": "D",
+              "text": "Três colisões"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-13",
+            "steps": [
+              "Aplicando h(x) = x mod 5, obtemos: h(2) = 2, h(5) = 0, h(9) = 4, h(20) = 0 e h(7) = 2.",
+              "As chaves 2, 5 e 9 ocupam posições inicialmente vazias, sem colisões.",
+              "A chave 20 colide com 5 na posição 0, e a chave 7 colide com 2 na posição 2, totalizando duas colisões."
+            ],
+            "conclusion": "Alternativa C: duas colisões.",
+            "distractors": "A e B subestimam as duas inserções em posições já ocupadas, enquanto D contabiliza uma colisão a mais do que ocorre.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma tabela hash por encadeamento onde os elementos inseridos são números inteiros positivos. Considere que a tabela tem tamanho 5 e que a função de espalhamento (função de hash) calcula o resto da divisão do valor do elemento por 5 para determinar a posição de inserção na tabela. Quantas colisões de chaves teremos se a tabela estiver inicialmente vazia e inserirmos as chaves 2, 5, 9, 20 e 7?"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere uma árvore binária de pesquisa sem balanceamento contendo como dado números inteiros, que começou vazia, e onde foram inseridos posteriormente, nesta ordem, os valores 10, 5, 20, 1, 30, 7 e 15. Uma chave de busca nessa árvore sem balanceamento terá que comparar a chave de busca, na pior das hipóteses, com:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "7 nós da árvore"
+            },
+            {
+              "id": "B",
+              "text": "6 nós da árvore"
+            },
+            {
+              "id": "C",
+              "text": "2 nós da árvore"
+            },
+            {
+              "id": "D",
+              "text": "3 nós da árvore"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-14",
+            "steps": [
+              "A inserção de 10 cria a raiz; 5 fica à esquerda de 10 e 20 à direita.",
+              "O valor 1 fica à esquerda de 5, 30 à direita de 20, 7 à direita de 5 e 15 à esquerda de 20.",
+              "Os caminhos mais longos percorrem três nós, como 10 → 5 → 1 ou 10 → 20 → 30.",
+              "A busca segue apenas um desses caminhos, comparando a chave com no máximo três nós."
+            ],
+            "conclusion": "Alternativa D: 3 nós da árvore.",
+            "distractors": "A e B excedem o comprimento dos caminhos de busca dessa árvore, enquanto C desconsidera as buscas que chegam ao terceiro nível.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma árvore binária de pesquisa sem balanceamento contendo como dado números inteiros, que começou vazia, e onde foram inseridos posteriormente, nesta ordem, os valores 10, 5, 20, 1, 30, 7 e 15. Uma chave de busca nessa árvore sem balanceamento terá que comparar a chave de busca, na pior das hipóteses, com:"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Complexidade",
+          "prompt": "Dado o seguinte pseudocódigo Python de busca binária recursiva, indique qual das opções abaixo é impressa pela linha final print().\ndef pesquisa_binaria_recursiva(A, esquerda, direita, item):\n    if direita < esquerda:\n        return -1\n    meio = (esquerda + direita) // 2\n    if A[meio] == item:\n        return meio\n    elif A[meio] > item:\n        return pesquisa_binaria_recursiva(A, esquerda, meio - 1, item)\n    else:\n        return pesquisa_binaria_recursiva(A, meio + 1, direita, item)\n\nA = [0, 100, 20, 30, 40, 50, 60, 70]\nprint(\"Pesquisa com sucesso:\", pesquisa_binaria_recursiva(A, 0, len(A) - 1, 100))",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Pesquisa com sucesso: 100"
+            },
+            {
+              "id": "B",
+              "text": "Pesquisa com sucesso: -1"
+            },
+            {
+              "id": "C",
+              "text": "Pesquisa com sucesso: 1"
+            },
+            {
+              "id": "D",
+              "text": "Pesquisa com sucesso: 2"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-15",
+            "steps": [
+              "Com esquerda = 0 e direita = 7, meio = 3 e A[3] = 30; como 100 > 30, a próxima chamada pesquisa os índices de 4 a 7.",
+              "Nesse intervalo, meio = 5 e A[5] = 50; como 100 > 50, a busca continua nos índices de 6 a 7.",
+              "Depois, meio = 6 e A[6] = 60; a busca segue para o índice 7, onde A[7] = 70, e então chama a função com esquerda = 8 e direita = 7.",
+              "Como direita < esquerda, a função retorna -1; o vetor não está ordenado, e a busca descartou o trecho que contém 100."
+            ],
+            "conclusion": "Alternativa B: a linha imprime \"Pesquisa com sucesso: -1\".",
+            "distractors": "A confunde o valor procurado com o retorno da função; C indica a posição real de 100, que não é visitada; D indica um índice que também não é retornado.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o seguinte pseudocódigo Python de busca binária recursiva, indique qual das opções abaixo é impressa pela linha final print()."
+            },
+            {
+              "type": "code",
+              "text": "def pesquisa_binaria_recursiva(A, esquerda, direita, item):\n    if direita < esquerda:\n        return -1\n    meio = (esquerda + direita) // 2\n    if A[meio] == item:\n        return meio\n    elif A[meio] > item:\n        return pesquisa_binaria_recursiva(A, esquerda, meio - 1, item)\n    else:\n        return pesquisa_binaria_recursiva(A, meio + 1, direita, item)\n\nA = [0, 100, 20, 30, 40, 50, 60, 70]\nprint(\"Pesquisa com sucesso:\", pesquisa_binaria_recursiva(A, 0, len(A) - 1, 100))"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Algoritmos",
+          "prompt": "Considere a seguinte afirmação:\nConsiderando o pior caso no custo das operações, em uma tabela hash com encadeamento na qual uma lista encadeada é usada para tratamento de colisões e uma chave no hash não pode se repetir, uma inserção tem custo de __, enquanto que uma busca tem custo de __. Entretanto, se tirarmos a lista encadeada e usarmos uma árvore rubro-negra para o tratamento de colisões, o custo de inserção na tabela hash passa a ser __ e o custo de busca passa a ser __.\nAssinale a opção que preenche corretamente os campos em branco:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O(n), O(n), O(log n), O(log n)"
+            },
+            {
+              "id": "B",
+              "text": "O(1), O(n), O(1), O(log n)"
+            },
+            {
+              "id": "C",
+              "text": "O(n), O(1), O(log n), O(1)"
+            },
+            {
+              "id": "D",
+              "text": "O(1), O(1), O(1), O(1)"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-16",
+            "steps": [
+              "No pior caso, todas as n chaves colidem e ficam na mesma estrutura de tratamento de colisões.",
+              "Com lista encadeada, a busca pode percorrer as n chaves, custando O(n); a inserção também precisa verificar se a chave já existe, pois repetições são proibidas, e custa O(n).",
+              "Uma árvore rubro-negra mantém altura O(log n), mesmo no pior caso.",
+              "Assim, tanto a busca quanto a inserção com verificação de duplicidade e manutenção do balanceamento custam O(log n) na árvore."
+            ],
+            "conclusion": "Alternativa A: O(n), O(n), O(log n) e O(log n).",
+            "distractors": "B ignora a verificação de duplicidade e o custo de inserção na árvore; C atribui custo constante às buscas no pior caso; D desconsidera o efeito das colisões em todas as operações.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere a seguinte afirmação:"
+            },
+            {
+              "type": "p",
+              "text": "Considerando o pior caso no custo das operações, em uma tabela hash com encadeamento na qual uma lista encadeada é usada para tratamento de colisões e uma chave no hash não pode se repetir, uma inserção tem custo de __, enquanto que uma busca tem custo de __. Entretanto, se tirarmos a lista encadeada e usarmos uma árvore rubro-negra para o tratamento de colisões, o custo de inserção na tabela hash passa a ser __ e o custo de busca passa a ser __."
+            },
+            {
+              "type": "p",
+              "text": "Assinale a opção que preenche corretamente os campos em branco:"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Estruturas de dados",
+          "prompt": "Dado o seguinte pseudocódigo Python de busca binária recursiva, indique quantas vezes ocorre a chamada da função pesquisa_binaria_recursiva():\ndef pesquisa_binaria_recursiva(A, esquerda, direita, item):\n    if direita < esquerda:\n        return -1\n    meio = (esquerda + direita) // 2\n    if A[meio] == item:\n        return meio\n    elif A[meio] > item:\n        return pesquisa_binaria_recursiva(A, esquerda, meio - 1, item)\n    else:\n        return pesquisa_binaria_recursiva(A, meio + 1, direita, item)\n\nA = [0, 100, 20, 30, 40, 50, 60, 70]\nprint(\"Pesquisa com sucesso:\", pesquisa_binaria_recursiva(A, 0, len(A) - 1, 70))",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "0 vezes"
+            },
+            {
+              "id": "B",
+              "text": "3 vezes"
+            },
+            {
+              "id": "C",
+              "text": "4 vezes"
+            },
+            {
+              "id": "D",
+              "text": "5 vezes"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-17",
+            "steps": [
+              "Conte a chamada inicial e cada chamada recursiva realizada até encontrar o item 70.",
+              "1ª chamada: esquerda = 0 e direita = 7; meio = 3 e A[3] = 30. Como 30 < 70, o próximo intervalo é [4, 7].",
+              "2ª chamada: meio = (4 + 7) // 2 = 5 e A[5] = 50. Como 50 < 70, o próximo intervalo é [6, 7].",
+              "3ª chamada: meio = (6 + 7) // 2 = 6 e A[6] = 60. Como 60 < 70, o próximo intervalo é [7, 7].",
+              "4ª chamada: meio = 7 e A[7] = 70. A função retorna 7, encerrando a busca. Embora o vetor não esteja ordenado, esse caminho de execução encontra o item."
+            ],
+            "conclusion": "Alternativa C: a função é chamada 4 vezes, incluindo a chamada inicial.",
+            "distractors": "A ignora as chamadas executadas; B conta apenas as três chamadas recursivas, excluindo a inicial; D acrescenta uma chamada que não ocorre após encontrar o item.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o seguinte pseudocódigo Python de busca binária recursiva, indique quantas vezes ocorre a chamada da função pesquisa_binaria_recursiva():"
+            },
+            {
+              "type": "code",
+              "text": "def pesquisa_binaria_recursiva(A, esquerda, direita, item):\n    if direita < esquerda:\n        return -1\n    meio = (esquerda + direita) // 2\n    if A[meio] == item:\n        return meio\n    elif A[meio] > item:\n        return pesquisa_binaria_recursiva(A, esquerda, meio - 1, item)\n    else:\n        return pesquisa_binaria_recursiva(A, meio + 1, direita, item)\n\nA = [0, 100, 20, 30, 40, 50, 60, 70]\nprint(\"Pesquisa com sucesso:\", pesquisa_binaria_recursiva(A, 0, len(A) - 1, 70))"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "Dado o seguinte pseudocódigo Python, indique a saída correta que será impressa na tela do computador:\nimport numpy as np\n\nA = [[0, 2, 1], [1, 0, 0]]\nB = [[7, 0], [0, 10], [11, 0]]\n\ndef operacao_com_matrizes():\n    resultado = np.zeros((2, 2))\n    for i in range(len(A)):\n        for j in range(len(B[0])):\n            for k in range(len(B)):\n                resultado[i][j] += A[i][k] * B[k][j]\n    return resultado\n\nprint(operacao_com_matrizes())",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "[[0. 2. 1.] [1. 0. 0.]]"
+            },
+            {
+              "id": "B",
+              "text": "[[ 7. 0.] [ 0. 10.] [11. 0.]]"
+            },
+            {
+              "id": "C",
+              "text": "[[ 7. 0.] [11. 20.]]"
+            },
+            {
+              "id": "D",
+              "text": "[[11. 20.] [ 7. 0.]]"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-18",
+            "steps": [
+              "Os três laços calculam o produto matricial A × B, com resultado[i][j] = Σ A[i][k] × B[k][j], para k de 0 a 2.",
+              "Primeira linha: resultado[0][0] = 0×7 + 2×0 + 1×11 = 11; resultado[0][1] = 0×0 + 2×10 + 1×0 = 20.",
+              "Segunda linha: resultado[1][0] = 1×7 + 0×0 + 0×11 = 7; resultado[1][1] = 1×0 + 0×10 + 0×0 = 0.",
+              "Como np.zeros((2,2)) cria uma matriz de números de ponto flutuante, a impressão apresenta os valores com ponto decimal."
+            ],
+            "conclusion": "Alternativa D: a saída é [[11. 20.] [7. 0.]], com cada linha da matriz impressa em uma linha.",
+            "distractors": "A e B apresentam as próprias matrizes de entrada, não o produto; C troca as duas linhas do resultado.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o seguinte pseudocódigo Python, indique a saída correta que será impressa na tela do computador:"
+            },
+            {
+              "type": "code",
+              "text": "import numpy as np\n\nA = [[0, 2, 1], [1, 0, 0]]\nB = [[7, 0], [0, 10], [11, 0]]\n\ndef operacao_com_matrizes():\n    resultado = np.zeros((2, 2))\n    for i in range(len(A)):\n        for j in range(len(B[0])):\n            for k in range(len(B)):\n                resultado[i][j] += A[i][k] * B[k][j]\n    return resultado\n\nprint(operacao_com_matrizes())"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Algoritmos",
+          "prompt": "Dado o seguinte pseudocódigo Python, indique a saída correta que será impressa na tela do computador quando a seguinte sequência de comandos é executada:\nclass Stack:\n    def __init__(self):\n        self.stack = []\n\n    def pushit(self, value):\n        self.stack.append(value)\n\n    def popit(self):\n        try:\n            self.stack.pop()\n        except:\n            print('empty stack')\n            self.stack = []\nOs comandos executados são:\nstack = Stack()\nstack.pushit(1)\nstack.pushit(3)\nstack.popit()\nstack.popit()\nstack.popit()\nstack.pushit(2)\nstack.pushit(1)\nstack.popit()\nprint(stack.stack)",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "[2, 1]"
+            },
+            {
+              "id": "B",
+              "text": "empty stack [2]"
+            },
+            {
+              "id": "C",
+              "text": "empty stack []"
+            },
+            {
+              "id": "D",
+              "text": "[]"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-19",
+            "steps": [
+              "A pilha segue a propriedade LIFO: o último elemento inserido é o primeiro removido.",
+              "Após pushit(1) e pushit(3), a pilha fica [1, 3]. Os dois primeiros popit() removem 3 e depois 1, deixando-a vazia.",
+              "O terceiro popit() tenta remover um elemento da pilha vazia; o tratamento da exceção imprime 'empty stack' e mantém a pilha vazia.",
+              "Após pushit(2) e pushit(1), a pilha fica [2, 1]. O popit() seguinte remove 1, restando [2].",
+              "O comando print(stack.stack) imprime [2], depois da mensagem emitida na tentativa de remoção da pilha vazia."
+            ],
+            "conclusion": "Alternativa B: a saída é 'empty stack' e, na linha seguinte, [2].",
+            "distractors": "A não considera a última remoção nem a mensagem de erro; C remove indevidamente o elemento 2; D omite a mensagem e também o elemento 2 que permanece.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o seguinte pseudocódigo Python, indique a saída correta que será impressa na tela do computador quando a seguinte sequência de comandos é executada:"
+            },
+            {
+              "type": "code",
+              "text": "class Stack:\n    def __init__(self):\n        self.stack = []\n\n    def pushit(self, value):\n        self.stack.append(value)\n\n    def popit(self):\n        try:\n            self.stack.pop()\n        except:\n            print('empty stack')\n            self.stack = []"
+            },
+            {
+              "type": "p",
+              "text": "Os comandos executados são:"
+            },
+            {
+              "type": "code",
+              "text": "stack = Stack()\nstack.pushit(1)\nstack.pushit(3)\nstack.popit()\nstack.popit()\nstack.popit()\nstack.pushit(2)\nstack.pushit(1)\nstack.popit()\nprint(stack.stack)"
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Estruturas de dados",
+          "prompt": "Dado o seguinte pseudocódigo Python, indique qual seria a saída correta no terminal do computador:\ndef func1(fator):\n    def func2(x):\n        return x * fator\n    return func2\n\nfuncao = func1(3)\nprint(funcao(5))",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "A saída é um erro pois a primeira função retorna outra função mas não passou o argumento 'fator'"
+            },
+            {
+              "id": "B",
+              "text": "A saída é 15"
+            },
+            {
+              "id": "C",
+              "text": "A saída é 3"
+            },
+            {
+              "id": "D",
+              "text": "A saída é 0"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2024-01-20",
+            "steps": [
+              "A chamada func1(3) define fator = 3 e retorna a função interna func2, sem executá-la naquele momento.",
+              "A função retornada preserva o acesso ao valor de fator por meio de uma closure.",
+              "Ao executar funcao(5), x recebe 5 e func2 calcula x × fator = 5 × 3 = 15.",
+              "O comando print imprime o valor retornado: 15."
+            ],
+            "conclusion": "Alternativa B: a saída é 15.",
+            "distractors": "A é incorreta porque fator foi fornecido e preservado pela closure; C apresenta somente o fator, não o produto; D não corresponde ao cálculo 5 × 3.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado o seguinte pseudocódigo Python, indique qual seria a saída correta no terminal do computador:"
+            },
+            {
+              "type": "code",
+              "text": "def func1(fator):\n    def func2(x):\n        return x * fator\n    return func2\n\nfuncao = func1(3)\nprint(funcao(5))"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2020-01",
+      "label": "Mestrado e Doutorado 2020/01",
+      "examUrl": "https://ppgi.ufam.edu.br/images/editais/Caderno_Questoes_Edital_060_2019.pdf",
+      "keyUrl": "https://ppgi.ufam.edu.br/images/editais/Gabarito_Edital_060_2019.pdf",
+      "title": "Edital 060/2019",
+      "subtitle": "Prova de conhecimento · 30 jan 2020",
+      "subjects": [
+        "Estruturas de dados",
+        "Algoritmos",
+        "Complexidade"
+      ],
+      "thumbnail": "/evidence/2020-01.jpg",
+      "questions": [
+        {
+          "number": 1,
+          "subject": "Estruturas de dados",
+          "prompt": "Suponha que você tenha a seguinte tabela hash implementada utilizando endereçamento aberto com sondagem linear (linear probing). A função hash que você está usando é uma função modular, h(x) = x MOD 9.\nQual das ordens abaixo pode ser a ordem em que os elementos foram adicionados à hash? Assuma que a hash nunca tenha sido redimensionada e que nenhum elemento tenha sido excluído ainda.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "9, 14, 4, 18, 21, 3, 12"
+            },
+            {
+              "id": "B",
+              "text": "12, 3, 14, 18, 4, 9, 21"
+            },
+            {
+              "id": "C",
+              "text": "12, 14, 3, 9, 4, 18, 21"
+            },
+            {
+              "id": "D",
+              "text": "9, 12, 14, 3, 21, 18, 4"
+            },
+            {
+              "id": "E",
+              "text": "18, 9, 12, 3, 14, 4, 21"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-1",
+            "steps": [
+              "No endereçamento aberto com sondagem linear, calcula-se h(x) = x MOD 9 e, se a posição estiver ocupada, procura-se a próxima posição livre.",
+              "Simulando a alternativa C: 12 é inserido na posição 3; 14, na posição 5; 3 encontra a posição 3 ocupada e vai para a posição 4.",
+              "Em seguida, 9 ocupa a posição 0; 4 encontra as posições 4 e 5 ocupadas e vai para a posição 6; 18 encontra a posição 0 ocupada e vai para a posição 1.",
+              "Por fim, 21 tem hash 3 e encontra as posições 3, 4, 5 e 6 ocupadas, sendo inserido na posição 7.",
+              "A configuração produzida por C, dos índices 0 a 8, é [9, 18, vazio, 12, 3, 14, 4, 21, vazio]. A tabela de referência não está reproduzida no enunciado fornecido desta questão, portanto não é possível conferir visualmente a correspondência."
+            ],
+            "conclusion": "Alternativa C, conforme o gabarito oficial; a simulação mostra a tabela produzida por essa ordem, mas a tabela de referência está ausente.",
+            "distractors": "A coloca 21 na posição 3, B e E colocam 18 na posição 0, e D coloca 21 na posição 6, produzindo configurações diferentes da obtida por C; sem a tabela de referência, não é possível rejeitá-las de forma independente do gabarito.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Suponha que você tenha a seguinte tabela hash implementada utilizando endereçamento aberto com sondagem linear (linear probing). A função hash que você está usando é uma função modular, h(x) = x MOD 9."
+            },
+            {
+              "type": "p",
+              "text": "Qual das ordens abaixo pode ser a ordem em que os elementos foram adicionados à hash? Assuma que a hash nunca tenha sido redimensionada e que nenhum elemento tenha sido excluído ainda."
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2020-01-1-1.webp",
+              "page": 2,
+              "width": 753,
+              "height": 158,
+              "alt": "Figura da questão 1 — Mestrado e Doutorado 2020/01, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "subject": "Algoritmos",
+          "prompt": "Dado os seguintes elementos (10, 20, 15, 25, 30, 16, 18, 19), qual desenho representa uma árvore AVL, inicialmente vazia, que é preenchida com esses elementos, na ordem apresentada, e que tem as devidas rotações efetuadas?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "1"
+            },
+            {
+              "id": "B",
+              "text": "2"
+            },
+            {
+              "id": "C",
+              "text": "3"
+            },
+            {
+              "id": "D",
+              "text": "4"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das árvores desenhadas representa uma AVL"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-2",
+            "steps": [
+              "Uma AVL mantém, em cada nó, diferença de no máximo 1 entre as alturas das subárvores esquerda e direita.",
+              "Ao inserir 10, 20 e 15, ocorre um desequilíbrio direita-esquerda em 10: uma rotação à direita em 20 e outra à esquerda em 10 produzem raiz 15, com filhos 10 e 20.",
+              "A inserção de 25 e 30 provoca um desequilíbrio direita-direita em 20. Uma rotação à esquerda em 20 forma a subárvore de raiz 25, com filhos 20 e 30.",
+              "Ao inserir 16 como filho esquerdo de 20, a raiz 15 fica desequilibrada no caso direita-esquerda. Rotaciona-se à direita em 25 e à esquerda em 15, obtendo raiz 20, filho esquerdo 15 e filho direito 25.",
+              "Insere-se 18 à direita de 16 e depois 19 à direita de 18. O desequilíbrio direita-direita em 16 é corrigido por uma rotação à esquerda, formando a subárvore de raiz 18, com filhos 16 e 19."
+            ],
+            "conclusion": "Alternativa A, conforme o gabarito: a árvore final tem raiz 20; à esquerda, 15 com filhos 10 e 18, sendo 16 e 19 filhos de 18; à direita, 25 com filho direito 30.",
+            "distractors": "B, C e D não representam a árvore obtida por essa sequência de inserções e rotações, enquanto E é incompatível com a existência da árvore AVL resultante indicada pelo gabarito.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dado os seguintes elementos (10, 20, 15, 25, 30, 16, 18, 19), qual desenho representa uma árvore AVL, inicialmente vazia, que é preenchida com esses elementos, na ordem apresentada, e que tem as devidas rotações efetuadas?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2020-01-2-1.webp",
+              "page": 2,
+              "width": 1066,
+              "height": 856,
+              "alt": "Figura da questão 2 — Mestrado e Doutorado 2020/01, página 2",
+              "caption": "Figura original · página 2"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "subject": "Complexidade",
+          "prompt": "Qual a alternativa que completa corretamente a seguinte frase: Um algoritmo que possui número de operações _______________ em função de uma entrada de tamanho n é linear.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "n³ + 9"
+            },
+            {
+              "id": "B",
+              "text": "3n² + 3n + 2"
+            },
+            {
+              "id": "C",
+              "text": "6"
+            },
+            {
+              "id": "D",
+              "text": "2n + 1"
+            },
+            {
+              "id": "E",
+              "text": "n² + 1"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-3",
+            "steps": [
+              "Um número de operações linear cresce proporcionalmente ao tamanho n da entrada, isto é, pertence a Θ(n).",
+              "Na expressão 2n + 1, o termo dominante é 2n; o fator constante 2 e a parcela constante 1 não alteram a ordem de crescimento.",
+              "Assim, 2n + 1 tem crescimento linear."
+            ],
+            "conclusion": "Alternativa D: 2n + 1.",
+            "distractors": "A tem crescimento cúbico; B e E têm crescimento quadrático; C tem crescimento constante, não linear.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual a alternativa que completa corretamente a seguinte frase: Um algoritmo que possui número de operações _______________ em função de uma entrada de tamanho n é linear."
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere um vetor com 25 elementos (posição 0 até a posição 24) que representam os números primos entre 1 a 100, em ordem crescente (Ex: [2, 3, 5, 7, 11, 13, ..., 89, 97]). Empregando pesquisa binária, quantos itens do vetor precisam ser examinados antes de se concluir que o número 52 não está no vetor e, portanto, não é primo?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "12"
+            },
+            {
+              "id": "B",
+              "text": "7"
+            },
+            {
+              "id": "C",
+              "text": "5"
+            },
+            {
+              "id": "D",
+              "text": "1"
+            },
+            {
+              "id": "E",
+              "text": "4"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-4",
+            "steps": [
+              "Use os limites inclusivos início = 0 e fim = 24, calculando o meio por ⌊(início + fim)/2⌋.",
+              "O primeiro índice examinado é 12, cujo valor é 41. Como 52 > 41, a busca continua entre os índices 13 e 24.",
+              "O segundo índice é 18, cujo valor é 67. Como 52 < 67, o intervalo passa a ser de 13 a 17.",
+              "O terceiro índice é 15, cujo valor é 53. Como 52 < 53, o intervalo passa a ser de 13 a 14.",
+              "O quarto índice é 13, cujo valor é 43. Como 52 > 43, resta apenas o índice 14, cujo valor é 47, examinado na quinta comparação com um item do vetor. Como 52 > 47, o intervalo fica vazio."
+            ],
+            "conclusion": "Alternativa C: são examinados 5 itens antes de concluir que 52 não está no vetor.",
+            "distractors": "A e B superestimam a quantidade de itens examinados, enquanto D e E a subestimam, conforme a simulação da pesquisa binária.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere um vetor com 25 elementos (posição 0 até a posição 24) que representam os números primos entre 1 a 100, em ordem crescente (Ex: [2, 3, 5, 7, 11, 13, ..., 89, 97]). Empregando pesquisa binária, quantos itens do vetor precisam ser examinados antes de se concluir que o número 52 não está no vetor e, portanto, não é primo?"
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "subject": "Algoritmos",
+          "prompt": "Considere o código da função abaixo:\nvoid fun1(struct node* head) {\n    if (head == NULL)\n        return;\n    fun1(head->next);\n    printf(\"%d \", head->data);\n}\nO que essa função faz, dada uma lista encadeada de valores inteiros como entrada?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Imprime todos os nós da lista encadeada, começando com primeiro o nó da lista"
+            },
+            {
+              "id": "B",
+              "text": "Imprime todos os nós da lista encadeada, começando com o último nó da lista"
+            },
+            {
+              "id": "C",
+              "text": "Imprime apenas os nós de posições pares da lista encadeada"
+            },
+            {
+              "id": "D",
+              "text": "Imprime apenas os nós de posições impares da lista encadeada"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das alternativas anteriores"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-5",
+            "steps": [
+              "Se head é NULL, a função retorna sem imprimir, encerrando a recursão.",
+              "Para cada nó existente, fun1(head->next) é executada antes do printf, avançando até o final da lista.",
+              "Na volta das chamadas recursivas, o printf imprime primeiro o último nó e depois seus predecessores, até chegar ao primeiro."
+            ],
+            "conclusion": "Alternativa B: a função imprime os valores de todos os nós, começando pelo último.",
+            "distractors": "A inverte a ordem efetiva da impressão, C e D indicam filtros de posição inexistentes no código, e E não se aplica porque B descreve corretamente a função.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere o código da função abaixo:"
+            },
+            {
+              "type": "code",
+              "text": "void fun1(struct node* head) {\n    if (head == NULL)\n        return;\n    fun1(head->next);\n    printf(\"%d \", head->data);\n}"
+            },
+            {
+              "type": "p",
+              "text": "O que essa função faz, dada uma lista encadeada de valores inteiros como entrada?"
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "subject": "Complexidade",
+          "prompt": "Marque a alternativa CORRETA. Sobre um hash com encadeamento e com tabela de tamanho 100, pode-se dizer que:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Para casos em que se insere um número n muito grande de chaves, o tempo no caso médio de busca será O(1)"
+            },
+            {
+              "id": "B",
+              "text": "Para casos em que se insere um número n muito grande de chaves, o tempo de busca no pior caso será O(1)"
+            },
+            {
+              "id": "C",
+              "text": "Para casos em que se insere um número n muito grande de chaves, o tempo no caso médio de busca será O(n)"
+            },
+            {
+              "id": "D",
+              "text": "Para casos em que se insere um número n muito grande de chaves, o tempo de busca no pior caso será O(log n)"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das alternativas anteriores"
+            }
+          ],
+          "correct": "C",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-6",
+            "steps": [
+              "No hash com encadeamento, as chaves que caem na mesma posição são armazenadas em uma cadeia, que pode precisar ser percorrida durante a busca.",
+              "Com n chaves e 100 posições, o fator de carga é α = n/100.",
+              "O custo médio usual de busca é O(1 + α) = O(1 + n/100). Como 100 é constante, esse custo é O(n)."
+            ],
+            "conclusion": "Alternativa C: com tamanho da tabela fixo em 100, o tempo médio de busca é O(n).",
+            "distractors": "A ignora o crescimento das cadeias, B e D não se aplicam porque o pior caso pode exigir percorrer n chaves na mesma cadeia, e E é incorreta porque C é verdadeira.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Marque a alternativa CORRETA. Sobre um hash com encadeamento e com tabela de tamanho 100, pode-se dizer que:"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "subject": "Estruturas de dados",
+          "prompt": "A seguinte função em C usa uma lista simplesmente encadeada como argumento de entrada. Ela modifica a lista, movendo o último elemento para a frente da lista e retorna a lista modificada.\ntypedef struct node {\n    int value;\n    struct node *next;\n} Node;\n\nNode *move_to_front(Node *head) {\n    Node *p, *q;\n    if ((head == NULL) || (head->next == NULL))\n        return head;\n    q = NULL;\n    p = head;\n    while (p->next != NULL) {\n        q = p;\n        p = p->next;\n    }\n    _ _ _ _ _ _ _ _ _ _ _ _ _ _\n    return head;\n}\nCerta parte do código foi deixada em branco (linha tracejada). Escolha a alternativa CORRETA para substituir a linha em branco.",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "q = NULL;\np->next = head;\nhead = p;",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "q->next = NULL;\nhead = p;\np->next = head;",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "head = p;\np->next = q;\nq->next = NULL;",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "q->next = NULL;\np->next = head;\nhead = p;",
+              "code": true
+            },
+            {
+              "id": "E",
+              "text": "A função não precisa ser complementada."
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-7",
+            "steps": [
+              "Para listas vazias ou com apenas um nó, a função retorna a própria lista, pois não há deslocamento necessário.",
+              "Ao terminar o laço, p aponta para o último nó e q aponta para o penúltimo.",
+              "Execute q->next = NULL para retirar o último nó do final da lista.",
+              "Execute p->next = head para ligar esse nó ao primeiro nó original.",
+              "Execute head = p para tornar o antigo último nó a nova cabeça da lista."
+            ],
+            "conclusion": "Alternativa D: q->next = NULL; p->next = head; head = p;",
+            "distractors": "A não rompe a ligação do penúltimo com o último e cria um ciclo, B faz o último apontar para si mesmo, C perde a ligação com o início original, e E deixa de realizar a movimentação.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A seguinte função em C usa uma lista simplesmente encadeada como argumento de entrada. Ela modifica a lista, movendo o último elemento para a frente da lista e retorna a lista modificada."
+            },
+            {
+              "type": "code",
+              "text": "typedef struct node {\n    int value;\n    struct node *next;\n} Node;\n\nNode *move_to_front(Node *head) {\n    Node *p, *q;\n    if ((head == NULL) || (head->next == NULL))\n        return head;\n    q = NULL;\n    p = head;\n    while (p->next != NULL) {\n        q = p;\n        p = p->next;\n    }\n    _ _ _ _ _ _ _ _ _ _ _ _ _ _\n    return head;\n}"
+            },
+            {
+              "type": "p",
+              "text": "Certa parte do código foi deixada em branco (linha tracejada). Escolha a alternativa CORRETA para substituir a linha em branco."
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "subject": "Algoritmos",
+          "prompt": "Qual dos seguintes algoritmos apresenta tempo O(n) quando ordenando um vetor com n elementos idênticos de texto?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Heapsort"
+            },
+            {
+              "id": "B",
+              "text": "Insertion sort"
+            },
+            {
+              "id": "C",
+              "text": "Mergesort"
+            },
+            {
+              "id": "D",
+              "text": "Quicksort"
+            },
+            {
+              "id": "E",
+              "text": "Nenhum dos algoritmos apresenta tempo O(n) para essa entrada"
+            }
+          ],
+          "correct": "B",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-8",
+            "steps": [
+              "No insertion sort usual, cada elemento é inserido no prefixo já ordenado, deslocando apenas valores estritamente maiores que ele.",
+              "Como todos os elementos são idênticos, não há deslocamentos: a comparação com o elemento anterior já encerra cada inserção.",
+              "São realizadas n − 1 inserções de custo constante cada, resultando em tempo Θ(n), portanto O(n)."
+            ],
+            "conclusion": "Alternativa B: insertion sort apresenta tempo O(n) para essa entrada.",
+            "distractors": "Nas versões usuais consideradas, heapsort e mergesort mantêm custo O(n log n), quicksort não tem comportamento linear garantido para valores iguais, e E é falsa porque insertion sort é linear nesse caso.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual dos seguintes algoritmos apresenta tempo O(n) quando ordenando um vetor com n elementos idênticos de texto?"
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "subject": "Complexidade",
+          "prompt": "Qual das afirmações a seguir é VERDADEIRA sobre árvores rubro-negra (vermelho e preto)?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O caminho do nó raiz até o nó folha mais distante não é maior que o dobro do número de nós do caminho da raiz para a folha mais próxima"
+            },
+            {
+              "id": "B",
+              "text": "O caminho do nó raiz para um nó folha ou para um nó nulo deve conter o mesmo número de nós pretos e vermelhos."
+            },
+            {
+              "id": "C",
+              "text": "A raiz pode ser vermelha"
+            },
+            {
+              "id": "D",
+              "text": "Se um nó for vermelho, os nós filhos somente serão pretos. O inverso também acontece, ou seja, se um nó for preto, seus nós filhos somente serão vermelhos."
+            },
+            {
+              "id": "E",
+              "text": "Nenhumas das afirmações é verdadeira"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-9",
+            "steps": [
+              "Em uma árvore rubro-negra, os caminhos de um mesmo nó até folhas nulas têm a mesma quantidade de nós pretos.",
+              "Além disso, um nó vermelho não pode ter um filho vermelho, impedindo dois vermelhos consecutivos em um caminho.",
+              "Assim, o caminho mais longo pode intercalar nós vermelhos entre os pretos, mas seu comprimento não supera o dobro do caminho mais curto."
+            ],
+            "conclusion": "Alternativa A: o caminho mais longo da raiz até uma folha não supera o dobro do mais curto.",
+            "distractors": "B confunde igualdade de altura preta com igualdade entre quantidades de pretos e vermelhos, C contraria a propriedade de raiz preta, D exige indevidamente filhos vermelhos para nós pretos, e E é falsa porque A é verdadeira.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual das afirmações a seguir é VERDADEIRA sobre árvores rubro-negra (vermelho e preto)?"
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "subject": "Estruturas de dados",
+          "prompt": "Qual das seguintes estruturas de dados é mais usada para implementar recursão?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Heap binário"
+            },
+            {
+              "id": "B",
+              "text": "Hash table"
+            },
+            {
+              "id": "C",
+              "text": "Fila"
+            },
+            {
+              "id": "D",
+              "text": "Árvore de busca"
+            },
+            {
+              "id": "E",
+              "text": "Pilha"
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-10",
+            "steps": [
+              "Cada chamada recursiva precisa guardar informações para retomar a execução, como parâmetros, variáveis locais e endereço de retorno.",
+              "A chamada mais recente deve terminar antes de a chamada anterior ser retomada.",
+              "Essa ordem é LIFO: o último registro inserido é o primeiro retirado, comportamento próprio de uma pilha."
+            ],
+            "conclusion": "Alternativa E: pilha é a estrutura usada para implementar as chamadas recursivas.",
+            "distractors": "Heap binário, tabela hash e árvore de busca não representam a ordem de retorno das chamadas, enquanto a fila usa FIFO, e não o LIFO necessário.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual das seguintes estruturas de dados é mais usada para implementar recursão?"
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "subject": "Algoritmos",
+          "prompt": "Qual das alternativas a seguir é FALSA sobre a árvores B e B+",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Árvores B e B+ criando um novo nível raiz (crescem para cima) sempre que sua altura muda, enquanto as árvores de pesquisa binária crescem adicionando novos nós folhas (para baixo) sempre que sua altura muda."
+            },
+            {
+              "id": "B",
+              "text": "A complexidade de tempo para busca por uma chave é diferente das árvores rubro-negras, se considerarmos o pior caso"
+            },
+            {
+              "id": "C",
+              "text": "O número de ponteiros filhos em um nó da árvore B é sempre igual ao número de chaves nele mais uma."
+            },
+            {
+              "id": "D",
+              "text": "Uma árvore B+, de ordem n, é uma árvore com as seguintes propriedades: (i) todos os nós das folhas são armazenados na mesma profundidade; (ii) todos as chaves são armazenadas em nós folha."
+            },
+            {
+              "id": "E",
+              "text": "Uma árvore B, de ordem n, é uma árvore com as seguintes propriedades: (i) todos os nós das folhas são armazenados na mesma profundidade; (ii) todos os nós não raiz têm entre n - 1 e 2n – 1 chaves; (iii) a raiz tem no máximo 2n – 1 chaves."
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Qual das alternativas a seguir é FALSA sobre a árvores B e B+"
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "subject": "Complexidade",
+          "prompt": "Quais das seguintes árvores abaixo respeita as regras básicas de balanceamento de árvores AVL?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Somente B"
+            },
+            {
+              "id": "B",
+              "text": "A, B e C"
+            },
+            {
+              "id": "C",
+              "text": "B e C"
+            },
+            {
+              "id": "D",
+              "text": "A e C"
+            },
+            {
+              "id": "E",
+              "text": "Nenhuma das árvores é AVL"
+            }
+          ],
+          "correct": "D",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-12",
+            "steps": [
+              "Em uma árvore AVL, para cada nó, a diferença entre as alturas das subárvores esquerda e direita deve pertencer a {−1, 0, 1}.",
+              "Para verificar essa condição, calculam-se as alturas de baixo para cima e examina-se o fator de balanceamento de cada nó.",
+              "As figuras das árvores A, B e C não foram fornecidas; portanto, não é possível calcular seus fatores de balanceamento nem verificar a resposta.",
+              "O gabarito oficial D indica que as árvores A e C respeitam as regras, enquanto B não respeita."
+            ],
+            "conclusion": "Alternativa D — A e C, conforme o gabarito oficial, sem possibilidade de verificação pela ausência das figuras.",
+            "distractors": "Segundo o gabarito, A, B e C incluem indevidamente a árvore B ou excluem alguma árvore válida, enquanto E nega que A e C sejam AVL; sem as figuras, essas classificações não podem ser verificadas.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Quais das seguintes árvores abaixo respeita as regras básicas de balanceamento de árvores AVL?"
+            }
+          ],
+          "figures": [
+            {
+              "src": "/figures/2020-01-12-1.webp",
+              "page": 5,
+              "width": 1146,
+              "height": 323,
+              "alt": "Figura da questão 12 — Mestrado e Doutorado 2020/01, página 5",
+              "caption": "Figura original · página 5"
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "subject": "Estruturas de dados",
+          "prompt": "Quais das seguintes afirmações sobre árvores é INCORRETA?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "O tempo de busca, no pior caso, para uma árvore AVL é O(log n)"
+            },
+            {
+              "id": "B",
+              "text": "No pior caso, uma inserção de árvore rubro-negra requer O(1) rotações"
+            },
+            {
+              "id": "C",
+              "text": "Uma árvore B+ tem todos as chaves armazenadas em nós folha"
+            },
+            {
+              "id": "D",
+              "text": "A busca por uma chave em uma árvore de pesquisa binária sem balanceamento com n nós leva tempo O(log n) no pior caso."
+            },
+            {
+              "id": "E",
+              "text": "Pode-se dizer que uma árvore B é uma árvore balanceada"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Quais das seguintes afirmações sobre árvores é INCORRETA?"
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "subject": "Algoritmos",
+          "prompt": "O número mínimo de comparações necessárias para determinar se um número inteiro aparece mais de n/2 vezes em um vetor ordenado de n números inteiros é:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Θ(n)"
+            },
+            {
+              "id": "B",
+              "text": "Θ(log n)"
+            },
+            {
+              "id": "C",
+              "text": "Θ(log *n)"
+            },
+            {
+              "id": "D",
+              "text": "Θ(1)"
+            },
+            {
+              "id": "E",
+              "text": "Θ(n/2)"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-14",
+            "steps": [
+              "Como o vetor está ordenado, todas as ocorrências de um mesmo inteiro formam um bloco contíguo.",
+              "Se a pergunta trata da existência de algum inteiro majoritário, ele necessariamente ocupa a posição central; se trata de um inteiro específico, basta procurar esse valor.",
+              "Duas buscas binárias localizam o início e o fim do bloco do valor investigado, usando O(log n) comparações.",
+              "Se os limites do bloco são L e R, sua quantidade de ocorrências é R − L + 1; verifica-se se essa quantidade é maior que n/2.",
+              "A complexidade mínima no pior caso é Θ(log n). Uma varredura linear usa Θ(n), mas não é mínima para um vetor ordenado, tornando o gabarito oficial A incompatível com o enunciado."
+            ],
+            "conclusion": "Alternativa B — Θ(log n). O gabarito oficial A apresenta uma inconsistência.",
+            "distractors": "A e E representam custo linear, pois Θ(n/2) = Θ(n), enquanto C e D não bastam, no pior caso, para determinar os limites do bloco de ocorrências.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "O número mínimo de comparações necessárias para determinar se um número inteiro aparece mais de n/2 vezes em um vetor ordenado de n números inteiros é:"
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "subject": "Complexidade",
+          "prompt": "Comparando árvores AVL e rubro-negras, qual das seguintes afirmações é VERDADEIRA:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "As árvores AVL tendem a ter altura menor em comparação com as árvores rubro-negras, mas podem causar mais rotações durante operações de inserção e exclusão."
+            },
+            {
+              "id": "B",
+              "text": "As alturas das árvores AVL e rubro-negras são as mesmas, mas as árvores AVL podem causar mais rotações durante a inserção e exclusão."
+            },
+            {
+              "id": "C",
+              "text": "As árvores rubro-negras tendem a ter altura menor em comparação com as árvores AVL, mas podem causar mais rotações durante a inserção e exclusão."
+            },
+            {
+              "id": "D",
+              "text": "As alturas das árvores AVL e rubro-negras são as mesmas, mas as árvores rubro-negras podem causar mais rotações durante a inserção e exclusão."
+            },
+            {
+              "id": "E",
+              "text": "Todas as afirmações anteriores são falsas"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-15",
+            "steps": [
+              "Árvores AVL exigem diferença de altura de no máximo 1 entre as subárvores de cada nó, impondo um balanceamento mais rígido.",
+              "Árvores rubro-negras usam restrições de cores que garantem altura O(log n), mas permitem um balanceamento menos rígido que o das AVL.",
+              "Assim, árvores AVL tendem a apresentar menor altura, favorecendo operações de busca.",
+              "A manutenção desse balanceamento mais rígido pode exigir mais rotações nas atualizações, especialmente em exclusões."
+            ],
+            "conclusion": "Alternativa A — AVL tendem a ter menor altura, mas podem exigir mais rotações durante inserções e exclusões.",
+            "distractors": "B e D afirmam indevidamente igualdade de alturas, C inverte a tendência de altura e E é falsa porque A descreve corretamente a comparação.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Comparando árvores AVL e rubro-negras, qual das seguintes afirmações é VERDADEIRA:"
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "subject": "Estruturas de dados",
+          "prompt": "Dada a seguinte árvore binária de busca (figura abaixo) e ao se realizar as seguintes operações em sequência - adicionar o nó 5, adicionar o nó 17, remover o nó 23 e remover o nó 9. Qual das alternativas representa a lista de nós desta árvore em pré-ordem e pós-ordem, respectivamente?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "3, 9, 10, 12, 15, 19, 21, 23 e 23, 21, 19, 15, 12, 10, 9, 3"
+            },
+            {
+              "id": "B",
+              "text": "15, 9, 23, 3, 12, 19, 10, 21 e 21, 10, 19, 12, 3, 23, 9, 15"
+            },
+            {
+              "id": "C",
+              "text": "15, 10, 21, 3, 12, 19, 9, 23 e 15, 21, 10, 19, 12, 3, 23, 9"
+            },
+            {
+              "id": "D",
+              "text": "10, 12, 9, 3, 15, 23, 19, 21 e 21, 19, 23, 15, 9, 3, 12, 10"
+            },
+            {
+              "id": "E",
+              "text": "15, 10, 3, 5, 12, 21, 19, 17 e 5, 3, 12, 10, 17, 19, 21, 15"
+            }
+          ],
+          "correct": null,
+          "annulled": true,
+          "needsReview": false,
+          "solution": {
+            "method": "Questão anulada",
+            "steps": [
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+            ],
+            "conclusion": "Questão anulada — não pontua.",
+            "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Dada a seguinte árvore binária de busca (figura abaixo) e ao se realizar as seguintes operações em sequência - adicionar o nó 5, adicionar o nó 17, remover o nó 23 e remover o nó 9. Qual das alternativas representa a lista de nós desta árvore em pré-ordem e pós-ordem, respectivamente?"
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "subject": "Algoritmos",
+          "prompt": "Suponha que, no pior caso, um algoritmo Merge Sort leve 30 segundos para ordenar uma entrada de tamanho 64. Qual das opções a seguir se aproxima mais do tamanho máximo de entrada de um problema que pode ser resolvido em 6 minutos?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "256"
+            },
+            {
+              "id": "B",
+              "text": "1024"
+            },
+            {
+              "id": "C",
+              "text": "512"
+            },
+            {
+              "id": "D",
+              "text": "2048"
+            },
+            {
+              "id": "E",
+              "text": "4096"
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-17",
+            "steps": [
+              "No pior caso, o Merge Sort tem custo proporcional a n log₂ n; adotamos T(n) = c · n log₂ n para estimar o tempo.",
+              "Para n = 64, temos 30 = c · 64 · 6, logo c = 30/384.",
+              "Seis minutos correspondem a 360 segundos, isto é, 12 vezes o tempo inicial; portanto, o limite estimado satisfaz n log₂ n = 12 · 384 = 4608.",
+              "Para n = 512, temos 512 · log₂ 512 = 512 · 9 = 4608, correspondendo exatamente a 360 segundos.",
+              "Para n = 256, o tempo estimado é (30/384) · 256 · 8 = 160 segundos, abaixo do limite e sem representar o maior tamanho possível entre as opções."
+            ],
+            "conclusion": "Alternativa C — 512, pelo modelo usual de tempo do Merge Sort. O gabarito oficial A é incompatível com esse cálculo.",
+            "distractors": "A subestima o tamanho máximo, enquanto B, D e E excedem os 360 segundos no modelo T(n) proporcional a n log₂ n.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Suponha que, no pior caso, um algoritmo Merge Sort leve 30 segundos para ordenar uma entrada de tamanho 64. Qual das opções a seguir se aproxima mais do tamanho máximo de entrada de um problema que pode ser resolvido em 6 minutos?"
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "subject": "Complexidade",
+          "prompt": "Considere que os seguintes elementos {5,4,3,2,1} foram inseridos nesta ordem em um vetor. Em seguida, você aplicou o algoritmo Insertion Sort nele. Qual é a sequência de passos feitos durante o uso do Insertion Sort neste vetor?",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "4 5 3 2 1\n3 4 5 2 1\n2 3 4 5 1\n1 2 3 4 5",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "5 4 3 1 2\n5 4 1 2 3\n5 1 2 3 4\n1 2 3 4 5",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "4 3 2 1 5\n3 2 1 5 4\n2 1 5 4 3\n1 5 4 3 2",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "4 5 3 2 1\n2 3 4 5 1\n3 4 5 2 1\n1 2 3 4 5",
+              "code": true
+            },
+            {
+              "id": "E",
+              "text": "4 5 3 1 2\n2 3 4 5 1\n3 4 5 2 1\n1 2 3 4 5",
+              "code": true
+            }
+          ],
+          "correct": "A",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-18",
+            "steps": [
+              "O Insertion Sort mantém um prefixo ordenado e insere nele o próximo elemento, deslocando os elementos maiores.",
+              "Insere-se 4 antes de 5: 4 5 3 2 1.",
+              "Insere-se 3 antes de 4 e 5: 3 4 5 2 1.",
+              "Insere-se 2 antes de 3, 4 e 5: 2 3 4 5 1.",
+              "Insere-se 1 antes de todos os demais: 1 2 3 4 5."
+            ],
+            "conclusion": "Alternativa A — 4 5 3 2 1 / 3 4 5 2 1 / 2 3 4 5 1 / 1 2 3 4 5.",
+            "distractors": "B ordena a partir da extremidade direita, C não mantém o prefixo ordenado, D troca a ordem das inserções de 3 e 2 e E altera elementos que ainda não deveriam ser processados.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere que os seguintes elementos {5,4,3,2,1} foram inseridos nesta ordem em um vetor. Em seguida, você aplicou o algoritmo Insertion Sort nele. Qual é a sequência de passos feitos durante o uso do Insertion Sort neste vetor?"
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "subject": "Estruturas de dados",
+          "prompt": "Considere uma lista duplamente encadeada não ordenada (com ponteiros na início e final da lista). Qual das seguintes operações a seguir pode ser implementada no tempo O(1)? Marque a alternativa CORRETA.\nI. Inserção na frente da lista encadeada\nII. Inserção no final da lista encadeada\nIII. Exclusão do nó frontal da lista encadeada\nIV. Exclusão do último nó da lista encadeada",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "I e II"
+            },
+            {
+              "id": "B",
+              "text": "I e III"
+            },
+            {
+              "id": "C",
+              "text": "I, II e III"
+            },
+            {
+              "id": "D",
+              "text": "I, II e IV"
+            },
+            {
+              "id": "E",
+              "text": "Todas as afirmativa estão corretas"
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-19",
+            "steps": [
+              "Inserir na frente exige ligar o novo nó ao antigo primeiro nó e atualizar o ponteiro de início, com uma quantidade constante de operações.",
+              "Inserir no final também é O(1), pois o ponteiro de final permite acessar diretamente o último nó e atualizar seus enlaces.",
+              "Excluir o nó frontal exige avançar o ponteiro de início e ajustar o enlace anterior do novo primeiro nó, sem percorrer a lista.",
+              "Excluir o último nó é O(1), pois seu ponteiro para o nó anterior fornece diretamente o novo final.",
+              "Os casos de lista vazia ou com um único nó também exigem apenas ajustes constantes; logo, I, II, III e IV podem ser implementadas em O(1)."
+            ],
+            "conclusion": "Alternativa E — todas as afirmativas estão corretas.",
+            "distractors": "A, B, C e D apresentam subconjuntos incompletos, pois todas as quatro operações podem ser realizadas em tempo O(1).",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Considere uma lista duplamente encadeada não ordenada (com ponteiros na início e final da lista). Qual das seguintes operações a seguir pode ser implementada no tempo O(1)? Marque a alternativa CORRETA."
+            },
+            {
+              "type": "list",
+              "style": "roman",
+              "items": [
+                {
+                  "label": "I.",
+                  "text": "Inserção na frente da lista encadeada"
+                },
+                {
+                  "label": "II.",
+                  "text": "Inserção no final da lista encadeada"
+                },
+                {
+                  "label": "III.",
+                  "text": "Exclusão do nó frontal da lista encadeada"
+                },
+                {
+                  "label": "IV.",
+                  "text": "Exclusão do último nó da lista encadeada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "subject": "Algoritmos",
+          "prompt": "Suponha que uma fila circular de elementos com capacidade (n - 1) seja implementada com um vetor de n elementos. Suponha que a operação de inserção e exclusão seja realizada usando REAR (último elemento da fila) e FRONT (primeiro elemento da fila) como variáveis de índice do vetor, respectivamente. Inicialmente, REAR = FRONT = 0. As condições para detectar a fila cheia e a fila vazia são:",
+          "intro": null,
+          "code": null,
+          "ask": null,
+          "sourcePageImage": null,
+          "sourcePageLabel": null,
+          "options": [
+            {
+              "id": "A",
+              "text": "Full:  (REAR+1) mod n == FRONT\nEmpty: (FRONT+1) mod n == REAR",
+              "code": true
+            },
+            {
+              "id": "B",
+              "text": "Full:  REAR == FRONT\nEmpty: (REAR+1) mod n == FRONT",
+              "code": true
+            },
+            {
+              "id": "C",
+              "text": "Full:  (FRONT+1) mod n == REAR\nEmpty: REAR == FRONT",
+              "code": true
+            },
+            {
+              "id": "D",
+              "text": "Full:  REAR == FRONT\nEmpty: (FRONT+1) mod n == REAR",
+              "code": true
+            },
+            {
+              "id": "E",
+              "text": "Full:  (REAR+1) mod n == FRONT\nEmpty: REAR == FRONT",
+              "code": true
+            }
+          ],
+          "correct": "E",
+          "annulled": false,
+          "needsReview": false,
+          "solution": {
+            "id": "2020-01-20",
+            "steps": [
+              "Uma posição do vetor permanece livre para distinguir a fila cheia da vazia, resultando em capacidade n − 1.",
+              "Inicialmente, REAR = FRONT = 0 representa a fila vazia; portanto, a condição de vazio é REAR == FRONT.",
+              "Os índices avançam circularmente por meio do módulo n: o índice seguinte a REAR é (REAR + 1) mod n.",
+              "A fila está cheia quando esse próximo índice coincide com FRONT, pois uma nova inserção ocuparia a posição reservada para distinguir os estados."
+            ],
+            "conclusion": "Alternativa E — cheia: (REAR + 1) mod n == FRONT; vazia: REAR == FRONT.",
+            "distractors": "A erra a condição de vazio, B e D usam a condição de vazio para indicar fila cheia, e C avança FRONT em vez de REAR para testar a falta de espaço.",
+            "method": "Conte as iterações do algoritmo e relacione-as ao tamanho de n."
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Suponha que uma fila circular de elementos com capacidade (n - 1) seja implementada com um vetor de n elementos. Suponha que a operação de inserção e exclusão seja realizada usando REAR (último elemento da fila) e FRONT (primeiro elemento da fila) como variáveis de índice do vetor, respectivamente. Inicialmente, REAR = FRONT = 0. As condições para detectar a fila cheia e a fila vazia são:"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+} as const;

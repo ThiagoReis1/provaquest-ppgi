@@ -1,0 +1,12 @@
+services:
+  provaquest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: provaquest-ppgi:local
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    restart: unless-stopped
