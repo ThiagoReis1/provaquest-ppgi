@@ -8,6 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "client/src/data/questions.json"
 
+# Ordem usada nos seletores e nos metadados de cada edital.
+SUBJECT_ORDER = ("Algoritmos", "Complexidade", "Estruturas de dados", "Grafos")
+
 
 def norm(value: str) -> str:
     return unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode().lower()
@@ -118,6 +121,10 @@ def main() -> None:
             question["subtopic"] = subtopic
             question["searchTerms"] = terms
             counts[topic] = counts.get(topic, 0) + 1
+        # A lista de assuntos do edital tem de refletir o que existe de fato no
+        # acervo; sem isso o metadado do edital envelhece em silêncio.
+        used = {question["subject"] for question in edition["questions"]}
+        edition["subjects"] = [name for name in SUBJECT_ORDER if name in used]
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("Temas classificados:", ", ".join(f"{key}={value}" for key, value in sorted(counts.items())))
 

@@ -28037,39 +28037,6 @@ export const candidateData = {
           "https://ppgi.ufam.edu.br/images/editais/2024_01/12_Resultador_da_Cassificacao_Final__Edital_071-2023.pdf",
       },
       candidate: {
-        name: "Errata do Resultado Final da Homologação das inscrições do Processo Seletivo 2024/",
-        degree: "Modalidade publicada no documento",
-        stages: {
-          inscricoes: {
-            status: "Publicado",
-            score: 1.0,
-          },
-        },
-        id: "2024-01-errata-do-resultado-final-da-homologacao-das-inscricoes-do-processo-seletivo-2024",
-        passedStages: [],
-      },
-      editalUrl:
-        "https://drive.google.com/file/d/1rWUIHlm7onS5sYCQZ06UaPF_ciVRe8pU/view",
-      editalLabel: "Edital 071/2023",
-    },
-    {
-      editionId: "2024-01",
-      editionLabel: "2024/01",
-      sourcePage:
-        "https://ppgi.ufam.edu.br/encerrados/2-uncategorised/143-editais-vigentes-4.html",
-      documents: {
-        inscricoes:
-          "https://ppgi.ufam.edu.br/images/editais/2024_01/3_Resultado_FINAL_Homologacao_071_2023.pdf",
-        prova:
-          "https://ppgi.ufam.edu.br/images/editais/2024_01/6_Resultado_FINAL_Prova_de_Conhecimento__071_2023.pdf",
-        projetos:
-          "https://ppgi.ufam.edu.br/images/editais/2024_01/8_Resultado_Final_da_Analise_de_Projeto_071-2023.pdf",
-        titulos:
-          "https://ppgi.ufam.edu.br/images/editais/2024_01/10_Resultado_Final_da_Prova_de_Titulos__071-2023.pdf",
-        final:
-          "https://ppgi.ufam.edu.br/images/editais/2024_01/12_Resultador_da_Cassificacao_Final__Edital_071-2023.pdf",
-      },
-      candidate: {
         name: "Andreina Moreira da Silva",
         degree: "Doutorado",
         stages: {

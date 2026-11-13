@@ -874,6 +874,8 @@ export default function Home() {
         setBookmarkedIds(detail);
         return;
       }
+      // Qualquer outra chave (aba atual, filtros, tema) não mexe nos favoritos.
+      if (key !== null && key !== STORAGE_KEYS.bookmarks) return;
       const saved = readStorage<unknown>(STORAGE_KEYS.bookmarks, []);
       setBookmarkedIds(
         Array.isArray(saved)
@@ -2885,8 +2887,12 @@ function CandidatesView() {
   const normalized = normalizeSearchText(query);
   const filtered = selectedEditionRecords.filter(item => {
     const c = item.candidate;
+    const stageNames = stageLabels[item.editionLabel] ?? {};
+    const stageText = Object.keys(c.stages)
+      .map(id => `${stageNames[id] ?? id} ${c.stages[id]?.status ?? ""}`)
+      .join(" ");
     const text = normalizeSearchText(
-      `${c.name} ${c.degree} ${item.editionLabel}`
+      `${c.name} ${c.degree} ${item.editionLabel} ${stageText}`
     );
     return (
       (!normalized || text.includes(normalized)) &&
@@ -3320,7 +3326,7 @@ function CandidatesView() {
           <div className="empty-state">
             <Search size={28} />
             <h3>Nenhum candidato encontrado</h3>
-            <p>Tente outro nome, edital, modalidade ou etapa.</p>
+            <p>Tente outro nome, edital ou etapa.</p>
           </div>
         )}
       </div>

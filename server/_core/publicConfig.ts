@@ -8,7 +8,12 @@ export function publicPlatformConfig(env: NodeJS.ProcessEnv = process.env) {
   };
 }
 
-export function publicPlatformScript(env: NodeJS.ProcessEnv = process.env): string {
-  const json = JSON.stringify(publicPlatformConfig(env)).replaceAll("<", "\\u003c");
+export function publicPlatformScript(
+  env: NodeJS.ProcessEnv = process.env
+): string {
+  const json = JSON.stringify(publicPlatformConfig(env)).replaceAll(
+    "<",
+    "\\u003c"
+  );
   return `window.__MANUS_CONFIG__=${json};`;
 }

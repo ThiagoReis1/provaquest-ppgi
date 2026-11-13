@@ -61,7 +61,8 @@ export async function generateImage(
 
   const model = options.model ?? DEFAULT_IMAGE_MODEL;
   const quality =
-    options.quality ?? (model === DEFAULT_IMAGE_MODEL ? DEFAULT_IMAGE_QUALITY : undefined);
+    options.quality ??
+    (model === DEFAULT_IMAGE_MODEL ? DEFAULT_IMAGE_QUALITY : undefined);
 
   const response = await fetch(fullUrl, {
     method: "POST",
@@ -90,13 +91,15 @@ export async function generateImage(
     image?: { b64Json?: string; url?: string; mimeType?: string };
     error?: unknown;
   };
-  if (result.error || !result.image) throw new Error("Image service did not return an image");
+  if (result.error || !result.image)
+    throw new Error("Image service did not return an image");
   let buffer: Buffer;
   if (result.image.b64Json) {
     buffer = Buffer.from(result.image.b64Json, "base64");
   } else if (result.image.url) {
     const imageResponse = await fetch(result.image.url);
-    if (!imageResponse.ok) throw new Error(`Image download failed (${imageResponse.status})`);
+    if (!imageResponse.ok)
+      throw new Error(`Image download failed (${imageResponse.status})`);
     buffer = Buffer.from(await imageResponse.arrayBuffer());
   } else {
     throw new Error("Image service returned no downloadable bytes");

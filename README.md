@@ -167,17 +167,20 @@ pnpm classify:data
 
 A aba **Praticar** reúne a busca e a resolução na mesma tela: os filtros (edital, assunto, tema, subtema, texto livre e “somente salvas”) montam a lista à esquerda e a questão escolhida abre à direita, com o edital sempre visível no topo do card.
 
-O estado fica no `localStorage` do navegador, então atualizar a página não apaga nada:
+O estado fica no `localStorage` do navegador, então atualizar a página não apaga nada. Cada questão e cada simulado usam uma chave própria, para que duas abas abertas ao mesmo tempo não se sobrescrevam:
 
-| Chave                           | Conteúdo                                                                 |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| `provaquest-practice`           | questão aberta, alternativas marcadas e respostas confirmadas da prática |
-| `provaquest-practice-filters`   | último filtro usado na prática                                           |
-| `provaquest-simulations`        | sessões separadas por edital (questões, índice, respostas e conclusão)   |
-| `provaquest-simulation-edition` | último edital de simulado aberto                                         |
-| `provaquest-progress`           | questões já respondidas, usadas no progresso geral                       |
-| `provaquest-results`            | acerto/erro por questão                                                  |
-| `provaquest-bookmarks`          | questões salvas                                                          |
+| Chave                                    | Conteúdo                                                                   |
+| ---------------------------------------- | -------------------------------------------------------------------------- |
+| `provaquest-practice`                    | questão aberta na prática (`activeId`)                                     |
+| `provaquest-practice-question:<id>`      | alternativa marcada e confirmação da questão `<id>` (`<edital>-<número>`)  |
+| `provaquest-practice-filters`            | último filtro usado na prática                                             |
+| `provaquest-simulation-edition:<edital>` | sessão do simulado daquele edital (questões, índice, respostas, conclusão) |
+| `provaquest-simulation-edition`          | último edital de simulado aberto                                           |
+| `provaquest-progress`                    | questões já respondidas, usadas no progresso geral                         |
+| `provaquest-results`                     | acerto/erro por questão                                                    |
+| `provaquest-bookmarks`                   | questões salvas                                                            |
+
+Versões anteriores gravavam a prática inteira em `provaquest-practice` e todos os simulados em `provaquest-simulations` (ou `provaquest-simulation`). Esses formatos continuam sendo lidos uma vez e são migrados para as chaves por questão/edital na primeira abertura.
 
 Na aba **Simulados**, cada edital tem seu próprio cartão, status e contagem de respostas. É possível continuar/refazer um edital, usar **Zerar** no cartão para apagar apenas aquele simulado ou **Zerar todos os simulados** para limpar todas as sessões sem afetar a prática nem os favoritos. O botão **Zerar progresso** da barra lateral limpa a prática e todos os simulados, mantendo favoritos. O progresso de um simulado não é somado ao progresso da prática. A aba atual é gravada em `?view=`, e cada sessão continua após F5.
 

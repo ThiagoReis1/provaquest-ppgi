@@ -11,7 +11,7 @@ export const studyData = {
         "https://drive.google.com/file/d/11wCulVUskHybras1UMRWq99pYDvkOmSS/view?usp=sharing",
       title: "Edital 014/2026",
       subtitle: "Prova de conceitos · 05 jun 2026",
-      subjects: ["Algoritmos", "Estruturas de dados", "Grafos"],
+      subjects: ["Algoritmos", "Complexidade", "Estruturas de dados", "Grafos"],
       thumbnail: "/evidence/2026-02.jpg",
       questions: [
         {
@@ -1220,19 +1220,38 @@ export const studyData = {
           ask: null,
           sourcePageImage: null,
           sourcePageLabel: null,
-          options: [],
-          correct: null,
+          options: [
+            {
+              id: "A",
+              text: "x, y, z, 1, 7, t, 9, 10, 13, s, 15",
+            },
+            {
+              id: "B",
+              text: "x, y, z, 1, 7, t, 9, 13, s, 10, 15",
+            },
+            {
+              id: "C",
+              text: "1, z, t, 10, 9, 7, y, s, 15, 13, x",
+            },
+            {
+              id: "D",
+              text: "1, z, t, 9, 7, y, 10, s, 15, 13, x",
+            },
+          ],
+          correct: "A",
           annulled: false,
-          needsReview: true,
+          needsReview: false,
           solution: {
-            method: "Conferência visual da prova original",
+            method: "Inserção em árvore binária de busca + percurso pré-ordem",
             steps: [
-              "A extração automática não recuperou com segurança todas as alternativas ou o diagrama desta questão.",
-              "Abra a prova original na área de Fontes oficiais para conferir o enunciado completo.",
+              "Na árvore da figura, a raiz é x, com filho esquerdo y e filho direito 13. Em y, o filho esquerdo é z e o direito é 7; em z, o único filho é 1; em 7, os filhos são t (esquerda) e 9 (direita); em 13, os filhos são s (esquerda) e 15 (direita).",
+              "Como a árvore é de busca e aceita a inserção da chave 10, as incógnitas respeitam a ordem simétrica: z < 1, t < 7 < 9 < 10 < y < x < s < 13 < 15. O que importa é que 10 é maior que 9 e menor que x e que y.",
+              "A inserção de 10 compara chaves a partir da raiz: 10 < x leva à esquerda (y); 10 < y leva à direita (7); 10 > 7 leva à direita (9). Como 10 > 9 e 9 não tem filho direito, 10 se torna o filho direito de 9.",
+              "O percurso pré-ordem visita raiz, subárvore esquerda e subárvore direita. Com 10 como filho direito de 9, a ordem é x, y, z, 1, 7, t, 9, 10 e, em seguida, a subárvore direita: 13, s, 15.",
             ],
-            conclusion: "Item em revisão — ainda não é respondível.",
+            conclusion: "Resposta A — x, y, z, 1, 7, t, 9, 10, 13, s, 15.",
             distractors:
-              "O item permanece fora dos simulados até a conferência visual.",
+              "B coloca 13 antes de 10, o que quebraria a ordem da BST, pois 10 pertence à subárvore esquerda da raiz; C e D começam pela folha 1 e terminam na raiz x, ou seja, não estão em pré-ordem (a raiz tem de ser o primeiro elemento).",
           },
           blocks: [
             {
@@ -1330,19 +1349,38 @@ export const studyData = {
           ask: null,
           sourcePageImage: null,
           sourcePageLabel: null,
-          options: [],
-          correct: null,
+          options: [
+            {
+              id: "A",
+              text: "A–C (1), A–B (2) e C–D (1)",
+            },
+            {
+              id: "B",
+              text: "A–C (1) e B–D (1), sem ligação entre os dois pares",
+            },
+            {
+              id: "C",
+              text: "A–C (1), C–D (1) e B–D (1)",
+            },
+            {
+              id: "D",
+              text: "A–C (1), A–B (2) e B–D (1)",
+            },
+          ],
+          correct: "C",
           annulled: false,
-          needsReview: true,
+          needsReview: false,
           solution: {
-            method: "Conferência visual da prova original",
+            method: "Execução do algoritmo de Prim com fila de prioridades",
             steps: [
-              "A extração automática não recuperou com segurança todas as alternativas ou o diagrama desta questão.",
-              "Abra a prova original na área de Fontes oficiais para conferir o enunciado completo.",
+              "O grafo da figura tem as arestas A–C (1), C–D (1), B–D (1), A–D (2) e A–B (2).",
+              "Partindo de A, as arestas que saem do conjunto já escolhido são A–C (1), A–D (2) e A–B (2). Prim pega a de menor peso, A–C (1), e a árvore passa a conter A e C.",
+              "Com {A, C} na árvore, a fronteira é C–D (1), A–D (2) e A–B (2). A menor é C–D (1), que incorpora D.",
+              "Agora a fronteira tem D–B (1), A–B (2) e A–D (2). Prim escolhe D–B (1), incorporando B. A árvore geradora mínima fica com A–C, C–D e B–D, de custo total 3.",
             ],
-            conclusion: "Item em revisão — ainda não é respondível.",
+            conclusion: "Resposta C — subgrafo com A–C (1), C–D (1) e B–D (1).",
             distractors:
-              "O item permanece fora dos simulados até a conferência visual.",
+              "A e D usam a aresta A–B (2) e têm custo 4, portanto não são o resultado de Prim; B mostra dois componentes desconexos (A–C e B–D), que nem formam árvore geradora.",
           },
           blocks: [
             {
@@ -1448,7 +1486,7 @@ export const studyData = {
         "https://drive.google.com/file/d/1xxU3OnzvpzOyYhT93twE6mI3CHujbqxy/view?usp=sharing",
       title: "Edital 098/2025",
       subtitle: "Prova de conceitos · 05 fev 2026",
-      subjects: ["Estruturas de dados", "Algoritmos", "Grafos"],
+      subjects: ["Algoritmos", "Estruturas de dados", "Grafos"],
       thumbnail: "/evidence/2026-01.jpg",
       questions: [
         {
@@ -2143,7 +2181,7 @@ export const studyData = {
           options: [],
           correct: null,
           annulled: true,
-          needsReview: true,
+          needsReview: false,
           solution: {
             method: "Questão anulada",
             steps: [
@@ -2809,7 +2847,7 @@ export const studyData = {
         "https://drive.google.com/file/d/108eCXIqBQu-Pj8WRLtJf1qwW2KgLc3mU/view?usp=sharing",
       title: "Edital 048/2025",
       subtitle: "Prova de conceitos · 15 ago 2025",
-      subjects: ["Estruturas de dados", "Algoritmos", "Grafos"],
+      subjects: ["Algoritmos", "Estruturas de dados"],
       thumbnail: "/evidence/2025-02.jpg",
       questions: [
         {
@@ -4400,7 +4438,7 @@ export const studyData = {
         "https://drive.google.com/file/d/19Sx7b9HZzHn8irWWpFcB6j-gz96wTTT3/view?usp=sharing",
       title: "Edital 092/2024",
       subtitle: "Prova de conceitos · 30 jan 2025",
-      subjects: ["Estruturas de dados", "Algoritmos", "Complexidade"],
+      subjects: ["Algoritmos", "Complexidade", "Estruturas de dados", "Grafos"],
       thumbnail: "/evidence/2025-01.jpg",
       questions: [
         {
@@ -5798,7 +5836,7 @@ export const studyData = {
         "https://drive.google.com/file/d/14h4rFRXHrmzQEDIvjXIlSKHz74VNuNwn/view?usp=sharing",
       title: "Edital 031/2024",
       subtitle: "Prova de conceitos · 17 jun 2024",
-      subjects: ["Algoritmos", "Estruturas de dados", "Complexidade"],
+      subjects: ["Algoritmos", "Complexidade", "Estruturas de dados"],
       thumbnail: "/evidence/2024-02.jpg",
       questions: [
         {
@@ -7119,7 +7157,7 @@ export const studyData = {
         "https://ppgi.ufam.edu.br/images/editais/2024_01/5_GABARITO_DEFINITIVO.pdf",
       title: "Edital 071/2023",
       subtitle: "Prova de conceitos · 26 jan 2024",
-      subjects: ["Algoritmos", "Estruturas de dados", "Complexidade"],
+      subjects: ["Algoritmos", "Complexidade", "Estruturas de dados"],
       thumbnail: "/evidence/2024-01.jpg",
       questions: [
         {
@@ -8420,7 +8458,7 @@ export const studyData = {
         "https://ppgi.ufam.edu.br/images/editais/Gabarito_Edital_060_2019.pdf",
       title: "Edital 060/2019",
       subtitle: "Prova de conhecimento · 30 jan 2020",
-      subjects: ["Estruturas de dados", "Algoritmos", "Complexidade"],
+      subjects: ["Algoritmos", "Complexidade", "Estruturas de dados"],
       thumbnail: "/evidence/2020-01.jpg",
       questions: [
         {
@@ -9294,24 +9332,18 @@ export const studyData = {
               text: "Θ(n/2)",
             },
           ],
-          correct: "A",
-          annulled: false,
+          correct: null,
+          annulled: true,
           needsReview: false,
           solution: {
-            id: "2020-01-14",
+            method: "Questão anulada",
             steps: [
-              "Como o vetor está ordenado, todas as ocorrências de um mesmo inteiro formam um bloco contíguo.",
-              "Se a pergunta trata da existência de algum inteiro majoritário, ele necessariamente ocupa a posição central; se trata de um inteiro específico, basta procurar esse valor.",
-              "Duas buscas binárias localizam o início e o fim do bloco do valor investigado, usando O(log n) comparações.",
-              "Se os limites do bloco são L e R, sua quantidade de ocorrências é R − L + 1; verifica-se se essa quantidade é maior que n/2.",
-              "A complexidade mínima no pior caso é Θ(log n). Uma varredura linear usa Θ(n), mas não é mínima para um vetor ordenado, tornando o gabarito oficial A incompatível com o enunciado.",
+              "Este item foi anulado no gabarito final do edital.",
+              "Por isso, ele não recebe uma resposta correta única e não entra na pontuação.",
             ],
-            conclusion:
-              "Alternativa B — Θ(log n). O gabarito oficial A apresenta uma inconsistência.",
+            conclusion: "Questão anulada — não pontua.",
             distractors:
-              "A e E representam custo linear, pois Θ(n/2) = Θ(n), enquanto C e D não bastam, no pior caso, para determinar os limites do bloco de ocorrências.",
-            method:
-              "Rastreamento do algoritmo e verificação do invariante solicitado.",
+              "As alternativas não são comparadas para fins de nota em uma questão anulada.",
           },
           blocks: [
             {

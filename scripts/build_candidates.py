@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 root = pathlib.Path(__import__('os').environ.get('PPGI_RESULT_TEXT_DIR', str(pathlib.Path(__file__).resolve().parents[1] / '.sources' / 'results')) )
 out = pathlib.Path(__file__).resolve().parents[1] / 'client/src/data/candidates.ts'
 num_re = re.compile(r'(?<!\w)(\d{1,3}(?:[.,]\d{1,2})?)(?!\w)')
-skip = ('PODER EXECUTIVO','MINISTÉRIO','UNIVERSIDADE','INSTITUTO','PROGRAMA','EDITAL','RESULTADO','CANDIDATO','NOTA','MANAUS','COORDENADOR','AV. GAL','FONE','PROCESSO','SELETIVO','ANEXO','TÍTULOS','PROPOSTA','PROVA','FINAL','SITUAÇÃO','HOMOLOGAÇÃO')
+skip = ('PODER EXECUTIVO','MINISTÉRIO','UNIVERSIDADE','INSTITUTO','PROGRAMA','EDITAL','RESULTADO','CANDIDATO','NOTA','MANAUS','COORDENADOR','AV. GAL','FONE','PROCESSO','SELETIVO','ANEXO','TÍTULOS','PROPOSTA','PROVA','FINAL','SITUAÇÃO','HOMOLOGAÇÃO','ERRATA','RETIFICAÇÃO','RETIFICACAO','COMUNICADO','AVISO','TABELA','RELAÇÃO','LISTA')
 
 def norm(s):
     s = unicodedata.normalize('NFKD', s).encode('ascii','ignore').decode().lower()
@@ -36,6 +36,9 @@ def parse_rows(path, kind):
         if not matches: continue
         name = clean(s[:matches[0].start()])
         if len(name.split()) < 2 or any(name.upper().startswith(k) for k in skip): continue
+        # Linhas de cabeçalho ("Errata do Resultado...", "Retificação...") têm
+        # cara de nome + número, mas não são candidatos.
+        if any(word in name.upper() for word in ('ERRATA','RETIFICAÇÃO','RETIFICACAO','COMUNICADO','TABELA','RELAÇÃO')): continue
         scores = [number(m.group(1)) for m in matches]
         scores = [x for x in scores if x is not None]
         if not scores: continue

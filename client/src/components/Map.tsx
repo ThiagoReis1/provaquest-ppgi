@@ -88,7 +88,8 @@ declare global {
 
 function loadMapScript() {
   const config = window.__MANUS_CONFIG__;
-  if (!config?.apiUrl || !config.apiBrowserKey) return Promise.reject(new Error("Maps is not configured"));
+  if (!config?.apiUrl || !config.apiBrowserKey)
+    return Promise.reject(new Error("Maps is not configured"));
   const API_KEY = encodeURIComponent(config.apiBrowserKey);
   const MAPS_PROXY_URL = `${config.apiUrl.replace(/\/$/, "")}/v1/maps/proxy`;
   return new Promise(resolve => {

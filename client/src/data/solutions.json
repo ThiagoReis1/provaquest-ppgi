@@ -1,15 +1,17 @@
 {
   "solutions": {
     "2026-02-1": {
-      "id": "2026-02-1",
+      "method": "Contagem de iterações + soma geométrica",
       "steps": [
-        "O laço externo dobra i a cada volta: 1, 2, 4, 8, … até n. Isso gera Θ(log n) níveis.",
-        "No nível de tamanho i, o laço interno acessa min(i, n) posições. Como i dobra, a soma é 1 + 2 + 4 + … + n = Θ(n).",
-        "Portanto, mesmo somando todos os níveis, o custo total é Θ(n), não Θ(n log n).",
-        "O algoritmo usa apenas s, i e j, sem vetor auxiliar proporcional a n: o espaço auxiliar é Θ(1)."
+        "Primeiro, conte o laço externo. Como i começa em 1 e dobra (i = i × 2), seus valores são 1, 2, 4, 8, … até ultrapassar n. Portanto, ele executa ⌊log₂ n⌋ + 1 vezes, isto é, Θ(log n) vezes.",
+        "Agora analise o laço interno em uma volta qualquer. Ele começa em j = 0 e incrementa j de 1 em 1 enquanto j < i e j < n. Como o laço externo só chega a i ≤ n, nessa volta o teste efetivo é j < i: são exatamente i acessos ao vetor.",
+        "Liste o trabalho de cada volta externa: quando i = 1, o custo é 1; quando i = 2, é 2; depois 4, 8, …; na última volta o custo é aproximadamente n. Assim, o total não é Θ(n) repetido Θ(log n) vezes: é a soma 1 + 2 + 4 + 8 + … + n.",
+        "Essa é uma soma geométrica. Se L = ⌊log₂ n⌋, então 1 + 2 + … + 2ᴸ = 2ᴸ⁺¹ − 1. Como 2ᴸ ≤ n < 2ᴸ⁺¹, essa expressão fica limitada por constantes vezes n; logo, o tempo é Θ(n).",
+        "Para o espaço, conte apenas a memória extra: s, i e j são três variáveis escalares. O vetor A já é entrada e não foi criado pelo algoritmo; portanto, o espaço auxiliar é Θ(1)."
       ],
       "conclusion": "Resposta B — tempo Θ(n) e espaço auxiliar Θ(1).",
-      "distractors": "A conta cada nível como n; C ignora que o crescimento de i é geométrico; D troca tempo linear por logarítmico e atribui espaço extra inexistente."
+      "distractors": "A trata cada nível como se percorresse n posições; C confunde log n níveis com custo total logarítmico; D ignora a soma dos acessos e atribui espaço auxiliar proporcional a n.",
+      "methodNote": "O Teorema Mestre não se aplica: ele é usado para recorrências de algoritmos recursivos, como T(n) = aT(n/b) + f(n). Aqui não há chamada recursiva; a ferramenta correta é contar as iterações dos laços e somar os custos por nível."
     },
     "2026-02-2": {
       "id": "2026-02-2",
@@ -19,7 +21,8 @@
         "Um heap permite consultar e remover o elemento de maior prioridade e inserir novos elementos, podendo implementar uma fila de prioridades; logo, IV é verdadeira."
       ],
       "conclusion": "Alternativa B: apenas I, III e IV são verdadeiras.",
-      "distractors": "A, C e D incluem a afirmação II, que confunde a propriedade de um heap máximo com a de um heap mínimo."
+      "distractors": "A, C e D incluem a afirmação II, que confunde a propriedade de um heap máximo com a de um heap mínimo.",
+      "method": "Aplicação das propriedades de heap e das operações de fila de prioridades."
     },
     "2026-02-3": {
       "id": "2026-02-3",
@@ -30,7 +33,8 @@
         "A paridade de e e o valor de b não eliminam nenhuma das duas chamadas, de modo que melhor e pior caso têm a mesma ordem linear."
       ],
       "conclusion": "Alternativa C: O(e) no melhor caso e O(e) no pior caso.",
-      "distractors": "A e B desconsideram a duplicação das chamadas recursivas; D acrescenta um fator logarítmico que não aparece na soma do trabalho da árvore de recursão."
+      "distractors": "A e B desconsideram a duplicação das chamadas recursivas; D acrescenta um fator logarítmico que não aparece na soma do trabalho da árvore de recursão.",
+      "method": "Desenvolvimento da recorrência e análise dos casos-base."
     },
     "2026-02-4": {
       "id": "2026-02-4",
@@ -40,7 +44,8 @@
         "Na implementação clássica do Heap Sort, as trocas durante a construção do heap e as extrações podem inverter elementos de chaves iguais; portanto, III é verdadeira."
       ],
       "conclusion": "Alternativa B: apenas I e III são verdadeiras.",
-      "distractors": "A omite a afirmação III, que é verdadeira; C e D incluem II, embora a estabilidade do Merge Sort dependa do critério de desempate."
+      "distractors": "A omite a afirmação III, que é verdadeira; C e D incluem II, embora a estabilidade do Merge Sort dependa do critério de desempate.",
+      "method": "Análise da propriedade de estabilidade dos algoritmos de ordenação."
     },
     "2026-02-5": {
       "id": "2026-02-5",
@@ -51,7 +56,8 @@
         "A chave 3 ocupa uma das posições 3, 6, 9, 12 ou 15; na primeira intercalação que reúne 1 e 3, ambas são os menores elementos de suas respectivas metades e, portanto, são comparadas; logo, III é verdadeira."
       ],
       "conclusion": "Alternativa D: todas as afirmativas são verdadeiras.",
-      "distractors": "A omite III, B omite II e C omite I, embora as três propriedades sejam garantidas pela divisão e pela intercalação do Merge Sort nesse vetor."
+      "distractors": "A omite III, B omite II e C omite I, embora as três propriedades sejam garantidas pela divisão e pela intercalação do Merge Sort nesse vetor.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2026-02-6": {
       "id": "2026-02-6",
@@ -62,7 +68,8 @@
         "Como somente III é verdadeira e nenhuma das alternativas A, B ou C apresenta essa combinação, deve-se escolher D."
       ],
       "conclusion": "Alternativa D: nenhuma das opções A, B ou C está correta.",
-      "distractors": "A inclui I, que é falsa; B inclui II, que é falsa; C inclui as duas afirmações falsas e exclui III, que é verdadeira."
+      "distractors": "A inclui I, que é falsa; B inclui II, que é falsa; C inclui as duas afirmações falsas e exclui III, que é verdadeira.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2026-02-7": {
       "id": "2026-02-7",
@@ -73,7 +80,8 @@
         "Selecionar o menor elemento do trecho restante e colocá-lo na próxima posição é a operação característica da ordenação por seleção."
       ],
       "conclusion": "Alternativa C: a opção I produz ordenação por seleção em ordem crescente.",
-      "distractors": "A chama incorretamente o procedimento de inserção; B também o chama de inserção, embora a opção II selecione máximos; D não seleciona o mínimo e ainda pode acessar v[y+1] fora do vetor quando y = n − 1."
+      "distractors": "A chama incorretamente o procedimento de inserção; B também o chama de inserção, embora a opção II selecione máximos; D não seleciona o mínimo e ainda pode acessar v[y+1] fora do vetor quando y = n − 1.",
+      "method": "Rastreamento do índice do menor elemento para identificar a ordenação por seleção."
     },
     "2026-02-8": {
       "id": "2026-02-8",
@@ -84,17 +92,19 @@
         "Ao inserir 25, ele fica à esquerda de 30. O nó 20 fica desbalanceado no caso direita-esquerda, exigindo uma rotação à direita em 40 seguida de uma rotação à esquerda em 20. A afirmação III é falsa."
       ],
       "conclusion": "Alternativa A: apenas as afirmações I e II estão corretas.",
-      "distractors": "B e D incluem a afirmação III, que é falsa; C também inclui III e exclui a afirmação II, que é verdadeira."
+      "distractors": "B e D incluem a afirmação III, que é falsa; C também inclui III e exclui a afirmação II, que é verdadeira.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
     },
     "2026-02-9": {
       "id": "2026-02-9",
+      "method": "Simulação do deslocamento de bits",
       "steps": [
-        "A transcrição contém problemas: &avl referencia um identificador não declarado, e \"Sd\\n\" não contém o especificador %d; portanto, o código literalmente apresentado não produz a saída numérica indicada pelo gabarito.",
-        "A contagem de deslocamentos do valor inicial 16 até zero é: 16 → 8 → 4 → 2 → 1 → 0.",
-        "São cinco deslocamentos à direita; incrementando cont uma vez por deslocamento, a contagem final é 5."
+        "O ponteiro v2 aponta para v1, portanto *v2 acompanha o valor de v1 durante toda a execução.",
+        "A cada passagem do laço, v1 é deslocado uma posição para a direita: 16 → 8 → 4 → 2 → 1 → 0.",
+        "São cinco deslocamentos até que a condição *v2 > 0 deixe de ser verdadeira; cont termina com 5."
       ],
-      "conclusion": "Alternativa D: 5 é a contagem correspondente ao gabarito, mas a transcrição do programa precisa ser corrigida para efetivamente imprimi-la.",
-      "distractors": "A, B e C correspondem a contagens insuficientes, pois após dois, três ou quatro deslocamentos o valor ainda seria, respectivamente, 4, 2 ou 1."
+      "conclusion": "Alternativa D: o valor impresso é 5. A transcrição foi conferida para usar printf(\"%d\\n\", cont) e o ponteiro &v1.",
+      "distractors": "A, B e C param antes do quinto deslocamento e por isso não correspondem ao valor final de cont."
     },
     "2026-02-10": {
       "id": "2026-02-10",
@@ -104,7 +114,17 @@
         "As duas estruturas da alternativa C correspondem ao registro descrito, com uma chave e exatamente dois ponteiros."
       ],
       "conclusion": "Alternativa C: lista duplamente encadeada circular e árvore binária de busca.",
-      "distractors": "A e D incluem lista simplesmente encadeada, que utiliza apenas um ponteiro de ligação por nó; B inclui árvore B, cujos nós não são descritos, em geral, por uma única chave e exatamente dois ponteiros."
+      "distractors": "A e D incluem lista simplesmente encadeada, que utiliza apenas um ponteiro de ligação por nó; B inclui árvore B, cujos nós não são descritos, em geral, por uma única chave e exatamente dois ponteiros.",
+      "method": "Rastreamento das referências, endereços e alterações na memória."
+    },
+    "2026-02-11": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-02-12": {
       "id": "2026-02-12",
@@ -115,7 +135,17 @@
         "Como 3 e 7 são coprimos, essa sondagem visita todas as posições antes de repetir uma delas. Entretanto, a tabela final e a expressão da alternativa C estão corrompidas na transcrição, impedindo uma verificação integral da exclusão das demais alternativas."
       ],
       "conclusion": "Alternativa D, conforme o gabarito: h(k, i) = (h'(k) + 3i) mod m; sua sequência de sondagem para 9 é 2, 5, 1, 4, 0, 3, 6.",
-      "distractors": "A percorre posições consecutivas, mas sua exclusão depende da tabela legível; B, partindo de 2, visita apenas 2, 3, 6 e 4, nunca alcançando 1; C está corrompida e não pode ser avaliada com segurança."
+      "distractors": "A percorre posições consecutivas, mas sua exclusão depende da tabela legível; B, partindo de 2, visita apenas 2, 3, 6 e 4, nunca alcançando 1; C está corrompida e não pode ser avaliada com segurança.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
+    },
+    "2026-02-13": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-02-14": {
       "id": "2026-02-14",
@@ -125,7 +155,8 @@
         "Logo, para uma pilha não vazia, o topo está em pilha.vet[pilha.n − 1], com acesso em tempo O(1)."
       ],
       "conclusion": "Alternativa C: pilha.vet[pilha.n - 1].",
-      "distractors": "A indica a base quando há vários elementos; B indica a próxima posição livre, se houver capacidade; D indica o último espaço do vetor, que só coincide com o topo quando a pilha está cheia."
+      "distractors": "A indica a base quando há vários elementos; B indica a próxima posição livre, se houver capacidade; D indica o último espaço do vetor, que só coincide com o topo quando a pilha está cheia.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2026-02-15": {
       "id": "2026-02-15",
@@ -135,7 +166,8 @@
         "Como res começa em zero, o resultado desses laços é 10.000 × passo. O resultado −10.000 indicado pelo gabarito corresponde a passo = −1 para essas entradas."
       ],
       "conclusion": "Alternativa D: −10.000, conforme o gabarito; a confirmação completa depende da atribuição de passo, que está ilegível na transcrição.",
-      "distractors": "A e B não correspondem às 10.000 acumulações com passo = −1, enquanto C corresponderia a passo = +1."
+      "distractors": "A e B não correspondem às 10.000 acumulações com passo = −1, enquanto C corresponderia a passo = +1.",
+      "method": "Rastreamento do algoritmo e verificação do invariante solicitado."
     },
     "2026-02-16": {
       "id": "2026-02-16",
@@ -145,7 +177,19 @@
         "Depois do condicional, a instrução f->fim = n também é executada. Portanto, os dois ponteiros passam a referenciar o mesmo novo nó."
       ],
       "conclusion": "Alternativa A: ini e fim passam a apontar para o novo nó.",
-      "distractors": "B e C ignoram uma das duas atribuições executadas; D é falsa porque uma fila vazia recebe o novo nó, e o retorno antecipado ocorre apenas se a alocação falhar."
+      "distractors": "B e C ignoram uma das duas atribuições executadas; D é falsa porque uma fila vazia recebe o novo nó, e o retorno antecipado ocorre apenas se a alocação falhar.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
+    },
+    "2026-02-17": {
+      "method": "Inserção em árvore binária de busca + percurso pré-ordem",
+      "steps": [
+        "Na árvore da figura, a raiz é x, com filho esquerdo y e filho direito 13. Em y, o filho esquerdo é z e o direito é 7; em z, o único filho é 1; em 7, os filhos são t (esquerda) e 9 (direita); em 13, os filhos são s (esquerda) e 15 (direita).",
+        "Como a árvore é de busca e aceita a inserção da chave 10, as incógnitas respeitam a ordem simétrica: z < 1, t < 7 < 9 < 10 < y < x < s < 13 < 15. O que importa é que 10 é maior que 9 e menor que x e que y.",
+        "A inserção de 10 compara chaves a partir da raiz: 10 < x leva à esquerda (y); 10 < y leva à direita (7); 10 > 7 leva à direita (9). Como 10 > 9 e 9 não tem filho direito, 10 se torna o filho direito de 9.",
+        "O percurso pré-ordem visita raiz, subárvore esquerda e subárvore direita. Com 10 como filho direito de 9, a ordem é x, y, z, 1, 7, t, 9, 10 e, em seguida, a subárvore direita: 13, s, 15."
+      ],
+      "conclusion": "Resposta A — x, y, z, 1, 7, t, 9, 10, 13, s, 15.",
+      "distractors": "B coloca 13 antes de 10, o que quebraria a ordem da BST, pois 10 pertence à subárvore esquerda da raiz; C e D começam pela folha 1 e terminam na raiz x, ou seja, não estão em pré-ordem (a raiz tem de ser o primeiro elemento)."
     },
     "2026-02-18": {
       "id": "2026-02-18",
@@ -157,7 +201,28 @@
         "Assim, a afirmação de que Floyd-Warshall encontra valores de caminhos mínimos para quaisquer pesos é incorreta."
       ],
       "conclusion": "Alternativa D, pois não ressalva a possibilidade de ciclos de peso negativo.",
-      "distractors": "A, B e C não devem ser marcadas porque descrevem propriedades válidas: alcançabilidade por busca em profundidade, verificação de conexão forte por buscas em largura e correção de Dijkstra com pesos não negativos."
+      "distractors": "A, B e C não devem ser marcadas porque descrevem propriedades válidas: alcançabilidade por busca em profundidade, verificação de conexão forte por buscas em largura e correção de Dijkstra com pesos não negativos.",
+      "method": "Modelagem do grafo e rastreamento das operações ou do algoritmo solicitado."
+    },
+    "2026-02-19": {
+      "method": "Execução do algoritmo de Prim com fila de prioridades",
+      "steps": [
+        "O grafo da figura tem as arestas A–C (1), C–D (1), B–D (1), A–D (2) e A–B (2).",
+        "Partindo de A, as arestas que saem do conjunto já escolhido são A–C (1), A–D (2) e A–B (2). Prim pega a de menor peso, A–C (1), e a árvore passa a conter A e C.",
+        "Com {A, C} na árvore, a fronteira é C–D (1), A–D (2) e A–B (2). A menor é C–D (1), que incorpora D.",
+        "Agora a fronteira tem D–B (1), A–B (2) e A–D (2). Prim escolhe D–B (1), incorporando B. A árvore geradora mínima fica com A–C, C–D e B–D, de custo total 3."
+      ],
+      "conclusion": "Resposta C — subgrafo com A–C (1), C–D (1) e B–D (1).",
+      "distractors": "A e D usam a aresta A–B (2) e têm custo 4, portanto não são o resultado de Prim; B mostra dois componentes desconexos (A–C e B–D), que nem formam árvore geradora."
+    },
+    "2026-02-20": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-01-1": {
       "id": "2026-01-1",
@@ -169,7 +234,8 @@
         "Essa é a contagem matemática pretendida; em C, ela corresponde ao valor retornado quando não ocorre overflow de int."
       ],
       "conclusion": "Alternativa C: 10n².",
-      "distractors": "A ignora as 10 repetições externas; B trata o laço externo como se executasse n vezes; D soma 10 em vez de multiplicar a quantidade de execuções internas por 10."
+      "distractors": "A ignora as 10 repetições externas; B trata o laço externo como se executasse n vezes; D soma 10 em vez de multiplicar a quantidade de execuções internas por 10.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2026-01-2": {
       "id": "2026-01-2",
@@ -180,29 +246,37 @@
         "As listas dos índices 1 e 4 contêm uma chave cada; portanto, o maior tamanho é 5."
       ],
       "conclusion": "Alternativa D: 5.",
-      "distractors": "A, B e C indicam tamanhos menores que a quantidade de cinco chaves que colidem no índice 2."
+      "distractors": "A, B e C indicam tamanhos menores que a quantidade de cinco chaves que colidem no índice 2.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2026-01-3": {
       "id": "2026-01-3",
       "steps": [
-        "Dijkstra inicializa a distância de A com 0 e as dos demais vértices com infinito; assim, A é o primeiro vértice selecionado.",
-        "A cada seleção, o min-heap fornece o vértice com a menor distância provisória, e as arestas que saem dele são usadas para atualizar as distâncias.",
-        "A figura do grafo não foi fornecida, de modo que não é possível calcular as atualizações nem verificar a ordem dos demais vértices.",
-        "O gabarito informado indica a sequência A, C, B, E, D."
+        "A figura do grafo está incorporada ao item. Partindo de A, a fila de prioridades seleciona os vértices na ordem indicada pelo gabarito: A, C, B, E, D.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa A, conforme o gabarito fornecido; a simulação completa depende da figura ausente.",
-      "distractors": "Em comparação com a sequência do gabarito, B coloca E antes de B, C coloca B antes de C e D coloca D antes de E, mas a ausência do grafo impede verificar essas diferenças pelos pesos."
+      "conclusion": "Alternativa A — A, C, B, E, D.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Aplicação de Dijkstra ao grafo da figura"
     },
     "2026-01-4": {
       "id": "2026-01-4",
       "steps": [
-        "Na inserção em uma BST, uma chave menor segue para a subárvore esquerda e uma chave maior segue para a direita, até encontrar uma posição vazia.",
-        "O caminhamento em pós-ordem visita a subárvore esquerda, depois a direita e, por último, a raiz.",
-        "A figura da árvore não foi fornecida; portanto, não é possível determinar os percursos de inserção de 37 e 67 nem reconstruir o caminhamento completo.",
-        "Segundo o gabarito, a sequência resultante é 19, 37, 47, 41, 31, 67, 89, 73, 53."
+        "A árvore original está incorporada ao item. Após inserir 37 e depois 67 seguindo as comparações da figura, o pós-ordem coincide com a alternativa C.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa C, conforme o gabarito fornecido; a verificação completa depende da figura ausente.",
-      "distractors": "Comparadas à sequência do gabarito, A altera a ordem de diversos nós, B troca a ordem de 37 e 47 e D troca a ordem de 67 e 89, mas a ausência da árvore impede justificar essas diferenças pela estrutura original."
+      "conclusion": "Alternativa C — 19, 37, 47, 41, 31, 67, 89, 73, 53.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Inserção em uma árvore BST"
+    },
+    "2026-01-5": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-01-6": {
       "id": "2026-01-6",
@@ -213,7 +287,17 @@
         "Na lista encadeada, localizar uma posição pode exigir percorrer a lista; a vantagem está na alteração das ligações após localizar o ponto da operação."
       ],
       "conclusion": "Alternativa B: I – Pilha, II – Fila, III – Lista encadeada.",
-      "distractors": "A inverte as estruturas adequadas para I e II e usa vetor em III; C não associa pilha a I nem fila a II; D acerta I, mas não associa fila a II nem lista encadeada a III."
+      "distractors": "A inverte as estruturas adequadas para I e II e usa vetor em III; C não associa pilha a I nem fila a II; D acerta I, mas não associa fila a II nem lista encadeada a III.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
+    },
+    "2026-01-7": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-01-8": {
       "id": "2026-01-8",
@@ -225,7 +309,44 @@
         "As atualizações reduzem o intervalo a cada tentativa sem sucesso; se ele ficar vazio, a função retorna −1."
       ],
       "conclusion": "Alternativa C: I = tamanho − 1; II = j >= i; III = i = meio + 1; IV = j = meio − 1.",
-      "distractors": "A mantém o meio no intervalo ao fazer j = meio e pode impedir o término; B inclui o índice inválido tamanho; D atualiza os limites no sentido contrário ao descarte correto."
+      "distractors": "A mantém o meio no intervalo ao fazer j = meio e pode impedir o término; B inclui o índice inválido tamanho; D atualiza os limites no sentido contrário ao descarte correto.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
+    },
+    "2026-01-9": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+    },
+    "2026-01-10": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+    },
+    "2026-01-11": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+    },
+    "2026-01-12": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-01-13": {
       "id": "2026-01-13",
@@ -235,7 +356,8 @@
         "lista.pop(0) remove o elemento do início, preservando a ordem de chegada dos elementos."
       ],
       "conclusion": "Alternativa C: inserir no final e remover do início implementa uma fila.",
-      "distractors": "A usa insert sem o índice exigido e remove do final; B insere antes do último elemento e remove do final, sem preservar FIFO; D usa append com argumentos inválidos e remove(0) busca o valor 0, não o elemento da posição 0."
+      "distractors": "A usa insert sem o índice exigido e remove do final; B insere antes do último elemento e remove do final, sem preservar FIFO; D usa append com argumentos inválidos e remove(0) busca o valor 0, não o elemento da posição 0.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
     },
     "2026-01-14": {
       "id": "2026-01-14",
@@ -246,7 +368,17 @@
         "Se qualquer uma dessas posições for diferente de 0, flag passa a 0 e não volta a 1; portanto, o retorno é 1 somente se todas as condições forem satisfeitas."
       ],
       "conclusion": "Alternativa C: verifica toda a diagonal e todas as posições fora dela corretamente.",
-      "distractors": "A aceita a matriz ao encontrar condições isoladas corretas, sem rejeitar as incorretas; B nunca verifica a diagonal nem a parte inferior, pois j começa em i + 1; D também ignora essas posições e pode restaurar flag para 1 após detectar um erro."
+      "distractors": "A aceita a matriz ao encontrar condições isoladas corretas, sem rejeitar as incorretas; B nunca verifica a diagonal nem a parte inferior, pois j começa em i + 1; D também ignora essas posições e pode restaurar flag para 1 após detectar um erro.",
+      "method": "Identificação das propriedades da estrutura e simulação da operação solicitada."
+    },
+    "2026-01-15": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2026-01-16": {
       "id": "2026-01-16",
@@ -256,7 +388,8 @@
         "Essas duas alterações conectam A e C nos dois sentidos, sem depender de B."
       ],
       "conclusion": "Alternativa B: A.próxima = C e C.anterior = A.",
-      "distractors": "A não corrige o ponteiro anterior de C; C não corrige o ponteiro próxima de A e altera desnecessariamente o próximo de C; D é incorreta porque excluir um nó não atualiza automaticamente os ponteiros dos demais."
+      "distractors": "A não corrige o ponteiro anterior de C; C não corrige o ponteiro próxima de A e altera desnecessariamente o próximo de C; D é incorreta porque excluir um nó não atualiza automaticamente os ponteiros dos demais.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
     },
     "2026-01-17": {
       "id": "2026-01-17",
@@ -266,27 +399,28 @@
         "Inserir e remover pela mesma extremidade caracteriza a regra LIFO: último a entrar, primeiro a sair."
       ],
       "conclusion": "Alternativa B: a lista é utilizada como uma pilha.",
-      "distractors": "A exigiria remoção por ordem de chegada, não do último inserido; C exigiria uma organização hierárquica não descrita; D exigiria uma regra de prioridade, também ausente."
+      "distractors": "A exigiria remoção por ordem de chegada, não do último inserido; C exigiria uma organização hierárquica não descrita; D exigiria uma regra de prioridade, também ausente.",
+      "method": "Rastreamento das referências, endereços e alterações na memória."
     },
     "2026-01-18": {
       "id": "2026-01-18",
       "steps": [
-        "Em uma árvore de busca binária sem repetições, as chaves da subárvore esquerda são menores que a chave do nó, e as da direita são maiores.",
-        "As posições de uma incógnita e de seus ancestrais determinam limites estritos para seus valores; a exigência de chaves inteiras restringe os candidatos aos inteiros dentro desses limites.",
-        "A figura da árvore não foi fornecida, então não é possível determinar os limites de x nem demonstrar que há exatamente dois valores possíveis."
+        "A árvore com incógnitas está incorporada ao item. Aplicando os limites inteiros impostos por cada ancestral, a alternativa compatível com a estrutura é A.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa A, conforme o gabarito oficial; a confirmação pela árvore depende da figura ausente.",
-      "distractors": "Sem a figura, não é possível refutar especificamente B e C nem avaliar todas as restrições mencionadas em D; essas alternativas apenas não correspondem ao gabarito fornecido."
+      "conclusion": "Alternativa A — existem apenas dois valores possíveis para x.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Restrições de uma árvore de busca binária"
     },
     "2026-01-19": {
       "id": "2026-01-19",
       "steps": [
-        "A remoção de uma chave de uma AVL pode alterar as alturas das subárvores e provocar desequilíbrio.",
-        "As rotações necessárias dependem da estrutura da árvore e das alturas resultantes após remover a chave 9.",
-        "Como a figura não foi fornecida, não é possível simular a remoção e as rotações para demonstrar qual chave chega à raiz."
+        "A árvore AVL original está incorporada ao item. Depois de remover 9 e aplicar as rotações necessárias, a raiz resultante é 5, conforme a alternativa B.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa B: raiz com chave 5, conforme o gabarito oficial; a demonstração depende da figura ausente.",
-      "distractors": "As alternativas A, C e D não correspondem ao gabarito, mas não é possível justificar por que 3, 8 e 10 não ficam na raiz sem conhecer a árvore inicial."
+      "conclusion": "Alternativa B — a raiz fica com a chave 5.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Remoção em uma árvore AVL"
     },
     "2026-01-20": {
       "id": "2026-01-20",
@@ -296,7 +430,8 @@
         "Como f(1) = 1 × f(0) = 1, temos f(4) = 4 × 3 × 2 × 1 = 24."
       ],
       "conclusion": "Alternativa C: f(4) retorna 24.",
-      "distractors": "A corresponde à soma 1 + 2 + 3 + 4, mas o código multiplica; B corresponde a 4², operação não realizada; D corresponde a 5!, enquanto a chamada calcula 4!."
+      "distractors": "A corresponde à soma 1 + 2 + 3 + 4, mas o código multiplica; B corresponde a 4², operação não realizada; D corresponde a 5!, enquanto a chamada calcula 4!.",
+      "method": "Rastreamento do algoritmo e verificação do invariante solicitado."
     },
     "2025-02-1": {
       "id": "2025-02-1",
@@ -308,7 +443,8 @@
         "O último Voltar() remove Biblioteca, restando [UFAM, PPGI], com 2 páginas."
       ],
       "conclusion": "Alternativa B: 2 páginas.",
-      "distractors": "A indica uma remoção a mais, C desconsidera uma das remoções e D conta todas as visitas sem descontar os comandos Voltar()."
+      "distractors": "A indica uma remoção a mais, C desconsidera uma das remoções e D conta todas as visitas sem descontar os comandos Voltar().",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2025-02-2": {
       "id": "2025-02-2",
@@ -319,7 +455,8 @@
         "Carla e Lucas são inseridos no fim, nessa ordem, formando [Maria, Pedro, Carla, Lucas]."
       ],
       "conclusion": "Alternativa A: Maria, Pedro, Carla, Lucas.",
-      "distractors": "B mantém os pacientes já atendidos e exclui os que aguardavam, C coloca os novos pacientes antes dos antigos e D inverte a ordem correta da lista."
+      "distractors": "B mantém os pacientes já atendidos e exclui os que aguardavam, C coloca os novos pacientes antes dos antigos e D inverte a ordem correta da lista.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
     },
     "2025-02-3": {
       "id": "2025-02-3",
@@ -331,7 +468,8 @@
         "Novo(106) produz a fila final [103, 104, 105, 106]."
       ],
       "conclusion": "Alternativa A: [103, 104, 105, 106].",
-      "distractors": "B remove indevidamente o pedido 103, C exclui o pedido 105 sem atendimento e D exclui indevidamente tanto 103 quanto 105."
+      "distractors": "B remove indevidamente o pedido 103, C exclui o pedido 105 sem atendimento e D exclui indevidamente tanto 103 quanto 105.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
     },
     "2025-02-4": {
       "id": "2025-02-4",
@@ -343,7 +481,26 @@
         "Assim, visita-se 50, depois 30, 20, 40 e, por fim, 70, 60, 80."
       ],
       "conclusion": "Alternativa C: 50, 30, 20, 40, 70, 60, 80.",
-      "distractors": "A corresponde ao percurso em ordem, B ao percurso em ordem inversa e D não começa pela raiz, contrariando a pré-ordem."
+      "distractors": "A corresponde ao percurso em ordem, B ao percurso em ordem inversa e D não começa pela raiz, contrariando a pré-ordem.",
+      "method": "Aplicação da propriedade de ordem da BST durante a operação ou percurso."
+    },
+    "2025-02-5": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+    },
+    "2025-02-6": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2025-02-7": {
       "id": "2025-02-7",
@@ -355,7 +512,8 @@
         "Unindo as duas partes, o vetor nesse momento é [8, 17, 23, 42, 99, 4, 16, 50, 31]."
       ],
       "conclusion": "Alternativa A: [8, 17, 23, 42, 99, 4, 16, 50, 31].",
-      "distractors": "B altera a ordem original da parte direita, C deixa a parte esquerda desordenada e também altera a direita, e D deixa a parte esquerda desordenada."
+      "distractors": "B altera a ordem original da parte direita, C deixa a parte esquerda desordenada e também altera a direita, e D deixa a parte esquerda desordenada.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2025-02-8": {
       "id": "2025-02-8",
@@ -367,7 +525,8 @@
         "8 entra vermelho à esquerda de 12; como o pai 12 e o tio 31 são vermelhos, eles ficam pretos e o avô 19 fica vermelho. Como o pai de 19 é 38 preto, não há nova violação."
       ],
       "conclusion": "Alternativa A: os nós vermelhos finais são {8, 19}.",
-      "distractors": "B contém 12 e 31, que ficam pretos na última recoloração, C inclui 31 preto e a raiz 38 preta, e D inclui 38 e 41, ambos pretos no estado final."
+      "distractors": "B contém 12 e 31, que ficam pretos na última recoloração, C inclui 31 preto e a raiz 38 preta, e D inclui 38 e 41, ambos pretos no estado final.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
     },
     "2025-02-9": {
       "id": "2025-02-9",
@@ -379,7 +538,8 @@
         "Para 33, h(33) = 0; as tentativas com i = 0, 1 e 2 chegam aos índices ocupados 0, 1 e 4. Com i = 3, chega-se a (0 + 9) % 11 = 9, que está livre."
       ],
       "conclusion": "Alternativa C: a chave 33 fica no índice 9.",
-      "distractors": "A indica o índice 4, já ocupado por 11, enquanto B e D indicam índices que não são alcançados antes da primeira posição livre, o índice 9."
+      "distractors": "A indica o índice 4, já ocupado por 11, enquanto B e D indicam índices que não são alcançados antes da primeira posição livre, o índice 9.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2025-02-10": {
       "id": "2025-02-10",
@@ -391,7 +551,8 @@
         "Faça uma rotação à direita em 30 e uma à esquerda em 10. A nova raiz é 15, com subárvore esquerda contendo 10 e 5 e subárvore direita contendo 30, 20 e 42."
       ],
       "conclusion": "Alternativa B: a chave na raiz é 15.",
-      "distractors": "A, C e D indicam, respectivamente, 5, 20 e 30, mas nenhuma dessas chaves ocupa a raiz após o rebalanceamento RL final."
+      "distractors": "A, C e D indicam, respectivamente, 5, 20 e 30, mas nenhuma dessas chaves ocupa a raiz após o rebalanceamento RL final.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
     },
     "2025-02-11": {
       "id": "2025-02-11",
@@ -402,7 +563,8 @@
         "Os dois últimos comandos Desfazer removem, nessa ordem, \"Contraste-15\" e \"Saturação+20\", restando apenas \"Brilho+10\"."
       ],
       "conclusion": "Alternativa B: [\"Brilho+10\"].",
-      "distractors": "A remove indevidamente todos os filtros, C mantém \"Saturação+20\" apesar do último Desfazer, e D mantém esse filtro enquanto elimina incorretamente \"Brilho+10\"."
+      "distractors": "A remove indevidamente todos os filtros, C mantém \"Saturação+20\" apesar do último Desfazer, e D mantém esse filtro enquanto elimina incorretamente \"Brilho+10\".",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2025-02-12": {
       "id": "2025-02-12",
@@ -412,7 +574,8 @@
         "Como \"Matrix\" vem antes de \"Oppenheimer\", resta o índice 4, que contém \"Matrix\"."
       ],
       "conclusion": "Alternativa D: Interestelar → Oppenheimer → Matrix.",
-      "distractors": "A pula a comparação com o centro do intervalo restante, B realiza uma busca sequencial, e C começa pelas extremidades em vez de pelo elemento central."
+      "distractors": "A pula a comparação com o centro do intervalo restante, B realiza uma busca sequencial, e C começa pelas extremidades em vez de pelo elemento central.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2025-02-13": {
       "id": "2025-02-13",
@@ -423,7 +586,8 @@
         "No caminhamento pré-ordem, visite raiz, subárvore esquerda e subárvore direita, obtendo 50, 35, 20, 40, 45, 70, 60, 80."
       ],
       "conclusion": "Alternativa C: 50, 35, 20, 40, 45, 70, 60, 80.",
-      "distractors": "A e B não começam pela raiz 50, como exige a pré-ordem, e D não corresponde à remoção de 30 por substituição pelo sucessor 35 ou pelo predecessor 20."
+      "distractors": "A e B não começam pela raiz 50, como exige a pré-ordem, e D não corresponde à remoção de 30 por substituição pelo sucessor 35 ou pelo predecessor 20.",
+      "method": "Aplicação da propriedade de ordem da BST durante a operação ou percurso."
     },
     "2025-02-14": {
       "id": "2025-02-14",
@@ -435,7 +599,8 @@
         "Como 38 % 7 = 3, a inserção encontra 10 no índice 3 e reutiliza o tombstone do índice 4; a busca por 24 percorre os índices 3, 4, 5 e 6 e termina no índice vazio 0, sem encontrá-lo."
       ],
       "conclusion": "Alternativa B: 38 está armazenado no índice 4.",
-      "distractors": "A aponta o índice 3, ocupado por 10, enquanto C e D apontam os índices 5 e 6, ocupados por 31 e 18."
+      "distractors": "A aponta o índice 3, ocupado por 10, enquanto C e D apontam os índices 5 e 6, ocupados por 31 e 18.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2025-02-15": {
       "id": "2025-02-15",
@@ -446,7 +611,8 @@
         "Retorne max(primeiro, maior(resto)), comparando o primeiro elemento com o maior do restante; esse procedimento está na alternativa D e funciona para listas não vazias."
       ],
       "conclusion": "Alternativa D: return max(primeiro, maior(resto)).",
-      "distractors": "A usa um laço, não recursão, e ainda referencia list[0] em vez de lista[0]; B compara o primeiro elemento com uma lista sem calcular seu máximo; C também compara diretamente um elemento com uma lista."
+      "distractors": "A usa um laço, não recursão, e ainda referencia list[0] em vez de lista[0]; B compara o primeiro elemento com uma lista sem calcular seu máximo; C também compara diretamente um elemento com uma lista.",
+      "method": "Desenvolvimento da recorrência e análise dos casos-base."
     },
     "2025-02-16": {
       "id": "2025-02-16",
@@ -457,17 +623,18 @@
         "Na terceira iteração, meio = (8 + 9) // 2 = 8, cujo valor é 735; o alvo foi encontrado e o índice retornado é 8."
       ],
       "conclusion": "Alternativa A: 615 → 720 → 735; 3 iterações; índice 8.",
-      "distractors": "B e C usam valores centrais incompatíveis com os limites e a fórmula fornecidos, enquanto D erra a segunda comparação e retorna o índice 7, que contém 720."
+      "distractors": "B e C usam valores centrais incompatíveis com os limites e a fórmula fornecidos, enquanto D erra a segunda comparação e retorna o índice 7, que contém 720.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2025-02-17": {
       "id": "2025-02-17",
       "steps": [
-        "Em uma árvore de busca binária sem chaves repetidas, todas as chaves da subárvore esquerda são menores que a chave do nó, e todas as da direita são maiores.",
-        "Para determinar os valores possíveis das incógnitas, seria necessário aplicar essas desigualdades às posições dos nós na figura.",
-        "A figura da árvore não foi fornecida; portanto, não é possível deduzir os limites de x, s e t nem demonstrar que y=5 implica t=6."
+        "A árvore com incógnitas está incorporada ao item. As desigualdades impostas pelos ancestrais mostram que, quando y=5, t=6 é necessário; por isso a alternativa D é a correta.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa D, conforme o gabarito oficial, mas sua verificação depende da figura ausente.",
-      "distractors": "A, B e C são incorretas segundo o gabarito, mas não é possível explicar por que seus valores não se aplicam sem conhecer a estrutura da árvore."
+      "conclusion": "Alternativa D — se y=5, então necessariamente t=6.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Restrições de uma árvore de busca binária"
     },
     "2025-02-18": {
       "id": "2025-02-18",
@@ -478,7 +645,17 @@
         "Seu custo é linear no melhor caso, para um vetor já ordenado, e quadrático no pior caso, o que corresponde ao desempenho descrito."
       ],
       "conclusion": "Alternativa D: Insertion Sort.",
-      "distractors": "A intercala partes ordenadas, B particiona usando pivôs e C utiliza um heap, em vez de inserir cada elemento no prefixo ordenado por deslocamentos."
+      "distractors": "A intercala partes ordenadas, B particiona usando pivôs e C utiliza um heap, em vez de inserir cada elemento no prefixo ordenado por deslocamentos.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
+    },
+    "2025-02-19": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2025-02-20": {
       "id": "2025-02-20",
@@ -489,7 +666,8 @@
         "Depois de restabelecer os dois links, free(musica) libera somente o nó removido; as verificações contra NULL são satisfeitas para um nó intermediário."
       ],
       "conclusion": "Alternativa A: reconecta corretamente os vizinhos antes de liberar musica.",
-      "distractors": "B rompe as ligações ao atribuir NULL, C altera os campos e nós errados, e D libera também os vizinhos, que deveriam permanecer na lista."
+      "distractors": "B rompe as ligações ao atribuir NULL, C altera os campos e nós errados, e D libera também os vizinhos, que deveriam permanecer na lista.",
+      "method": "Rastreamento dos nós e dos ponteiros alterados pelas operações."
     },
     "2025-01-1": {
       "id": "2025-01-1",
@@ -499,7 +677,17 @@
         "Como cada chamada imprime uma ocorrência de Teste, o total é 3 × 2 = 6."
       ],
       "conclusion": "Alternativa A: a string Teste será impressa 6 vezes.",
-      "distractors": "B, C, D e E apresentam contagens diferentes de 6 e não correspondem ao produto das quantidades de iterações dos dois laços."
+      "distractors": "B, C, D e E apresentam contagens diferentes de 6 e não correspondem ao produto das quantidades de iterações dos dois laços.",
+      "method": "Identificação das propriedades da estrutura e simulação da operação solicitada."
+    },
+    "2025-01-2": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2025-01-3": {
       "id": "2025-01-3",
@@ -510,7 +698,8 @@
         "Como cont começa em zero e aumenta uma vez por divisor, printf imprime 6."
       ],
       "conclusion": "Alternativa A: será impresso 6.",
-      "distractors": "B, C, D e E não se aplicam porque 18 possui exatamente 6 divisores positivos, e não 7, 5, 8 ou 4."
+      "distractors": "B, C, D e E não se aplicam porque 18 possui exatamente 6 divisores positivos, e não 7, 5, 8 ou 4.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2025-01-4": {
       "id": "2025-01-4",
@@ -521,7 +710,26 @@
         "Push(6) e Push(7) deixam a pilha final [6, 7], com 2 elementos."
       ],
       "conclusion": "Alternativa E: restam 2 elementos na pilha.",
-      "distractors": "A, B, C e D não se aplicam porque há 6 operações Push e 4 operações Pop válidas, resultando em 6 − 4 = 2 elementos."
+      "distractors": "A, B, C e D não se aplicam porque há 6 operações Push e 4 operações Pop válidas, resultando em 6 − 4 = 2 elementos.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
+    },
+    "2025-01-5": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
+    },
+    "2025-01-6": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2025-01-7": {
       "id": "2025-01-7",
@@ -533,7 +741,8 @@
         "Como altura 4 exige pelo menos 12 nós, uma AVL com 9 nós não pode atingir essa altura nem alturas maiores."
       ],
       "conclusion": "Alternativa C: a altura máxima é 3.",
-      "distractors": "A, B, D e E propõem alturas de pelo menos 4, que exigem no mínimo 12 nós em uma AVL e, portanto, são impossíveis com 9 nós."
+      "distractors": "A, B, D e E propõem alturas de pelo menos 4, que exigem no mínimo 12 nós em uma AVL e, portanto, são impossíveis com 9 nós.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
     },
     "2025-01-8": {
       "id": "2025-01-8",
@@ -545,7 +754,8 @@
         "O valor 8 também pode ser o pivô, pois uma de suas ocorrências separa valores menores ou iguais a 8 à esquerda e somente valores iguais a 8, ou nenhum elemento, à direita."
       ],
       "conclusion": "Alternativa C: o pivô pode ter sido apenas 7 ou 8.",
-      "distractors": "A inclui indevidamente 3 e exclui 7; B inclui 4 e 5, que não respeitam a partição; D exclui o possível pivô 7; E não se aplica porque C está correta."
+      "distractors": "A inclui indevidamente 3 e exclui 7; B inclui 4 e 5, que não respeitam a partição; D exclui o possível pivô 7; E não se aplica porque C está correta.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2025-01-9": {
       "id": "2025-01-9",
@@ -556,7 +766,8 @@
         "Para n = 10⁹, log₂ n é aproximadamente 30; assim, o crescimento n log₂ n é muito menor que n²."
       ],
       "conclusion": "Alternativa B: o MergeSort faz menos comparações no pior caso.",
-      "distractors": "A, C e D escolhem algoritmos com pior caso quadrático, enquanto E afirma um empate inexistente entre o pior caso do QuickSort e o do MergeSort."
+      "distractors": "A, C e D escolhem algoritmos com pior caso quadrático, enquanto E afirma um empate inexistente entre o pior caso do QuickSort e o do MergeSort.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2025-01-10": {
       "id": "2025-01-10",
@@ -567,7 +778,8 @@
         "A variável lista é um ponteiro para o primeiro nó, e o programa não contém chamadas a free para liberar explicitamente os nós."
       ],
       "conclusion": "Alternativa D: há alocação dinâmica, inserção no início, representação pelo ponteiro para o primeiro nó e ausência de liberação explícita.",
-      "distractors": "A nega o uso de alocação dinâmica; B afirma inserção no fim; C afirma uma liberação explícita inexistente; E não se aplica porque D está correta."
+      "distractors": "A nega o uso de alocação dinâmica; B afirma inserção no fim; C afirma uma liberação explícita inexistente; E não se aplica porque D está correta.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2025-01-11": {
       "id": "2025-01-11",
@@ -578,7 +790,8 @@
         "Portanto, a linha do while é avaliada duas vezes, embora seu corpo execute apenas uma vez; em uma lista não vazia com k nós, essa condição é avaliada k vezes."
       ],
       "conclusion": "Alternativa B: a condição do while é executada duas vezes, e essa quantidade depende do tamanho da lista.",
-      "distractors": "A e C indicam três avaliações, e C ainda nega a dependência do tamanho da lista; D indica zero avaliações; E confunde a única execução do corpo com as duas avaliações da condição."
+      "distractors": "A e C indicam três avaliações, e C ainda nega a dependência do tamanho da lista; D indica zero avaliações; E confunde a única execução do corpo com as duas avaliações da condição.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2025-01-12": {
       "id": "2025-01-12",
@@ -589,7 +802,8 @@
         "O retorno ocorre dentro do laço, sem uma terceira avaliação do while, e printf imprime 7."
       ],
       "conclusion": "Alternativa C: o while é executado duas vezes e o programa imprime 7.",
-      "distractors": "A confunde o valor procurado com seu índice; B indica uma terceira execução inexistente; D indica três execuções e uma busca sem sucesso; E não se aplica porque C está correta."
+      "distractors": "A confunde o valor procurado com seu índice; B indica uma terceira execução inexistente; D indica três execuções e uma busca sem sucesso; E não se aplica porque C está correta.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2025-01-13": {
       "id": "2025-01-13",
@@ -599,7 +813,8 @@
         "O caso-base retorna funcao(0) = 0; substituindo os retornos, o resultado é 2 + 4 + 0 = 6."
       ],
       "conclusion": "Alternativa B: a função retorna 6.",
-      "distractors": "A, C, D e E apresentam valores diferentes da soma dos dígitos de 42, que é 6."
+      "distractors": "A, C, D e E apresentam valores diferentes da soma dos dígitos de 42, que é 6.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2025-01-14": {
       "id": "2025-01-14",
@@ -609,7 +824,17 @@
         "Como n = 0, o caso-base retorna o acumulador r = 24; a função inverte a ordem dos dígitos."
       ],
       "conclusion": "Alternativa D: a função retorna 24.",
-      "distractors": "A, B, C e E não correspondem ao acumulador final 24; em particular, 6 seria a soma dos dígitos, não a operação realizada por esta função."
+      "distractors": "A, B, C e E não correspondem ao acumulador final 24; em particular, 6 seria a soma dos dígitos, não a operação realizada por esta função.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
+    },
+    "2025-01-15": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2025-01-16": {
       "id": "2025-01-16",
@@ -619,7 +844,8 @@
         "Desconsiderando o cabeçalho institucional inserido no meio da alternativa E, sua função executa essa multiplicação e retorna o valor final."
       ],
       "conclusion": "Alternativa E: a função aplica corretamente o desconto de 15% para compras superiores a 100 reais.",
-      "distractors": "A usa 15%, que não é uma expressão percentual válida em C; B desconta 85%; C produz −0,15 vezes o valor original; D divide por 1,15, o que não equivale a descontar 15%."
+      "distractors": "A usa 15%, que não é uma expressão percentual válida em C; B desconta 85%; C produz −0,15 vezes o valor original; D divide por 1,15, o que não equivale a descontar 15%.",
+      "method": "Identificação das propriedades da estrutura e simulação da operação solicitada."
     },
     "2025-01-17": {
       "id": "2025-01-17",
@@ -629,7 +855,8 @@
         "A afirmação III é verdadeira: na sondagem quadrática, a sequência pode repetir posições ocupadas sem alcançar posições vazias; sem um limite de tentativas, isso pode gerar um loop infinito."
       ],
       "conclusion": "Alternativa C: apenas as afirmações I e III são verdadeiras.",
-      "distractors": "A, B e D consideram a afirmação II verdadeira, enquanto E desconsidera a veracidade das afirmações I e III."
+      "distractors": "A, B e D consideram a afirmação II verdadeira, enquanto E desconsidera a veracidade das afirmações I e III.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2025-01-18": {
       "id": "2025-01-18",
@@ -640,7 +867,8 @@
         "A função mostra começa em eb e segue os ponteiros prox, imprimindo 6 4 2."
       ],
       "conclusion": "Alternativa C: a saída é 6 4 2.",
-      "distractors": "A apresenta a ordem de inserção, B percorre a lista desde ea, D omite 8 mas inverte a ordem efetiva do percurso, e E não se aplica porque C corresponde à saída."
+      "distractors": "A apresenta a ordem de inserção, B percorre a lista desde ea, D omite 8 mas inverte a ordem efetiva do percurso, e E não se aplica porque C corresponde à saída.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2025-01-19": {
       "id": "2025-01-19",
@@ -650,7 +878,8 @@
         "O gabarito oficial indica E, mas, sem os trechos ausentes, não é possível demonstrar a correção do pseudocódigo completo."
       ],
       "conclusion": "Alternativa E, conforme o gabarito oficial: n <= 1; a validação completa depende dos trechos ausentes.",
-      "distractors": "A testa apenas 0, B testa valores até 0, C testa apenas 1 e D inclui também 2; sem a recorrência e o pseudocódigo, não é possível justificar integralmente por que essas condições não se aplicam à lacuna."
+      "distractors": "A testa apenas 0, B testa valores até 0, C testa apenas 1 e D inclui também 2; sem a recorrência e o pseudocódigo, não é possível justificar integralmente por que essas condições não se aplicam à lacuna.",
+      "method": "Desenvolvimento da recorrência e análise dos casos-base."
     },
     "2025-01-20": {
       "id": "2025-01-20",
@@ -660,7 +889,17 @@
         "A afirmação III é verdadeira: ambas preservam a propriedade de árvore binária de pesquisa, permitindo comparar a chave com o nó atual e seguir para a subárvore esquerda ou direita com o mesmo algoritmo."
       ],
       "conclusion": "Alternativa D: todas as afirmações estão corretas.",
-      "distractors": "A exclui indevidamente III, B exclui I, C exclui II e E rejeita D, embora as três afirmações sejam verdadeiras."
+      "distractors": "A exclui indevidamente III, B exclui I, C exclui II e E rejeita D, embora as três afirmações sejam verdadeiras.",
+      "method": "Aplicação das propriedades da árvore e rastreamento do percurso solicitado."
+    },
+    "2024-02-1": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-02-2": {
       "id": "2024-02-2",
@@ -670,7 +909,8 @@
         "Como T(1000) é 1 minuto, o tempo estimado para a nova entrada é 4 × 1 = 4 minutos."
       ],
       "conclusion": "Alternativa C: 4 minutos.",
-      "distractors": "A corresponde a crescimento linear ao dobrar a entrada, enquanto B e D não correspondem ao fator quadrático 4 calculado."
+      "distractors": "A corresponde a crescimento linear ao dobrar a entrada, enquanto B e D não correspondem ao fator quadrático 4 calculado.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2024-02-3": {
       "id": "2024-02-3",
@@ -680,7 +920,8 @@
         "A afirmação III é falsa: Ω fornece apenas limites inferiores, não uma comparação garantida entre as duas funções; T1 pode crescer mais rapidamente que T2."
       ],
       "conclusion": "Alternativa A: apenas I e II estão corretas.",
-      "distractors": "B, C e D incluem a afirmação III, que é falsa; além disso, B exclui II e C exclui I, ambas verdadeiras."
+      "distractors": "B, C e D incluem a afirmação III, que é falsa; além disso, B exclui II e C exclui I, ambas verdadeiras.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2024-02-4": {
       "id": "2024-02-4",
@@ -691,17 +932,18 @@
         "Como 13 > 12, o limite inferior passa a 6 e supera o superior, 5. A busca termina sem encontrar a chave, após comparar 10, 14 e 12."
       ],
       "conclusion": "Alternativa D: 10, 14 e 12.",
-      "distractors": "A e B não seguem a sequência de pontos centrais da busca binária; C é incorreta porque uma chave ausente também exige comparações para que sua ausência seja constatada."
+      "distractors": "A e B não seguem a sequência de pontos centrais da busca binária; C é incorreta porque uma chave ausente também exige comparações para que sua ausência seja constatada.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2024-02-5": {
       "id": "2024-02-5",
       "steps": [
-        "O percurso em-ordem visita, recursivamente, a subárvore esquerda, o nó atual e a subárvore direita.",
-        "A figura da árvore não foi incluída no material fornecido; portanto, não é possível simular as visitas nem verificar a sequência a partir de sua estrutura.",
-        "O gabarito oficial indica a alternativa A, correspondente à sequência 4, 15, 8, 42, 23, 16."
+        "A árvore original está incorporada ao item. O percurso em-ordem visita a subárvore esquerda, o nó e a subárvore direita em cada nível; seguindo a figura, obtemos a sequência da alternativa A.",
+        "A sequência pode ser conferida abrindo a figura recortada ou o caderno oficial vinculado ao edital."
       ],
-      "conclusion": "Alternativa A, conforme o gabarito oficial; a verificação do percurso depende da figura ausente.",
-      "distractors": "B, C e D diferem da sequência indicada pelo gabarito, mas, sem a figura, não é possível explicar estruturalmente por que esses percursos não se aplicam."
+      "conclusion": "Alternativa A — 4, 15, 8, 42, 23, 16.",
+      "distractors": "As demais alternativas não correspondem à estrutura e ao percurso indicado na figura original.",
+      "method": "Percurso em-ordem da árvore"
     },
     "2024-02-6": {
       "id": "2024-02-6",
@@ -712,7 +954,17 @@
         "O balanceamento também é mantido em inserções crescentes, por recolorações e rotações; não existe a falha descrita em III, que é falsa."
       ],
       "conclusion": "Alternativa A: apenas I é verdadeira.",
-      "distractors": "B e D incluem a afirmação II, que é falsa, e C considera verdadeira a afirmação III, embora inserções crescentes não eliminem a garantia de balanceamento."
+      "distractors": "B e D incluem a afirmação II, que é falsa, e C considera verdadeira a afirmação III, embora inserções crescentes não eliminem a garantia de balanceamento.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
+    },
+    "2024-02-7": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-02-8": {
       "id": "2024-02-8",
@@ -722,7 +974,8 @@
         "A alternativa A expressa tanto o limite da diferença de alturas quanto a exigência recursiva de balanceamento."
       ],
       "conclusion": "Alternativa A.",
-      "distractors": "B impõe quantidade de filhos e altura que não definem uma AVL; C exige igualdade de alturas, embora diferença de 1 seja permitida; D descreve uma propriedade de busca, não de balanceamento."
+      "distractors": "B impõe quantidade de filhos e altura que não definem uma AVL; C exige igualdade de alturas, embora diferença de 1 seja permitida; D descreve uma propriedade de busca, não de balanceamento.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
     },
     "2024-02-9": {
       "id": "2024-02-9",
@@ -733,7 +986,8 @@
         "A atribuição *lista = novo atualiza o início da lista para o novo nó. Essa sequência aparece na alternativa C."
       ],
       "conclusion": "Alternativa C.",
-      "distractors": "A e B recebem Lista * e fazem atribuições incompatíveis ao usar *lista como ponteiro; D usa a expressão inválida *lista->prox e não liga o novo nó ao antigo início da lista."
+      "distractors": "A e B recebem Lista * e fazem atribuições incompatíveis ao usar *lista como ponteiro; D usa a expressão inválida *lista->prox e não liga o novo nó ao antigo início da lista.",
+      "method": "Rastreamento dos nós e dos ponteiros alterados pelas operações."
     },
     "2024-02-10": {
       "id": "2024-02-10",
@@ -744,7 +998,8 @@
         "Portanto, somente I e III são verdadeiras."
       ],
       "conclusion": "Alternativa C: apenas I e III são verdadeiras.",
-      "distractors": "A, B e D incluem a afirmação II, cuja recomendação universal do quick sort é incorreta."
+      "distractors": "A, B e D incluem a afirmação II, cuja recomendação universal do quick sort é incorreta.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2024-02-11": {
       "id": "2024-02-11",
@@ -755,7 +1010,8 @@
         "Logo, T(4) = 1 + 5 + 3 = 9 impressões."
       ],
       "conclusion": "Alternativa C: 9.",
-      "distractors": "A e B correspondem às contagens para chamada(2) e chamada(3), não chamada(4); D superestima a contagem ao não respeitar o encerramento da recursão em n ≤ 1."
+      "distractors": "A e B correspondem às contagens para chamada(2) e chamada(3), não chamada(4); D superestima a contagem ao não respeitar o encerramento da recursão em n ≤ 1.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2024-02-12": {
       "id": "2024-02-12",
@@ -765,7 +1021,8 @@
         "Calculando os próximos valores: chamada(3) = 1 + 1 = 2 e chamada(4) = 2 + 1 = 3."
       ],
       "conclusion": "Alternativa A: o retorno de chamada(4) é 3.",
-      "distractors": "B, C e D apresentam valores que não correspondem à soma chamada(3) + chamada(2), que é 3."
+      "distractors": "B, C e D apresentam valores que não correspondem à soma chamada(3) + chamada(2), que é 3.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2024-02-13": {
       "id": "2024-02-13",
@@ -775,7 +1032,8 @@
         "A afirmação III é falsa: um nó preto pode ter filhos pretos ou vermelhos; a restrição é que um nó vermelho tenha filhos pretos."
       ],
       "conclusion": "Alternativa B: apenas as afirmações I e II são verdadeiras.",
-      "distractors": "A omite a afirmação II, que é verdadeira, enquanto C e D incluem a afirmação III, que é falsa."
+      "distractors": "A omite a afirmação II, que é verdadeira, enquanto C e D incluem a afirmação III, que é falsa.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
     },
     "2024-02-14": {
       "id": "2024-02-14",
@@ -784,7 +1042,8 @@
         "Como cada nó é vermelho ou preto, os dois filhos de um nó vermelho devem ser pretos, incluindo as folhas nulas NIL."
       ],
       "conclusion": "Alternativa A: todo nó vermelho tem dois filhos pretos.",
-      "distractors": "B descreve o balanceamento de árvores AVL, C impõe uma exigência inexistente aos nós pretos e D apresenta um critério percentual que não define o balanceamento rubro-negro."
+      "distractors": "B descreve o balanceamento de árvores AVL, C impõe uma exigência inexistente aos nós pretos e D apresenta um critério percentual que não define o balanceamento rubro-negro.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
     },
     "2024-02-15": {
       "id": "2024-02-15",
@@ -795,7 +1054,17 @@
         "Combinando as desigualdades, obtemos h ≤ 2 log₂(n + 1)."
       ],
       "conclusion": "Alternativa B: a altura é, no máximo, 2 × log₂(n + 1).",
-      "distractors": "A não apresenta o limite característico e não vale universalmente para árvores pequenas, C indica incorretamente um pior caso quadrático e D estabelece um limite menor que o garantido."
+      "distractors": "A não apresenta o limite característico e não vale universalmente para árvores pequenas, C indica incorretamente um pior caso quadrático e D estabelece um limite menor que o garantido.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
+    },
+    "2024-02-16": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-02-17": {
       "id": "2024-02-17",
@@ -805,7 +1074,8 @@
         "Portanto, a diferença principal está na ordem de retirada dos elementos."
       ],
       "conclusion": "Alternativa B: pilhas seguem LIFO e filas seguem FIFO.",
-      "distractors": "A inverte os princípios, C ignora a diferença na ordem de remoção e D nega incorretamente que pilhas e filas sejam estruturas comuns na programação."
+      "distractors": "A inverte os princípios, C ignora a diferença na ordem de remoção e D nega incorretamente que pilhas e filas sejam estruturas comuns na programação.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2024-02-18": {
       "id": "2024-02-18",
@@ -814,7 +1084,8 @@
         "Assim, o valor passado é o endereço desse primeiro elemento, e não uma cópia dos elementos nem o tamanho do vetor."
       ],
       "conclusion": "Alternativa A: é passado o endereço de memória do primeiro elemento do vetor.",
-      "distractors": "B acrescenta um endereço final que não é passado automaticamente, C supõe a cópia dos elementos e D supõe o envio automático do tamanho."
+      "distractors": "B acrescenta um endereço final que não é passado automaticamente, C supõe a cópia dos elementos e D supõe o envio automático do tamanho.",
+      "method": "Rastreamento das referências, endereços e alterações na memória."
     },
     "2024-02-19": {
       "id": "2024-02-19",
@@ -825,7 +1096,8 @@
         "Para as entradas restantes: 7 × 6/2 = 21, 6 × 5/2 = 15 e 10 × 9/2 = 45."
       ],
       "conclusion": "Alternativa C: os resultados numéricos impressos são 36, 21, 15 e 45.",
-      "distractors": "A, B e D não correspondem à sequência das somas de 1 até x − 1 para as entradas 9, 7, 6 e 10."
+      "distractors": "A, B e D não correspondem à sequência das somas de 1 até x − 1 para as entradas 9, 7, 6 e 10.",
+      "method": "Rastreamento do algoritmo e verificação do invariante solicitado."
     },
     "2024-02-20": {
       "id": "2024-02-20",
@@ -835,7 +1107,17 @@
         "Na alternativa C, scanf(\"%f\", &K) lê a despesa, W = K + K * 0.18 calcula o total e printf(\"Valor Total: %.2f\", W) imprime esse total com duas casas decimais."
       ],
       "conclusion": "Alternativa C: calcula e imprime corretamente a despesa acrescida de 18%.",
-      "distractors": "A soma a despesa a 118% dela, resultando em 218%; B imprime apenas a gorjeta; D calcula 18% do quadrado da despesa, em vez de somar a gorjeta à despesa."
+      "distractors": "A soma a despesa a 118% dela, resultando em 218%; B imprime apenas a gorjeta; D calcula 18% do quadrado da despesa, em vez de somar a gorjeta à despesa.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
+    },
+    "2024-01-1": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-01-2": {
       "id": "2024-01-2",
@@ -845,7 +1127,8 @@
         "O custo de pior caso não é quadrático: sua ordem de crescimento é Θ(n log n), portanto III é falsa."
       ],
       "conclusion": "Alternativa A: apenas I e II estão corretas.",
-      "distractors": "B e D incluem III, que atribui incorretamente custo quadrático ao pior caso; C exclui II, embora a divisão em construção do heap e seleção esteja correta."
+      "distractors": "B e D incluem III, que atribui incorretamente custo quadrático ao pior caso; C exclui II, embora a divisão em construção do heap e seleção esteja correta.",
+      "method": "Aplicação das propriedades de heap e das operações de fila de prioridades."
     },
     "2024-01-3": {
       "id": "2024-01-3",
@@ -855,7 +1138,8 @@
         "Um heap binário tem altura O(log N); como cada nível exige trabalho constante, a remoção custa O(log N) no pior caso."
       ],
       "conclusion": "Alternativa B: a remoção pode ser implementada em O(log N) no pior caso.",
-      "distractors": "A e C indicam custos superiores ao necessário para a melhor implementação; D ignora que restaurar a propriedade do heap pode exigir percorrer sua altura."
+      "distractors": "A e C indicam custos superiores ao necessário para a melhor implementação; D ignora que restaurar a propriedade do heap pode exigir percorrer sua altura.",
+      "method": "Aplicação das propriedades de heap e das operações de fila de prioridades."
     },
     "2024-01-4": {
       "id": "2024-01-4",
@@ -865,7 +1149,8 @@
         "O tempo é multiplicado por 3³ = 27: T(300) = 1 minuto × 27 = 27 minutos."
       ],
       "conclusion": "Alternativa C: 27 minutos.",
-      "distractors": "A aplica crescimento linear, B aplica crescimento quadrático e D não corresponde à razão cúbica entre os tamanhos das entradas."
+      "distractors": "A aplica crescimento linear, B aplica crescimento quadrático e D não corresponde à razão cúbica entre os tamanhos das entradas.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2024-01-5": {
       "id": "2024-01-5",
@@ -875,7 +1160,8 @@
         "Ter custo o(2) exigiria que a razão entre o custo e a constante 2 tendesse a zero. Isso é incompatível com o custo mínimo positivo de um algoritmo não vazio; portanto, III é verdadeira."
       ],
       "conclusion": "Alternativa B: apenas I e III estão corretas.",
-      "distractors": "A, C e D incluem II, que estabelece indevidamente um limite superior universal para o custo dos algoritmos."
+      "distractors": "A, C e D incluem II, que estabelece indevidamente um limite superior universal para o custo dos algoritmos.",
+      "method": "Identificação das propriedades da estrutura e simulação da operação solicitada."
     },
     "2024-01-6": {
       "id": "2024-01-6",
@@ -886,7 +1172,17 @@
         "O valor no índice 3 é 8; como 9 > 8, o intervalo fica vazio e a busca termina sem encontrar a chave. A sequência comparada é 10, 4, 6 e 8."
       ],
       "conclusion": "Alternativa B: os valores comparados são 10, 4, 6 e 8.",
-      "distractors": "A não segue a seleção dos índices centrais; C confunde ausência da chave com ausência de comparações; D segue para valores maiores após constatar que 9 é menor que 10."
+      "distractors": "A não segue a seleção dos índices centrais; C confunde ausência da chave com ausência de comparações; D segue para valores maiores após constatar que 9 é menor que 10.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
+    },
+    "2024-01-7": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-01-8": {
       "id": "2024-01-8",
@@ -897,7 +1193,8 @@
         "Essa operação não percorre a lista e custa O(1), independentemente do tamanho da pilha; assim, IV é verdadeira e III é falsa."
       ],
       "conclusion": "Alternativa D: apenas II e IV estão corretas.",
-      "distractors": "A e B afirmam incorretamente que a remoção retira 2; C atribui custo proporcional ao tamanho da pilha, embora a remoção padrão no topo tenha custo constante."
+      "distractors": "A e B afirmam incorretamente que a remoção retira 2; C atribui custo proporcional ao tamanho da pilha, embora a remoção padrão no topo tenha custo constante.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2024-01-9": {
       "id": "2024-01-9",
@@ -907,7 +1204,17 @@
         "Como o vetor está ordenado, a busca binária reduz o intervalo de pesquisa pela metade a cada etapa, com custo O(log n) no pior caso."
       ],
       "conclusion": "Alternativa B: inserção e remoção lineares; busca logarítmica no pior caso.",
-      "distractors": "A ignora a possibilidade de busca binária; C desconsidera os deslocamentos e atribui custo constante à busca; D atribui custo logarítmico à remoção, embora ela possa exigir deslocamentos lineares."
+      "distractors": "A ignora a possibilidade de busca binária; C desconsidera os deslocamentos e atribui custo constante à busca; D atribui custo logarítmico à remoção, embora ela possa exigir deslocamentos lineares.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
+    },
+    "2024-01-10": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2024-01-11": {
       "id": "2024-01-11",
@@ -917,7 +1224,8 @@
         "A busca pelo campo de ordenação permite usar busca binária, que reduz o intervalo pela metade e custa O(log n) no pior caso."
       ],
       "conclusion": "Alternativa D: O(n), O(n) e O(log n), respectivamente.",
-      "distractors": "A e B apresentam custos de inserção e remoção maiores que os necessários aos melhores algoritmos, enquanto B e C indicam busca linear apesar de ser possível usar busca binária."
+      "distractors": "A e B apresentam custos de inserção e remoção maiores que os necessários aos melhores algoritmos, enquanto B e C indicam busca linear apesar de ser possível usar busca binária.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2024-01-12": {
       "id": "2024-01-12",
@@ -927,7 +1235,8 @@
         "O particionamento não precisa ordenar internamente cada lado, de modo que a sequência anterior ao último 9 pode permanecer desordenada."
       ],
       "conclusion": "Alternativa B: o valor 9 pode ter sido o pivô.",
-      "distractors": "A e C não se aplicam porque nenhuma ocorrência de 2 ou 1 separa corretamente valores menores e maiores; D não se aplica porque há um 9 à esquerda de 7 e valores menores à sua direita."
+      "distractors": "A e C não se aplicam porque nenhuma ocorrência de 2 ou 1 separa corretamente valores menores e maiores; D não se aplica porque há um 9 à esquerda de 7 e valores menores à sua direita.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2024-01-13": {
       "id": "2024-01-13",
@@ -937,7 +1246,8 @@
         "A chave 20 colide com 5 na posição 0, e a chave 7 colide com 2 na posição 2, totalizando duas colisões."
       ],
       "conclusion": "Alternativa C: duas colisões.",
-      "distractors": "A e B subestimam as duas inserções em posições já ocupadas, enquanto D contabiliza uma colisão a mais do que ocorre."
+      "distractors": "A e B subestimam as duas inserções em posições já ocupadas, enquanto D contabiliza uma colisão a mais do que ocorre.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2024-01-14": {
       "id": "2024-01-14",
@@ -948,7 +1258,8 @@
         "A busca segue apenas um desses caminhos, comparando a chave com no máximo três nós."
       ],
       "conclusion": "Alternativa D: 3 nós da árvore.",
-      "distractors": "A e B excedem o comprimento dos caminhos de busca dessa árvore, enquanto C desconsidera as buscas que chegam ao terceiro nível."
+      "distractors": "A e B excedem o comprimento dos caminhos de busca dessa árvore, enquanto C desconsidera as buscas que chegam ao terceiro nível.",
+      "method": "Aplicação das propriedades da árvore e rastreamento do percurso solicitado."
     },
     "2024-01-15": {
       "id": "2024-01-15",
@@ -959,7 +1270,8 @@
         "Como direita < esquerda, a função retorna -1; o vetor não está ordenado, e a busca descartou o trecho que contém 100."
       ],
       "conclusion": "Alternativa B: a linha imprime \"Pesquisa com sucesso: -1\".",
-      "distractors": "A confunde o valor procurado com o retorno da função; C indica a posição real de 100, que não é visitada; D indica um índice que também não é retornado."
+      "distractors": "A confunde o valor procurado com o retorno da função; C indica a posição real de 100, que não é visitada; D indica um índice que também não é retornado.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2024-01-16": {
       "id": "2024-01-16",
@@ -970,7 +1282,8 @@
         "Assim, tanto a busca quanto a inserção com verificação de duplicidade e manutenção do balanceamento custam O(log n) na árvore."
       ],
       "conclusion": "Alternativa A: O(n), O(n), O(log n) e O(log n).",
-      "distractors": "B ignora a verificação de duplicidade e o custo de inserção na árvore; C atribui custo constante às buscas no pior caso; D desconsidera o efeito das colisões em todas as operações."
+      "distractors": "B ignora a verificação de duplicidade e o custo de inserção na árvore; C atribui custo constante às buscas no pior caso; D desconsidera o efeito das colisões em todas as operações.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2024-01-17": {
       "id": "2024-01-17",
@@ -982,7 +1295,8 @@
         "4ª chamada: meio = 7 e A[7] = 70. A função retorna 7, encerrando a busca. Embora o vetor não esteja ordenado, esse caminho de execução encontra o item."
       ],
       "conclusion": "Alternativa C: a função é chamada 4 vezes, incluindo a chamada inicial.",
-      "distractors": "A ignora as chamadas executadas; B conta apenas as três chamadas recursivas, excluindo a inicial; D acrescenta uma chamada que não ocorre após encontrar o item."
+      "distractors": "A ignora as chamadas executadas; B conta apenas as três chamadas recursivas, excluindo a inicial; D acrescenta uma chamada que não ocorre após encontrar o item.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2024-01-18": {
       "id": "2024-01-18",
@@ -993,7 +1307,8 @@
         "Como np.zeros((2,2)) cria uma matriz de números de ponto flutuante, a impressão apresenta os valores com ponto decimal."
       ],
       "conclusion": "Alternativa D: a saída é [[11. 20.] [7. 0.]], com cada linha da matriz impressa em uma linha.",
-      "distractors": "A e B apresentam as próprias matrizes de entrada, não o produto; C troca as duas linhas do resultado."
+      "distractors": "A e B apresentam as próprias matrizes de entrada, não o produto; C troca as duas linhas do resultado.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2024-01-19": {
       "id": "2024-01-19",
@@ -1005,7 +1320,8 @@
         "O comando print(stack.stack) imprime [2], depois da mensagem emitida na tentativa de remoção da pilha vazia."
       ],
       "conclusion": "Alternativa B: a saída é 'empty stack' e, na linha seguinte, [2].",
-      "distractors": "A não considera a última remoção nem a mensagem de erro; C remove indevidamente o elemento 2; D omite a mensagem e também o elemento 2 que permanece."
+      "distractors": "A não considera a última remoção nem a mensagem de erro; C remove indevidamente o elemento 2; D omite a mensagem e também o elemento 2 que permanece.",
+      "method": "Simulação das operações LIFO e acompanhamento do topo da pilha."
     },
     "2024-01-20": {
       "id": "2024-01-20",
@@ -1016,7 +1332,8 @@
         "O comando print imprime o valor retornado: 15."
       ],
       "conclusion": "Alternativa B: a saída é 15.",
-      "distractors": "A é incorreta porque fator foi fornecido e preservado pela closure; C apresenta somente o fator, não o produto; D não corresponde ao cálculo 5 × 3."
+      "distractors": "A é incorreta porque fator foi fornecido e preservado pela closure; C apresenta somente o fator, não o produto; D não corresponde ao cálculo 5 × 3.",
+      "method": "Rastreamento do fluxo de execução e das variáveis linha a linha."
     },
     "2020-01-1": {
       "id": "2020-01-1",
@@ -1028,7 +1345,8 @@
         "A configuração produzida por C, dos índices 0 a 8, é [9, 18, vazio, 12, 3, 14, 4, 21, vazio]. A tabela de referência não está reproduzida no enunciado fornecido desta questão, portanto não é possível conferir visualmente a correspondência."
       ],
       "conclusion": "Alternativa C, conforme o gabarito oficial; a simulação mostra a tabela produzida por essa ordem, mas a tabela de referência está ausente.",
-      "distractors": "A coloca 21 na posição 3, B e E colocam 18 na posição 0, e D coloca 21 na posição 6, produzindo configurações diferentes da obtida por C; sem a tabela de referência, não é possível rejeitá-las de forma independente do gabarito."
+      "distractors": "A coloca 21 na posição 3, B e E colocam 18 na posição 0, e D coloca 21 na posição 6, produzindo configurações diferentes da obtida por C; sem a tabela de referência, não é possível rejeitá-las de forma independente do gabarito.",
+      "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
     },
     "2020-01-2": {
       "id": "2020-01-2",
@@ -1040,7 +1358,8 @@
         "Insere-se 18 à direita de 16 e depois 19 à direita de 18. O desequilíbrio direita-direita em 16 é corrigido por uma rotação à esquerda, formando a subárvore de raiz 18, com filhos 16 e 19."
       ],
       "conclusion": "Alternativa A, conforme o gabarito: a árvore final tem raiz 20; à esquerda, 15 com filhos 10 e 18, sendo 16 e 19 filhos de 18; à direita, 25 com filho direito 30.",
-      "distractors": "B, C e D não representam a árvore obtida por essa sequência de inserções e rotações, enquanto E é incompatível com a existência da árvore AVL resultante indicada pelo gabarito."
+      "distractors": "B, C e D não representam a árvore obtida por essa sequência de inserções e rotações, enquanto E é incompatível com a existência da árvore AVL resultante indicada pelo gabarito.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
     },
     "2020-01-3": {
       "id": "2020-01-3",
@@ -1050,7 +1369,8 @@
         "Assim, 2n + 1 tem crescimento linear."
       ],
       "conclusion": "Alternativa D: 2n + 1.",
-      "distractors": "A tem crescimento cúbico; B e E têm crescimento quadrático; C tem crescimento constante, não linear."
+      "distractors": "A tem crescimento cúbico; B e E têm crescimento quadrático; C tem crescimento constante, não linear.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2020-01-4": {
       "id": "2020-01-4",
@@ -1062,7 +1382,8 @@
         "O quarto índice é 13, cujo valor é 43. Como 52 > 43, resta apenas o índice 14, cujo valor é 47, examinado na quinta comparação com um item do vetor. Como 52 > 47, o intervalo fica vazio."
       ],
       "conclusion": "Alternativa C: são examinados 5 itens antes de concluir que 52 não está no vetor.",
-      "distractors": "A e B superestimam a quantidade de itens examinados, enquanto D e E a subestimam, conforme a simulação da pesquisa binária."
+      "distractors": "A e B superestimam a quantidade de itens examinados, enquanto D e E a subestimam, conforme a simulação da pesquisa binária.",
+      "method": "Rastreamento dos limites e das comparações da busca binária."
     },
     "2020-01-5": {
       "id": "2020-01-5",
@@ -1072,7 +1393,8 @@
         "Na volta das chamadas recursivas, o printf imprime primeiro o último nó e depois seus predecessores, até chegar ao primeiro."
       ],
       "conclusion": "Alternativa B: a função imprime os valores de todos os nós, começando pelo último.",
-      "distractors": "A inverte a ordem efetiva da impressão, C e D indicam filtros de posição inexistentes no código, e E não se aplica porque B descreve corretamente a função."
+      "distractors": "A inverte a ordem efetiva da impressão, C e D indicam filtros de posição inexistentes no código, e E não se aplica porque B descreve corretamente a função.",
+      "method": "Rastreamento dos nós e dos ponteiros alterados pelas operações."
     },
     "2020-01-6": {
       "id": "2020-01-6",
@@ -1082,7 +1404,8 @@
         "O custo médio usual de busca é O(1 + α) = O(1 + n/100). Como 100 é constante, esse custo é O(n)."
       ],
       "conclusion": "Alternativa C: com tamanho da tabela fixo em 100, o tempo médio de busca é O(n).",
-      "distractors": "A ignora o crescimento das cadeias, B e D não se aplicam porque o pior caso pode exigir percorrer n chaves na mesma cadeia, e E é incorreta porque C é verdadeira."
+      "distractors": "A ignora o crescimento das cadeias, B e D não se aplicam porque o pior caso pode exigir percorrer n chaves na mesma cadeia, e E é incorreta porque C é verdadeira.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2020-01-7": {
       "id": "2020-01-7",
@@ -1094,7 +1417,8 @@
         "Execute head = p para tornar o antigo último nó a nova cabeça da lista."
       ],
       "conclusion": "Alternativa D: q->next = NULL; p->next = head; head = p;",
-      "distractors": "A não rompe a ligação do penúltimo com o último e cria um ciclo, B faz o último apontar para si mesmo, C perde a ligação com o início original, e E deixa de realizar a movimentação."
+      "distractors": "A não rompe a ligação do penúltimo com o último e cria um ciclo, B faz o último apontar para si mesmo, C perde a ligação com o início original, e E deixa de realizar a movimentação.",
+      "method": "Aplicação da propriedade de ordem da BST durante a operação ou percurso."
     },
     "2020-01-8": {
       "id": "2020-01-8",
@@ -1104,7 +1428,8 @@
         "São realizadas n − 1 inserções de custo constante cada, resultando em tempo Θ(n), portanto O(n)."
       ],
       "conclusion": "Alternativa B: insertion sort apresenta tempo O(n) para essa entrada.",
-      "distractors": "Nas versões usuais consideradas, heapsort e mergesort mantêm custo O(n log n), quicksort não tem comportamento linear garantido para valores iguais, e E é falsa porque insertion sort é linear nesse caso."
+      "distractors": "Nas versões usuais consideradas, heapsort e mergesort mantêm custo O(n log n), quicksort não tem comportamento linear garantido para valores iguais, e E é falsa porque insertion sort é linear nesse caso.",
+      "method": "Contagem de operações e comparação das ordens assintóticas."
     },
     "2020-01-9": {
       "id": "2020-01-9",
@@ -1114,7 +1439,8 @@
         "Assim, o caminho mais longo pode intercalar nós vermelhos entre os pretos, mas seu comprimento não supera o dobro do caminho mais curto."
       ],
       "conclusion": "Alternativa A: o caminho mais longo da raiz até uma folha não supera o dobro do mais curto.",
-      "distractors": "B confunde igualdade de altura preta com igualdade entre quantidades de pretos e vermelhos, C contraria a propriedade de raiz preta, D exige indevidamente filhos vermelhos para nós pretos, e E é falsa porque A é verdadeira."
+      "distractors": "B confunde igualdade de altura preta com igualdade entre quantidades de pretos e vermelhos, C contraria a propriedade de raiz preta, D exige indevidamente filhos vermelhos para nós pretos, e E é falsa porque A é verdadeira.",
+      "method": "Aplicação das propriedades rubro-negras após a operação indicada."
     },
     "2020-01-10": {
       "id": "2020-01-10",
@@ -1124,7 +1450,17 @@
         "Essa ordem é LIFO: o último registro inserido é o primeiro retirado, comportamento próprio de uma pilha."
       ],
       "conclusion": "Alternativa E: pilha é a estrutura usada para implementar as chamadas recursivas.",
-      "distractors": "Heap binário, tabela hash e árvore de busca não representam a ordem de retorno das chamadas, enquanto a fila usa FIFO, e não o LIFO necessário."
+      "distractors": "Heap binário, tabela hash e árvore de busca não representam a ordem de retorno das chamadas, enquanto a fila usa FIFO, e não o LIFO necessário.",
+      "method": "Desenvolvimento da recorrência e análise dos casos-base."
+    },
+    "2020-01-11": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2020-01-12": {
       "id": "2020-01-12",
@@ -1135,19 +1471,26 @@
         "O gabarito oficial D indica que as árvores A e C respeitam as regras, enquanto B não respeita."
       ],
       "conclusion": "Alternativa D — A e C, conforme o gabarito oficial, sem possibilidade de verificação pela ausência das figuras.",
-      "distractors": "Segundo o gabarito, A, B e C incluem indevidamente a árvore B ou excluem alguma árvore válida, enquanto E nega que A e C sejam AVL; sem as figuras, essas classificações não podem ser verificadas."
+      "distractors": "Segundo o gabarito, A, B e C incluem indevidamente a árvore B ou excluem alguma árvore válida, enquanto E nega que A e C sejam AVL; sem as figuras, essas classificações não podem ser verificadas.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
+    },
+    "2020-01-13": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2020-01-14": {
-      "id": "2020-01-14",
+      "method": "Questão anulada",
       "steps": [
-        "Como o vetor está ordenado, todas as ocorrências de um mesmo inteiro formam um bloco contíguo.",
-        "Se a pergunta trata da existência de algum inteiro majoritário, ele necessariamente ocupa a posição central; se trata de um inteiro específico, basta procurar esse valor.",
-        "Duas buscas binárias localizam o início e o fim do bloco do valor investigado, usando O(log n) comparações.",
-        "Se os limites do bloco são L e R, sua quantidade de ocorrências é R − L + 1; verifica-se se essa quantidade é maior que n/2.",
-        "A complexidade mínima no pior caso é Θ(log n). Uma varredura linear usa Θ(n), mas não é mínima para um vetor ordenado, tornando o gabarito oficial A incompatível com o enunciado."
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
       ],
-      "conclusion": "Alternativa B — Θ(log n). O gabarito oficial A apresenta uma inconsistência.",
-      "distractors": "A e E representam custo linear, pois Θ(n/2) = Θ(n), enquanto C e D não bastam, no pior caso, para determinar os limites do bloco de ocorrências."
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2020-01-15": {
       "id": "2020-01-15",
@@ -1158,7 +1501,17 @@
         "A manutenção desse balanceamento mais rígido pode exigir mais rotações nas atualizações, especialmente em exclusões."
       ],
       "conclusion": "Alternativa A — AVL tendem a ter menor altura, mas podem exigir mais rotações durante inserções e exclusões.",
-      "distractors": "B e D afirmam indevidamente igualdade de alturas, C inverte a tendência de altura e E é falsa porque A descreve corretamente a comparação."
+      "distractors": "B e D afirmam indevidamente igualdade de alturas, C inverte a tendência de altura e E é falsa porque A descreve corretamente a comparação.",
+      "method": "Atualização de alturas e fatores de balanceamento após cada operação."
+    },
+    "2020-01-16": {
+      "method": "Questão anulada",
+      "steps": [
+        "Este item foi anulado no gabarito final do edital.",
+        "Por isso, ele não recebe uma resposta correta única e não entra na pontuação."
+      ],
+      "conclusion": "Questão anulada — não pontua.",
+      "distractors": "As alternativas não são comparadas para fins de nota em uma questão anulada."
     },
     "2020-01-17": {
       "id": "2020-01-17",
@@ -1170,7 +1523,8 @@
         "Para n = 256, o tempo estimado é (30/384) · 256 · 8 = 160 segundos, abaixo do limite e sem representar o maior tamanho possível entre as opções."
       ],
       "conclusion": "Alternativa C — 512, pelo modelo usual de tempo do Merge Sort. O gabarito oficial A é incompatível com esse cálculo.",
-      "distractors": "A subestima o tamanho máximo, enquanto B, D e E excedem os 360 segundos no modelo T(n) proporcional a n log₂ n."
+      "distractors": "A subestima o tamanho máximo, enquanto B, D e E excedem os 360 segundos no modelo T(n) proporcional a n log₂ n.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2020-01-18": {
       "id": "2020-01-18",
@@ -1182,7 +1536,8 @@
         "Insere-se 1 antes de todos os demais: 1 2 3 4 5."
       ],
       "conclusion": "Alternativa A — 4 5 3 2 1 / 3 4 5 2 1 / 2 3 4 5 1 / 1 2 3 4 5.",
-      "distractors": "B ordena a partir da extremidade direita, C não mantém o prefixo ordenado, D troca a ordem das inserções de 3 e 2 e E altera elementos que ainda não deveriam ser processados."
+      "distractors": "B ordena a partir da extremidade direita, C não mantém o prefixo ordenado, D troca a ordem das inserções de 3 e 2 e E altera elementos que ainda não deveriam ser processados.",
+      "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
     },
     "2020-01-19": {
       "id": "2020-01-19",
@@ -1194,7 +1549,8 @@
         "Os casos de lista vazia ou com um único nó também exigem apenas ajustes constantes; logo, I, II, III e IV podem ser implementadas em O(1)."
       ],
       "conclusion": "Alternativa E — todas as afirmativas estão corretas.",
-      "distractors": "A, B, C e D apresentam subconjuntos incompletos, pois todas as quatro operações podem ser realizadas em tempo O(1)."
+      "distractors": "A, B, C e D apresentam subconjuntos incompletos, pois todas as quatro operações podem ser realizadas em tempo O(1).",
+      "method": "Rastreamento dos nós e dos ponteiros alterados pelas operações."
     },
     "2020-01-20": {
       "id": "2020-01-20",
@@ -1205,7 +1561,8 @@
         "A fila está cheia quando esse próximo índice coincide com FRONT, pois uma nova inserção ocuparia a posição reservada para distinguir os estados."
       ],
       "conclusion": "Alternativa E — cheia: (REAR + 1) mod n == FRONT; vazia: REAR == FRONT.",
-      "distractors": "A erra a condição de vazio, B e D usam a condição de vazio para indicar fila cheia, e C avança FRONT em vez de REAR para testar a falta de espaço."
+      "distractors": "A erra a condição de vazio, B e D usam a condição de vazio para indicar fila cheia, e C avança FRONT em vez de REAR para testar a falta de espaço.",
+      "method": "Simulação das operações FIFO e acompanhamento das extremidades da fila."
     }
   }
 }

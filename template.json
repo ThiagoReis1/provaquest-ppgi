@@ -2,11 +2,7 @@
   "id": "web-db-user",
   "name": "Web App (db,user)",
   "description": "Full-stack web template with database + user flows",
-  "capabilities": [
-    "server",
-    "db",
-    "user"
-  ],
+  "capabilities": ["server", "db", "user"],
   "files": [
     "package.json",
     "drizzle/schema.ts",

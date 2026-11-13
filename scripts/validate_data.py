@@ -8,8 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "client" / "src" / "data" / "questions.json"
 TS_PATH = ROOT / "client" / "src" / "data" / "questions.ts"
 FIGURES_DIR = ROOT / "client" / "public" / "figures"
-
-
+SUBJECT_ORDER = ("Algoritmos", "Complexidade", "Estruturas de dados", "Grafos")
 def load_data() -> dict:
     return json.loads(DATA_PATH.read_text(encoding="utf-8"))
 
@@ -34,6 +33,12 @@ def validate() -> dict:
     figure_names = referenced_figures(data)
     for edition in editions:
         assert edition.get("id") and edition.get("examUrl") and edition.get("keyUrl")
+        used_subjects = {question["subject"] for question in edition["questions"]}
+        expected_subjects = [name for name in SUBJECT_ORDER if name in used_subjects]
+        assert edition.get("subjects") == expected_subjects, (
+            f"Assuntos do edital {edition['id']} divergem do acervo: "
+            f"{edition.get('subjects')} != {expected_subjects}"
+        )
         for question in edition["questions"]:
             question_key = f"{edition['id']}-{question['number']}"
             assert question_key not in ids, f"ID duplicado: {question_key}"

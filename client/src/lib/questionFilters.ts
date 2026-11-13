@@ -1,3 +1,5 @@
+import { normalizeSearchText } from "./normalizeSearch";
+
 export type SearchBlock =
   | { type: "p" | "code"; text: string }
   | { type: "list"; items: readonly { label: string; text: string }[] };
@@ -20,11 +22,9 @@ export type SearchQuestion = {
 };
 
 export function normalizeSearch(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
+  // Mesma normalização da consulta nominal: sem acentos, sem diferença de
+  // caixa e com apóstrofos tipográficos convertidos para o formato ASCII.
+  return normalizeSearchText(value);
 }
 
 export function searchTextOf(question: SearchQuestion) {
