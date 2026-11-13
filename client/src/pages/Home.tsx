@@ -28,6 +28,13 @@ import { candidateData } from "@/data/candidates";
 import { questionId } from "@/lib/simulation";
 import { matchesQuestionQuery } from "@/lib/questionFilters";
 import { candidateStageTone } from "@/lib/candidateStageTone";
+import { didCandidatePassStage } from "@/lib/candidateStageStatus";
+import { normalizeSearchText } from "@/lib/normalizeSearch";
+import {
+  persistBeforeRemovingLegacy,
+  writeJsonSafely,
+} from "@/lib/safeStorage";
+import { simulationAnswerStatus } from "@/lib/simulationAnswerStatus";
 import {
   availableSubjects,
   availableSubtopics,
@@ -389,12 +396,12 @@ function readStorage<T>(key: string, fallback: T): T {
   }
 }
 
-function writeStorage(key: string, value: unknown) {
-  if (typeof window === "undefined") return;
+function writeStorage(key: string, value: unknown): boolean {
+  if (typeof window === "undefined") return false;
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    return writeJsonSafely(window.localStorage, key, value);
   } catch {
-    /* quota excedida ou navegação privada: o estado continua em memória */
+    return false;
   }
 }
 
@@ -619,11 +626,16 @@ export default function Home() {
   }, [practice]);
 
   useEffect(() => {
-    writeStorage(STORAGE_KEYS.simulations, simulations);
+    if (typeof window === "undefined") return;
     try {
-      window.localStorage.removeItem(STORAGE_KEYS.simulation);
+      persistBeforeRemovingLegacy(
+        window.localStorage,
+        STORAGE_KEYS.simulations,
+        STORAGE_KEYS.simulation,
+        simulations
+      );
     } catch {
-      /* storage indisponível */
+      /* Mantém a sessão em memória quando o storage está indisponível. */
     }
   }, [simulations]);
 
@@ -881,7 +893,13 @@ export default function Home() {
       setQuery("");
       setBookmarkedOnly(false);
     } else {
-      if (options.editionId) setSelectedEdition(options.editionId);
+      if (options.editionId) {
+        if (options.editionId !== selectedEdition) {
+          setSelectedTopic("Todos os temas");
+          setSelectedSubtopic("Todos os subtemas");
+        }
+        setSelectedEdition(options.editionId);
+      }
       if (options.subject) setSelectedSubject(options.subject);
       if (options.bookmarksOnly !== undefined)
         setBookmarkedOnly(options.bookmarksOnly);
@@ -895,7 +913,14 @@ export default function Home() {
   }
 
   function startEditionPractice(editionId: string) {
-    startPractice({ editionId, subject: "Todos os assuntos" });
+    setSelectedTopic("Todos os temas");
+    setSelectedSubtopic("Todos os subtemas");
+    setQuery("");
+    startPractice({
+      editionId,
+      subject: "Todos os assuntos",
+      bookmarksOnly: false,
+    });
   }
 
   function openPracticeQuestion(question: PracticeQuestion) {
@@ -1608,7 +1633,11 @@ function QuestionCard({
           </button>
         </div>
         <QuestionBody question={question} />
-        <div className="options-list">
+        <div
+          className="options-list"
+          role="group"
+          aria-label={`Alternativas da questão ${question.number}`}
+        >
           {options.map(option => {
             const chosen = currentAnswer === option.id;
             const isCorrect = option.id === question.correct;
@@ -1624,6 +1653,7 @@ function QuestionCard({
                 disabled={isSubmitted}
                 key={option.id}
                 className={`option-row ${chosen ? "selected" : ""} ${state}`}
+                aria-pressed={chosen}
                 onClick={() => onSelect(option.id)}
               >
                 <span className="option-letter">{option.id}</span>
@@ -1994,12 +2024,20 @@ function SimulationView({
   onRestart,
 }: any) {
   const [reviewing, setReviewing] = useState(false);
+  const submitted = simulations[selectedEdition]?.submitted ?? {};
   const sessionAnswered = ids.filter((id: string) =>
-    Boolean(simulations[selectedEdition]?.submitted?.[id])
+    Boolean(submitted[id] && answers[id])
   ).length;
   const sessionCorrect = ids.filter((id: string) => {
     const question = allQuestions.find(item => questionKey(item) === id);
-    return question && answers[id] === question.correct;
+    return (
+      question &&
+      simulationAnswerStatus(
+        answers[id],
+        question.correct,
+        Boolean(submitted[id])
+      ) === "correct"
+    );
   }).length;
   const score = ids.length
     ? Math.round((sessionCorrect / ids.length) * 100)
@@ -2163,6 +2201,7 @@ function SimulationView({
           edition={edition}
           sessionIds={ids}
           answers={answers}
+          submitted={submitted}
           onBack={() => setReviewing(false)}
         />
       ) : (
@@ -2215,7 +2254,7 @@ function SimulationView({
                     item => questionKey(item) === id
                   );
                   const hasAnswer = Boolean(
-                    simulations[selectedEdition]?.submitted?.[id]
+                    simulations[selectedEdition]?.submitted?.[id] && answers[id]
                   );
                   const isCorrect =
                     hasAnswer &&
@@ -2270,6 +2309,7 @@ function SimulationView({
               simulate
               score={score}
               correctTotal={sessionCorrect}
+              answeredTotal={sessionAnswered}
               onReview={() => setReviewing(true)}
             />
           ) : (
@@ -2303,6 +2343,7 @@ function ResultView({
   resetStudy,
   score = 0,
   correctTotal = 0,
+  answeredTotal = 0,
   onReview,
 }: {
   sessionIds: string[];
@@ -2310,6 +2351,7 @@ function ResultView({
   simulate: boolean;
   score?: number;
   correctTotal?: number;
+  answeredTotal?: number;
   onReview: () => void;
 }) {
   return (
@@ -2337,6 +2379,11 @@ function ResultView({
           <span>acertos</span>
         </div>
       </div>
+      <p className="result-response-summary">
+        {answeredTotal}{" "}
+        {answeredTotal === 1 ? "resposta confirmada" : "respostas confirmadas"}{" "}
+        · {Math.max(0, sessionIds.length - answeredTotal)} sem confirmação
+      </p>
       <div className="result-actions">
         <button className="primary-button" onClick={resetStudy}>
           <RotateCcw size={16} /> Refazer simulado
@@ -2346,8 +2393,9 @@ function ResultView({
         </button>
       </div>
       <p className="result-footnote">
-        <Check size={14} /> Questões anuladas e itens em revisão não entram na
-        pontuação.
+        <Check size={14} /> A nota considera todas as questões respondíveis;
+        rascunhos e itens sem confirmação não contam como acerto. Anuladas e em
+        revisão ficam fora.
       </p>
     </section>
   );
@@ -2357,11 +2405,13 @@ function ReviewPanel({
   edition,
   sessionIds,
   answers,
+  submitted,
   onBack,
 }: {
   edition: Edition;
   sessionIds: string[];
   answers: Record<string, string>;
+  submitted: Record<string, boolean>;
   onBack: () => void;
 }) {
   return (
@@ -2371,8 +2421,8 @@ function ReviewPanel({
           <span className="section-kicker">Revisão do simulado</span>
           <h2>Veja onde ganhou — e onde pode virar o jogo.</h2>
           <p>
-            {sessionIds.length} respostas comparadas ao gabarito do{" "}
-            {edition.label}.
+            {sessionIds.length} questões comparadas ao gabarito do{" "}
+            {edition.label}, incluindo pendentes e rascunhos não confirmados.
           </p>
         </div>
         <button className="quiet-button" onClick={onBack}>
@@ -2384,20 +2434,39 @@ function ReviewPanel({
           const question = allQuestions.find(item => questionKey(item) === id);
           if (!question) return null;
           const marked = answers[id];
-          const isCorrect = marked === question.correct;
+          const status = simulationAnswerStatus(
+            marked,
+            question.correct,
+            Boolean(submitted[id])
+          );
+          const reviewClass =
+            status === "correct"
+              ? "review-correct"
+              : status === "incorrect"
+                ? "review-wrong"
+                : "review-pending";
           return (
-            <article
-              className={`review-item ${isCorrect ? "review-correct" : "review-wrong"}`}
-              key={id}
-            >
+            <article className={`review-item ${reviewClass}`} key={id}>
               <div className="review-index">
                 {String(index + 1).padStart(2, "0")}
               </div>
               <div className="review-copy">
                 <div className="review-meta">
                   <span>Questão {question.number}</span>
-                  <Pill tone={isCorrect ? "mint" : "coral"}>
-                    {isCorrect ? "Acertou" : "Revisar"}
+                  <Pill
+                    tone={
+                      status === "correct"
+                        ? "mint"
+                        : status === "incorrect"
+                          ? "coral"
+                          : "neutral"
+                    }
+                  >
+                    {status === "correct"
+                      ? "Acertou"
+                      : status === "incorrect"
+                        ? "Revisar"
+                        : "Não respondida"}
                   </Pill>
                 </div>
                 <strong>
@@ -2406,7 +2475,10 @@ function ReviewPanel({
                 </strong>
                 <div className="review-answer">
                   <span>
-                    Sua resposta: <b>{marked ?? "—"}</b>
+                    {status === "pending" && marked
+                      ? "Rascunho não confirmado:"
+                      : "Sua resposta:"}{" "}
+                    <b>{marked ?? "—"}</b>
                   </span>
                   <span>
                     Gabarito: <b>{question.correct}</b>
@@ -2414,7 +2486,13 @@ function ReviewPanel({
                 </div>
                 <p>{explain(question)}</p>
               </div>
-              {isCorrect ? <Check size={18} /> : <X size={18} />}
+              {status === "correct" ? (
+                <Check size={18} />
+              ) : status === "incorrect" ? (
+                <X size={18} />
+              ) : (
+                <CircleHelp size={18} />
+              )}
             </article>
           );
         })}
@@ -2570,10 +2648,12 @@ function CandidatesView() {
       setStage("todos");
     }
   }, [stage, activeStageIds]);
-  const normalized = query.trim().toLowerCase();
+  const normalized = normalizeSearchText(query);
   const filtered = selectedEditionRecords.filter(item => {
     const c = item.candidate;
-    const text = `${c.name} ${c.degree} ${item.editionLabel}`.toLowerCase();
+    const text = normalizeSearchText(
+      `${c.name} ${c.degree} ${item.editionLabel}`
+    );
     return (
       (!normalized || text.includes(normalized)) &&
       (stage === "todos" || Boolean(c.stages[stage]))
@@ -2586,7 +2666,7 @@ function CandidatesView() {
           maximumFractionDigits: 2,
         })
       : "—";
-  const statusFor = (candidate: any, def: any, index: number) => {
+  const statusFor = (candidate: any, def: any) => {
     const entry = candidate.stages[def.id];
     if (!entry) return "Não participou";
     if (def.id === "inscricoes")
@@ -2597,7 +2677,15 @@ function CandidatesView() {
       return entry.status && entry.status !== "Publicado"
         ? entry.status
         : "Resultado final";
-    return candidate.passedStages.includes(def.id) ? "Passou" : "Não passou";
+    const activeIndex = activeStages.findIndex(stage => stage.id === def.id);
+    return didCandidatePassStage(
+      def.id,
+      activeStages[activeIndex + 1]?.id,
+      candidate.stages,
+      candidate.passedStages ?? []
+    )
+      ? "Passou"
+      : "Não passou";
   };
   const funnel = activeStages.map((def, index) => {
     const entered = selectedEditionRecords.filter(
@@ -2727,6 +2815,7 @@ function CandidatesView() {
           <button
             type="button"
             className={scoreGroup === "todos" ? "active" : ""}
+            aria-pressed={scoreGroup === "todos"}
             onClick={() => setScoreGroup("todos")}
           >
             Todos os candidatos
@@ -2736,6 +2825,7 @@ function CandidatesView() {
             className={
               scoreGroup === "aprovados" ? "active passing" : "passing"
             }
+            aria-pressed={scoreGroup === "aprovados"}
             onClick={() => setScoreGroup("aprovados")}
           >
             Candidatos ≥ 7,00
@@ -2743,6 +2833,7 @@ function CandidatesView() {
           <button
             type="button"
             className={scoreGroup === "abaixo" ? "active below" : "below"}
+            aria-pressed={scoreGroup === "abaixo"}
             onClick={() => setScoreGroup("abaixo")}
           >
             Candidatos &lt; 7,00
@@ -2774,11 +2865,7 @@ function CandidatesView() {
             </b>
           </div>
         </div>
-        <div
-          className="score-chart"
-          role="img"
-          aria-label="Gráfico de barras dos candidatos na Prova de Conhecimentos agrupado pelo corte de 7,00"
-        >
+        <div className="score-chart" aria-hidden="true">
           {scoreBins.map(bin => (
             <div
               className={`score-bar-column ${bin.start >= 7 ? "passing" : ""}`}
@@ -2795,6 +2882,29 @@ function CandidatesView() {
             </div>
           ))}
         </div>
+        <table className="sr-only">
+          <caption>
+            Distribuição das notas na Prova de Conhecimentos para o grupo
+            selecionado
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Faixa de nota</th>
+              <th scope="col">Quantidade de candidatos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {scoreBins.map(bin => (
+              <tr key={bin.start}>
+                <th scope="row">
+                  {bin.start.toFixed(1).replace(".", ",")} a{" "}
+                  {bin.end.toFixed(1).replace(".", ",")}
+                </th>
+                <td>{bin.count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         <p className="score-chart-note">
           Use os botões para visualizar todos os candidatos ou agrupá-los pelo
           corte oficial de 7,00.
@@ -2912,7 +3022,7 @@ function CandidatesView() {
                       def.id === "final"
                         ? (entry.finalScore ?? entry.score)
                         : entry.score;
-                    const status = statusFor(c, def, index);
+                    const status = statusFor(c, def);
                     const tone = candidateStageTone(def.id, status);
                     const stageDocument = item.documents?.[def.id];
                     const stageContent = (

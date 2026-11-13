@@ -4511,3 +4511,42 @@ button:disabled {
     font-size: 14px;
   }
 }
+
+/* Foco de teclado visível nos campos de busca e seletores. */
+.search-input:focus-within {
+  border-color: #225ea8;
+  box-shadow: 0 0 0 3px rgba(34, 94, 168, 0.22);
+}
+.search-controls select:focus-visible,
+.simulator-select select:focus-visible {
+  border-color: #225ea8;
+  outline: 3px solid #225ea8;
+  outline-offset: 2px;
+}
+
+/* Estado neutro para itens do simulado sem resposta confirmada. */
+.review-item.review-pending {
+  border-color: #d6e0e8;
+  background: #f7f9fb;
+}
+.review-item.review-pending > svg {
+  color: #607487;
+}
+.result-response-summary {
+  margin: -8px 0 0 !important;
+  color: var(--ink-soft) !important;
+  font-size: 13px !important;
+}
+
+/* Mantém conteúdo disponível a leitores de tela sem alterar o layout visual. */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
