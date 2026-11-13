@@ -801,6 +801,14 @@ export default function Home() {
     window.history.replaceState({}, "", url);
   }, [mode]);
 
+  /* O botão Voltar/Avançar altera o histórico fora do React. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const syncModeFromHistory = () => setMode(modeFromUrl());
+    window.addEventListener("popstate", syncModeFromHistory);
+    return () => window.removeEventListener("popstate", syncModeFromHistory);
+  }, []);
+
   useEffect(() => {
     const syncStorage = (event: Event) => {
       const storageEvent = event as StorageEvent;
@@ -955,9 +963,10 @@ export default function Home() {
     bookmarkedIds,
   ]);
 
-  const answeredCount = Object.keys(practice.submitted).filter(id =>
-    respondibleQuestionIds.has(id)
-  ).length;
+  const answeredCount = new Set([
+    ...Object.keys(practice.submitted),
+    ...Object.keys(completed),
+  ]).size;
   const correctCount = Object.values(studyResults).filter(Boolean).length;
   const globalProgress = Math.min(
     100,
@@ -976,7 +985,10 @@ export default function Home() {
     ? practice.answers[questionKey(practiceQuestion)]
     : undefined;
   const practiceSubmitted = practiceQuestion
-    ? Boolean(practice.submitted[questionKey(practiceQuestion)])
+    ? Boolean(
+        practice.submitted[questionKey(practiceQuestion)] ||
+          completed[questionKey(practiceQuestion)]
+      )
     : false;
 
   const filterIds = useMemo(
@@ -984,10 +996,10 @@ export default function Home() {
     [filteredQuestions]
   );
   const answeredInFilter = filterIds.filter(
-    id => practice.submitted[id]
+    id => practice.submitted[id] || completed[id]
   ).length;
   const correctInFilter = filterIds.filter(
-    id => practice.submitted[id] && studyResults[id] === true
+    id => (practice.submitted[id] || completed[id]) && studyResults[id] === true
   ).length;
   const filterProgress = filteredQuestions.length
     ? (answeredInFilter / filteredQuestions.length) * 100
@@ -1017,14 +1029,21 @@ export default function Home() {
       );
     if (stillVisible) return;
     const nextQuestion =
-      filteredQuestions.find(
-        question => !practice.submitted[questionKey(question)]
-      ) ?? filteredQuestions[0];
+      filteredQuestions.find(question => {
+        const id = questionKey(question);
+        return !practice.submitted[id] && !completed[id];
+      }) ?? filteredQuestions[0];
     setPractice(previous => ({
       ...previous,
       activeId: questionKey(nextQuestion),
     }));
-  }, [mode, filteredQuestions, practice.activeId, practice.submitted]);
+  }, [
+    mode,
+    filteredQuestions,
+    practice.activeId,
+    practice.submitted,
+    completed,
+  ]);
 
   function persistProgress(next: Record<string, boolean>) {
     const sanitized = sanitizeProgress(next);

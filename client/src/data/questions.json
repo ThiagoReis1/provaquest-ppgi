@@ -9454,15 +9454,14 @@
           "solution": {
             "id": "2020-01-17",
             "steps": [
-              "No pior caso, o Merge Sort tem custo proporcional a n log₂ n; adotamos T(n) = c · n log₂ n para estimar o tempo.",
-              "Para n = 64, temos 30 = c · 64 · 6, logo c = 30/384.",
-              "Seis minutos correspondem a 360 segundos, isto é, 12 vezes o tempo inicial; portanto, o limite estimado satisfaz n log₂ n = 12 · 384 = 4608.",
-              "Para n = 512, temos 512 · log₂ 512 = 512 · 9 = 4608, correspondendo exatamente a 360 segundos.",
-              "Para n = 256, o tempo estimado é (30/384) · 256 · 8 = 160 segundos, abaixo do limite e sem representar o maior tamanho possível entre as opções."
+              "O gabarito final oficial do Edital 060/2019 marca a alternativa A (256). A aplicação mantém essa resposta oficial para não substituir o resultado publicado pela banca.",
+              "Há uma ressalva técnica: se o tempo for modelado exatamente por T(n) = c · n log₂ n, então 30 = c · 64 · 6 e o limite de 360 segundos coincide com n = 512, alternativa C.",
+              "Portanto, o enunciado e o gabarito oficial apresentam uma inconsistência matemática: o acervo informa A porque essa é a resposta publicada oficialmente, mas registra a ressalva para não apresentar a derivação de C como se fosse compatível com o gabarito.",
+              "Em caso de uso para pontuação ou revisão do processo seletivo, prevalece o documento oficial da UFAM; em caso de estudo de complexidade, a conta n log₂ n deve ser considerada com a ressalva acima."
             ],
-            "conclusion": "Alternativa C — 512, pelo modelo usual de tempo do Merge Sort. O gabarito oficial A é incompatível com esse cálculo.",
-            "distractors": "A subestima o tamanho máximo, enquanto B, D e E excedem os 360 segundos no modelo T(n) proporcional a n log₂ n.",
-            "method": "Rastreamento das permutações e das propriedades do algoritmo de ordenação."
+            "conclusion": "Alternativa A — 256, conforme o gabarito final oficial. Observação: o modelo matemático n log₂ n, aplicado literalmente, aponta 512 (C), indicando uma inconsistência entre o enunciado e o gabarito publicado.",
+            "distractors": "A aplicação não troca o gabarito oficial pela interpretação matemática independente. B, C, D e E devem ser avaliadas com a ressalva registrada; para contestação ou correção formal, consulte a publicação oficial da UFAM.",
+            "method": "Conferência do gabarito oficial com ressalva matemática explícita."
           },
           "blocks": [
             {

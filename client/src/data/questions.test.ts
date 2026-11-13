@@ -194,6 +194,13 @@ describe("acervo de questões", () => {
     ).toEqual(annulled2020);
   });
 
+  it("não contradiz o gabarito oficial na solução de 2020/01-17", () => {
+    const item = question("2020-01", 17);
+    expect(item.correct).toBe("A");
+    expect(item.solution?.conclusion).toMatch(/^Alternativa A/);
+    expect(item.solution?.steps.join(" ")).toMatch(/gabarito final oficial/i);
+  });
+
   it("só deixa como respondível quem tem alternativas e gabarito", () => {
     for (const edition of studyData.editions) {
       for (const item of edition.questions) {
