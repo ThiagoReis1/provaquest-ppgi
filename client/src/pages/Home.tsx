@@ -985,10 +985,7 @@ export default function Home() {
     ? practice.answers[questionKey(practiceQuestion)]
     : undefined;
   const practiceSubmitted = practiceQuestion
-    ? Boolean(
-        practice.submitted[questionKey(practiceQuestion)] ||
-          completed[questionKey(practiceQuestion)]
-      )
+    ? Boolean(practice.submitted[questionKey(practiceQuestion)])
     : false;
 
   const filterIds = useMemo(
@@ -1031,7 +1028,9 @@ export default function Home() {
     const nextQuestion =
       filteredQuestions.find(question => {
         const id = questionKey(question);
-        return !practice.submitted[id] && !completed[id];
+        return (
+          !practice.submitted[id] && !(completed[id] && practice.answers[id])
+        );
       }) ?? filteredQuestions[0];
     setPractice(previous => ({
       ...previous,
@@ -1092,8 +1091,18 @@ export default function Home() {
     setSelectedSubtopic("Todos os subtemas");
   }
 
-  function nav(nextMode: Mode) {
+  function navigateToMode(nextMode: Mode) {
+    if (typeof window !== "undefined" && modeFromUrl() !== nextMode) {
+      const url = new URL(window.location.href);
+      if (nextMode === "home") url.searchParams.delete("view");
+      else url.searchParams.set("view", nextMode);
+      window.history.pushState({}, "", url);
+    }
     setMode(nextMode);
+  }
+
+  function nav(nextMode: Mode) {
+    navigateToMode(nextMode);
     setMobileMenu(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1131,7 +1140,7 @@ export default function Home() {
       ...previous,
       activeId: options.activeId ?? null,
     }));
-    setMode("practice");
+    navigateToMode("practice");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -1276,7 +1285,7 @@ export default function Home() {
         },
       }));
     }
-    setMode("simulate");
+    navigateToMode("simulate");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -1310,7 +1319,7 @@ export default function Home() {
 
   function selectSimulationEdition(editionId: string) {
     setSimEdition(editionId);
-    setMode("simulate");
+    navigateToMode("simulate");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
