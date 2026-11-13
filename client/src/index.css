@@ -238,12 +238,6 @@ a {
 .nav-item.active svg {
   color: var(--coral);
 }
-.nav-shortcut {
-  margin-left: auto;
-  color: #b4c0ca;
-  font-family: "DM Mono", monospace;
-  font-size: 9px;
-}
 .sidebar-bottom {
   padding: 0 6px;
 }
@@ -2130,6 +2124,144 @@ button:disabled {
 }
 
 /* Consulta de notas e funil */
+.score-distribution-section {
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto 28px;
+  padding: 20px 22px 16px;
+  border: 1px solid #dce7f1;
+  border-radius: 14px;
+  background: #fff;
+}
+.score-chart {
+  display: grid;
+  grid-template-columns: repeat(21, minmax(12px, 1fr));
+  align-items: end;
+  gap: 5px;
+  height: 190px;
+  padding: 18px 4px 0;
+  border-bottom: 1px solid #dce7f1;
+}
+.score-bar-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  height: 100%;
+  text-align: center;
+}
+.score-bar-count,
+.score-bar-label {
+  display: block;
+  flex: 0 0 18px;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font:
+    9px "DM Mono",
+    monospace;
+  white-space: nowrap;
+}
+.score-bar-track {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: end;
+  justify-content: center;
+  min-height: 0;
+  height: 100%;
+}
+.score-bar-track i {
+  display: block;
+  width: min(22px, 80%);
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+  background: #405bd6;
+}
+.score-bar-column.passing .score-bar-track i {
+  background: #2ca56f;
+}
+.score-chart-note {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+.score-group-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+.score-group-controls button {
+  padding: 8px 12px;
+  border: 1px solid #cbd8e4;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  background: #f7fafc;
+  font:
+    700 11px "Space Grotesk",
+    sans-serif;
+  cursor: pointer;
+  transition:
+    color 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease;
+}
+.score-group-controls button:hover,
+.score-group-controls button.active {
+  border-color: #405bd6;
+  color: #263ca8;
+  background: #eef1ff;
+}
+.score-group-controls button.passing:hover,
+.score-group-controls button.passing.active {
+  border-color: #2ca56f;
+  color: #18744b;
+  background: #eaf8f1;
+}
+.score-group-controls button.below:hover,
+.score-group-controls button.below.active {
+  border-color: #405bd6;
+  color: #263ca8;
+  background: #eef1ff;
+}
+.score-group-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.score-summary-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #dce7f1;
+  border-left: 4px solid #405bd6;
+  border-radius: 8px;
+  background: #f8faff;
+}
+.score-summary-card.passing {
+  border-left-color: #2ca56f;
+  background: #f3fbf7;
+}
+.score-summary-card strong {
+  color: var(--ink);
+  font:
+    700 20px "Space Grotesk",
+    sans-serif;
+}
+.score-summary-card span {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+.score-summary-card b {
+  color: #405bd6;
+  font:
+    700 13px "DM Mono",
+    monospace;
+}
+.score-summary-card.passing b {
+  color: #2ca56f;
+}
 .funnel-section {
   margin: 0 auto 28px;
   max-width: 1120px;
@@ -2140,7 +2272,7 @@ button:disabled {
   gap: 8px;
 }
 .funnel-card {
-  padding: 14px;
+  padding: 16px;
   border: 1px solid #dce7f1;
   border-radius: 12px;
   background: white;
@@ -2154,7 +2286,7 @@ button:disabled {
 .funnel-card-top span {
   color: var(--ink-soft);
   font:
-    700 10px "Space Grotesk",
+    700 12px "Space Grotesk",
     sans-serif;
 }
 .funnel-card-top strong {
@@ -2181,19 +2313,41 @@ button:disabled {
   flex-direction: column;
   gap: 3px;
   color: var(--muted);
-  font-size: 8px;
-  line-height: 1.3;
+  font-size: 11px;
+  line-height: 1.4;
 }
 .funnel-meta b {
   color: var(--coral);
   font:
-    8px "DM Mono",
+    10px "DM Mono",
     monospace;
   text-transform: uppercase;
 }
+.edition-source-link,
+.funnel-pdf-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.edition-source-link {
+  margin-top: 8px;
+}
+.edition-source-link:hover,
+.funnel-pdf-link:hover {
+  text-decoration: underline;
+}
+.funnel-pdf-link {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #edf1f4;
+}
 .candidate-stage-table {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 7px;
   margin-top: 15px;
   padding-top: 13px;
@@ -2208,6 +2362,17 @@ button:disabled {
   padding: 9px 10px;
   border-radius: 9px;
   background: #f8fbfc;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+.candidate-stage-row[href]:hover {
+  border-color: #b8d0df;
+  box-shadow: 0 5px 14px rgb(25 55 80 / 8%);
+  transform: translateY(-1px);
 }
 .candidate-stage-row.stage-no {
   background: #fff9f7;
@@ -2231,14 +2396,14 @@ button:disabled {
 .stage-name b {
   overflow: hidden;
   color: var(--ink-soft);
-  font-size: 9px;
+  font-size: 11px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 .stage-name small {
   margin-top: 3px;
   color: var(--muted);
-  font-size: 8px;
+  font-size: 10px;
   line-height: 1.2;
 }
 .stage-score {
@@ -2249,7 +2414,7 @@ button:disabled {
   display: block;
   color: var(--ink);
   font:
-    700 13px "Space Grotesk",
+    700 15px "Space Grotesk",
     sans-serif;
 }
 .stage-score small {
@@ -2257,13 +2422,17 @@ button:disabled {
   margin-top: 2px;
   color: var(--coral);
   font:
-    7px "DM Mono",
+    9px "DM Mono",
     monospace;
   white-space: nowrap;
 }
 .candidate-stage-row .stage-dot {
   width: 19px;
   height: 19px;
+}
+.stage-pdf-icon {
+  flex: 0 0 auto;
+  color: var(--blue);
 }
 @media (max-width: 950px) {
   .funnel-grid {
@@ -2274,6 +2443,17 @@ button:disabled {
   }
 }
 @media (max-width: 600px) {
+  .score-distribution-section {
+    width: calc(100% - 28px);
+    padding: 16px 12px 12px;
+    overflow-x: auto;
+  }
+  .score-chart {
+    min-width: 610px;
+  }
+  .score-group-summary {
+    grid-template-columns: 1fr;
+  }
   .funnel-grid {
     grid-template-columns: repeat(2, 1fr);
   }

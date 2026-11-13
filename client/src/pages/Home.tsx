@@ -717,28 +717,6 @@ export default function Home() {
     { id: "sources", label: "Fontes oficiais", icon: <FileText size={17} /> },
   ];
 
-  useEffect(() => {
-    const handleSearchShortcut = (event: KeyboardEvent) => {
-      if (
-        (event.metaKey || event.ctrlKey) &&
-        event.key.toLowerCase() === "k" &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        nav("search");
-        window.setTimeout(() => {
-          document
-            .querySelector<HTMLInputElement>(
-              'input[aria-label="Buscar questões"]'
-            )
-            ?.focus();
-        }, 0);
-      }
-    };
-    window.addEventListener("keydown", handleSearchShortcut);
-    return () => window.removeEventListener("keydown", handleSearchShortcut);
-  }, [mode]);
-
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -782,9 +760,6 @@ export default function Home() {
                 >
                   {item.icon}
                   <span>{item.label}</span>
-                  {item.id === "search" && (
-                    <span className="nav-shortcut">Ctrl/⌘ K</span>
-                  )}
                 </button>
               ))}
             </nav>
@@ -1916,11 +1891,54 @@ function SourcesView({
 
 function CandidatesView() {
   const [query, setQuery] = useState("");
-  const [edition, setEdition] = useState("todos");
-  const [degree, setDegree] = useState("todos");
+  const [edition, setEdition] = useState("2026/02");
   const [stage, setStage] = useState("todos");
-  const records: any[] = candidateData.records as any;
-  const stageDefs = [
+  const [scoreGroup, setScoreGroup] = useState("todos");
+  const records: any[] = (candidateData.records as readonly any[]).filter(
+    item => item.candidate.degree === "Mestrado"
+  );
+  const stageLabels: Record<string, Record<string, string>> = {
+    "2026/02": {
+      prova: "Etapa I – Prova de Conhecimentos",
+      titulos: "Etapa II – Análise de Títulos e Currículo",
+      final: "Classificação Final",
+    },
+    "2026/01": {
+      prova: "Etapa I – Prova de Conhecimentos",
+      titulos: "Etapa II – Análise de Títulos e Currículo",
+      final: "Classificação Final",
+    },
+    "2025/02": {
+      prova: "Etapa I – Prova de Conhecimentos",
+      projetos: "Etapa II – Análise de Projetos",
+      titulos: "Etapa III – Prova de Títulos",
+      final: "Classificação Final",
+    },
+    "2025/01": {
+      prova: "Etapa I – Prova de Conhecimentos",
+      projetos: "Etapa II – Análise de Projetos",
+      titulos: "Etapa III – Prova de Títulos",
+      final: "Classificação Final",
+    },
+    "2024/02": {
+      prova: "Etapa I – Prova de Conhecimentos",
+      projetos: "Etapa II – Análise de Projetos",
+      titulos: "Etapa III – Prova de Títulos",
+      final: "Classificação Final",
+    },
+    "2024/01": {
+      prova: "Etapa I – Prova de Conceitos",
+      projetos: "Etapa II – Análise do Projeto de Pesquisa",
+      titulos: "Etapa III – Prova de Títulos – Currículo Lattes",
+      final: "Classificação Final",
+    },
+    "2020/01": {
+      prova: "Prova de Conhecimentos",
+      projetos: "Análise de Projetos",
+      final: "Resultado Final",
+    },
+  };
+  const baseStageDefs = [
     { id: "inscricoes", label: "Inscrições homologadas", short: "Inscrições" },
     { id: "prova", label: "Prova de conhecimentos", short: "Prova", cutoff: 7 },
     { id: "projetos", label: "Análise de projetos", short: "Projeto" },
@@ -1928,14 +1946,14 @@ function CandidatesView() {
     { id: "final", label: "Classificação final", short: "Final" },
   ];
   const editions = Array.from(new Set(records.map(item => item.editionLabel)));
-  const degrees = Array.from(
-    new Set(records.map(item => item.candidate.degree))
-  )
-    .filter(Boolean)
-    .sort();
-  const selectedEditionRecords = records
-    .filter(item => edition === "todos" || item.editionLabel === edition)
-    .filter(item => degree === "todos" || item.candidate.degree === degree);
+  const selectedStageLabels = stageLabels[edition] ?? {};
+  const stageDefs = baseStageDefs.map(def => ({
+    ...def,
+    label: selectedStageLabels[def.id] ?? def.label,
+  }));
+  const selectedEditionRecords = records.filter(
+    item => edition === "todos" || item.editionLabel === edition
+  );
   const activeStages = stageDefs.filter(def =>
     selectedEditionRecords.some(item => item.candidate.stages[def.id])
   );
@@ -1987,6 +2005,28 @@ function CandidatesView() {
       : null;
     return { ...def, entered, advanced };
   });
+  const scoreEntries = selectedEditionRecords.flatMap(item => {
+    const score = item.candidate.stages.prova?.score;
+    return typeof score === "number" && Number.isFinite(score) ? [score] : [];
+  });
+  const passingScoreCount = scoreEntries.filter(score => score >= 7).length;
+  const belowCutoffScoreCount = scoreEntries.length - passingScoreCount;
+  const visibleScoreEntries = scoreEntries.filter(score =>
+    scoreGroup === "aprovados"
+      ? score >= 7
+      : scoreGroup === "abaixo"
+        ? score < 7
+        : true
+  );
+  const scoreBins = Array.from({ length: 21 }, (_, index) => {
+    const start = index / 2;
+    const end = start + 0.5;
+    const count = visibleScoreEntries.filter(
+      score => score >= start && (index === 20 ? score <= end : score < end)
+    ).length;
+    return { start, end, count };
+  });
+  const maxScoreBin = Math.max(1, ...scoreBins.map(bin => bin.count));
   return (
     <div className="page-view candidates-view">
       <div className="page-intro search-intro">
@@ -1994,8 +2034,8 @@ function CandidatesView() {
           <span className="section-kicker">Notas e progressão</span>
           <h1>Quem entrou. Quanto tirou. Quem passou.</h1>
           <p>
-            Consulta objetiva dos resultados oficiais: nota publicada em cada
-            etapa, situação e funil de candidatos por edital.
+            Consulta objetiva dos resultados oficiais do mestrado: nota
+            publicada em cada etapa, situação e funil de candidatos por edital.
           </p>
         </div>
         <div className="search-summary">
@@ -2011,11 +2051,16 @@ function CandidatesView() {
           etapa seguinte; “Não passou” significa que não aparece. Na prova de
           conhecimentos, o corte mínimo exibido é <strong>7,00</strong>.{" "}
           <a
-            href="https://ppgi.ufam.edu.br/encerrados.html"
+            href={
+              selectedEditionRecords[0]?.editalUrl ??
+              selectedEditionRecords[0]?.sourcePage
+            }
             target="_blank"
             rel="noreferrer"
           >
-            Abrir fontes oficiais <ExternalLink size={12} />
+            Abrir{" "}
+            {selectedEditionRecords[0]?.editalLabel ?? `edital ${edition}`}{" "}
+            <ExternalLink size={12} />
           </a>
         </span>
       </div>
@@ -2040,16 +2085,6 @@ function CandidatesView() {
           ))}
         </select>
         <select
-          aria-label="Filtrar candidatos por modalidade"
-          value={degree}
-          onChange={event => setDegree(event.target.value)}
-        >
-          <option value="todos">Todas as modalidades</option>
-          {degrees.map(item => (
-            <option key={item}>{item}</option>
-          ))}
-        </select>
-        <select
           aria-label="Filtrar candidatos por etapa"
           value={stage}
           onChange={event => setStage(event.target.value)}
@@ -2062,40 +2097,170 @@ function CandidatesView() {
           ))}
         </select>
       </div>
+      <section
+        className="score-distribution-section"
+        aria-labelledby="score-distribution-title"
+      >
+        <div className="section-heading">
+          <div>
+            <span className="section-kicker">Desempenho dos candidatos</span>
+            <h2 id="score-distribution-title">
+              Desempenho na Prova de Conhecimentos
+            </h2>
+          </div>
+          <span className="section-caption">
+            {visibleScoreEntries.length} candidatos no grupo selecionado
+          </span>
+        </div>
+        <div
+          className="score-group-controls"
+          role="group"
+          aria-label="Agrupar candidatos pelo corte de 7,00"
+        >
+          <button
+            type="button"
+            className={scoreGroup === "todos" ? "active" : ""}
+            onClick={() => setScoreGroup("todos")}
+          >
+            Todos os candidatos
+          </button>
+          <button
+            type="button"
+            className={
+              scoreGroup === "aprovados" ? "active passing" : "passing"
+            }
+            onClick={() => setScoreGroup("aprovados")}
+          >
+            Candidatos ≥ 7,00
+          </button>
+          <button
+            type="button"
+            className={scoreGroup === "abaixo" ? "active below" : "below"}
+            onClick={() => setScoreGroup("abaixo")}
+          >
+            Candidatos &lt; 7,00
+          </button>
+        </div>
+        <div className="score-group-summary" aria-live="polite">
+          <div className="score-summary-card passing">
+            <strong>{passingScoreCount}</strong>
+            <span>candidatos ≥ 7,00</span>
+            <b>
+              {scoreEntries.length
+                ? ((passingScoreCount / scoreEntries.length) * 100)
+                    .toFixed(1)
+                    .replace(".", ",")
+                : "0,0"}
+              %
+            </b>
+          </div>
+          <div className="score-summary-card below">
+            <strong>{belowCutoffScoreCount}</strong>
+            <span>candidatos &lt; 7,00</span>
+            <b>
+              {scoreEntries.length
+                ? ((belowCutoffScoreCount / scoreEntries.length) * 100)
+                    .toFixed(1)
+                    .replace(".", ",")
+                : "0,0"}
+              %
+            </b>
+          </div>
+        </div>
+        <div
+          className="score-chart"
+          role="img"
+          aria-label="Gráfico de barras dos candidatos na Prova de Conhecimentos agrupado pelo corte de 7,00"
+        >
+          {scoreBins.map(bin => (
+            <div
+              className={`score-bar-column ${bin.start >= 7 ? "passing" : ""}`}
+              key={bin.start}
+              title={`${bin.start.toFixed(1).replace(".", ",")} a ${bin.end.toFixed(1).replace(".", ",")}: ${bin.count} candidatos`}
+            >
+              <span className="score-bar-count">{bin.count || ""}</span>
+              <div className="score-bar-track">
+                <i style={{ height: `${(bin.count / maxScoreBin) * 100}%` }} />
+              </div>
+              <span className="score-bar-label">
+                {bin.start.toFixed(1).replace(".", ",")}
+              </span>
+            </div>
+          ))}
+        </div>
+        <p className="score-chart-note">
+          Use os botões para visualizar todos os candidatos ou agrupá-los pelo
+          corte oficial de 7,00.
+        </p>
+      </section>
       <section className="funnel-section">
         <div className="section-heading">
           <div>
             <span className="section-kicker">Funil do processo</span>
-            <h2>{edition === "todos" ? "Todos os editais" : edition}</h2>
+            <h2>
+              {edition === "todos"
+                ? "Todos os editais de mestrado"
+                : `Mestrado ${edition}`}
+            </h2>
+            {edition !== "todos" && selectedEditionRecords[0]?.sourcePage && (
+              <a
+                className="edition-source-link"
+                href={
+                  selectedEditionRecords[0].editalUrl ??
+                  selectedEditionRecords[0].sourcePage
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                {selectedEditionRecords[0].editalLabel ?? "Abrir edital"} (PDF){" "}
+                <ExternalLink size={13} />
+              </a>
+            )}
           </div>
           <span className="section-caption">
             Entraram × avançaram para a próxima etapa
           </span>
         </div>
         <div className="funnel-grid">
-          {funnel.map(item => (
-            <article className="funnel-card" key={item.id}>
-              <div className="funnel-card-top">
-                <span>{item.short}</span>
-                <strong>{item.entered}</strong>
-              </div>
-              <div className="funnel-bar">
-                <i
-                  style={{
-                    width: `${Math.max(4, item.entered ? ((item.advanced ?? item.entered) / item.entered) * 100 : 0)}%`,
-                  }}
-                />
-              </div>
-              <div className="funnel-meta">
-                <span>
-                  {item.advanced === null
-                    ? "etapa final"
-                    : `${item.advanced} foram para ${activeStages[funnel.indexOf(item) + 1]?.short ?? "a próxima"}`}
-                </span>
-                {item.cutoff && <b>corte {money(item.cutoff)}</b>}
-              </div>
-            </article>
-          ))}
+          {funnel.map(item => {
+            const stageSource =
+              edition !== "todos"
+                ? selectedEditionRecords[0]?.documents?.[item.id]
+                : undefined;
+            return (
+              <article className="funnel-card" key={item.id}>
+                <div className="funnel-card-top">
+                  <span>{item.label}</span>
+                  <strong>{item.entered}</strong>
+                </div>
+                <div className="funnel-bar">
+                  <i
+                    style={{
+                      width: `${Math.max(4, item.entered ? ((item.advanced ?? item.entered) / item.entered) * 100 : 0)}%`,
+                    }}
+                  />
+                </div>
+                <div className="funnel-meta">
+                  <span>
+                    {item.advanced === null
+                      ? "etapa final"
+                      : `${item.advanced} foram para ${activeStages[funnel.indexOf(item) + 1]?.short ?? "a próxima"}`}
+                  </span>
+                  {item.cutoff && <b>corte {money(item.cutoff)}</b>}
+                </div>
+                {stageSource && (
+                  <a
+                    className="funnel-pdf-link"
+                    href={stageSource}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    PDF desta etapa <ExternalLink size={12} />
+                  </a>
+                )}
+              </article>
+            );
+          })}
         </div>
       </section>
       <div className="candidate-results">
@@ -2142,11 +2307,9 @@ function CandidatesView() {
                         : entry.score;
                     const status = statusFor(c, def, index);
                     const tone = candidateStageTone(def.id, status);
-                    return (
-                      <div
-                        className={`candidate-stage-row stage-${tone}`}
-                        key={def.id}
-                      >
+                    const stageDocument = item.documents?.[def.id];
+                    const stageContent = (
+                      <>
                         <div className="stage-name">
                           <span className="stage-dot">
                             {tone === "positive" ? (
@@ -2170,6 +2333,26 @@ function CandidatesView() {
                             <small>corte {money(def.cutoff)}</small>
                           )}
                         </div>
+                      </>
+                    );
+                    return stageDocument ? (
+                      <a
+                        className={`candidate-stage-row stage-${tone}`}
+                        href={stageDocument}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={`Abrir PDF: ${def.label}`}
+                        key={def.id}
+                      >
+                        {stageContent}
+                        <ExternalLink className="stage-pdf-icon" size={13} />
+                      </a>
+                    ) : (
+                      <div
+                        className={`candidate-stage-row stage-${tone}`}
+                        key={def.id}
+                      >
+                        {stageContent}
                       </div>
                     );
                   })}

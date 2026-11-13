@@ -70,6 +70,27 @@ sources = {
 }
 urls = json.load(open('/tmp/ppgi_result_pdfs/urls.json'))
 
+def drive_view(url):
+    if not url:
+        return url
+    match = re.search(r"[?&]id=([^&]+)", url)
+    if match and "drive.google.com" in url:
+        return f"https://drive.google.com/file/d/{match.group(1)}/view"
+    match = re.search(r"/file/d/([^/]+)", url)
+    if match and "drive.google.com" in url:
+        return f"https://drive.google.com/file/d/{match.group(1)}/view"
+    return url
+
+edition_meta = {
+ '2026-02': {'editalUrl': 'https://edoc.ufam.edu.br/bitstream/123456789/11516/1/EDITAL%20N.%c2%ba%20014-2026-PROPESP-UFAM-PPGI-M-2026-2-Site.pdf', 'editalLabel': 'Edital 014/2026'},
+ '2026-01': {'editalUrl': 'https://drive.google.com/file/d/1uxWtOzC0LI1H9pfFK_SYSxV1P1nKfajl/view', 'editalLabel': 'Edital 098/2025'},
+ '2025-02': {'editalUrl': 'https://edoc.ufam.edu.br/bitstream/123456789/10194/1/EDITAL%20N.%c2%ba%20048-2025-PROPESP-UFAM-PPGI-M-D-2025-2-Site.pdf', 'editalLabel': 'Edital 048/2025'},
+ '2025-01': {'editalUrl': 'https://edoc.ufam.edu.br/bitstream/123456789/9214/1/EDITAL%20N.%c2%ba%20092-2024-PROPESP-UFAM-PPGI-M-D-2025-1-Site.pdf', 'editalLabel': 'Edital 092/2024'},
+ '2024-02': {'editalUrl': 'https://edoc.ufam.edu.br/bitstream/123456789/8339/1/EDITAL%20N.%c2%ba%20031-2024-PROPESP-UFAM-PPGI-M-D-2024-2-Site.pdf', 'editalLabel': 'Edital 031/2024'},
+ '2024-01': {'editalUrl': 'https://drive.google.com/file/d/1rWUIHlm7onS5sYCQZ06UaPF_ciVRe8pU/view', 'editalLabel': 'Edital 071/2023'},
+ '2020-01': {'editalUrl': 'https://ppgi.ufam.edu.br/images/editais/Edital_060_2019_PPGI.pdf', 'editalLabel': 'Edital 060/2019'},
+}
+
 # 2020/01 publishes the homologation table in official HTML.
 h = BeautifulSoup(requests.get('https://antigoppgi.ufam.edu.br/selecao-ppg/2020-01/homologacao-das-inscricoes-edital-060-2019').text, 'html.parser')
 manual_2020, current = [], ''
@@ -123,7 +144,7 @@ for eid, c in config.items():
         # the generated model so the UI can display the complete funnel.
         for stage in person['passedStages']:
             st.setdefault(stage, {'status': 'Aprovado'})
-        records.append({'editionId':eid,'editionLabel':c['label'],'sourcePage':sources[eid],'documents':c['docUrls'],'candidate':person})
+        records.append({'editionId':eid,'editionLabel':c['label'],'sourcePage':sources[eid],'editalUrl':edition_meta[eid]['editalUrl'],'editalLabel':edition_meta[eid]['editalLabel'],'documents':{stage: drive_view(url) for stage, url in c['docUrls'].items()},'candidate':person})
 
 payload = {
  'generatedNote':'Notas extraídas dos resultados oficiais. Para cada etapa, “Passou” significa que o candidato aparece no resultado oficial da etapa seguinte; “Não passou” significa que não aparece nele. A nota permanece a publicada no documento, sem arredondamento inventado.',
