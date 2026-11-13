@@ -1870,7 +1870,7 @@ button:disabled {
 }
 .solution-heading span {
   margin-left: auto;
-  color: #67958b;
+  color: #47756c;
   font:
     10px "DM Mono",
     monospace;
@@ -1914,7 +1914,7 @@ button:disabled {
   display: grid;
   gap: 3px;
   margin-top: 11px;
-  color: #6a7f7b;
+  color: #49635f;
   font-size: 10px;
   line-height: 1.45;
 }

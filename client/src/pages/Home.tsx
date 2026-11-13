@@ -30,6 +30,7 @@ import { matchesQuestionQuery } from "@/lib/questionFilters";
 import { candidateStageTone } from "@/lib/candidateStageTone";
 import { didCandidatePassStage } from "@/lib/candidateStageStatus";
 import { normalizeSearchText } from "@/lib/normalizeSearch";
+import { withStudyResult } from "@/lib/mergeStudyResults";
 import {
   persistScopedDiff,
   readScopedValue,
@@ -804,6 +805,20 @@ export default function Home() {
     const syncStorage = (event: Event) => {
       const storageEvent = event as StorageEvent;
       const key = storageEvent.key;
+      if (key === STORAGE_KEYS.results || key === STORAGE_KEYS.progress) {
+        let value: unknown = {};
+        try {
+          value = storageEvent.newValue
+            ? JSON.parse(storageEvent.newValue)
+            : {};
+        } catch {
+          return;
+        }
+        if (key === STORAGE_KEYS.results)
+          setStudyResults(sanitizeResults(value));
+        else setCompleted(sanitizeProgress(value));
+        return;
+      }
       if (key?.startsWith(STORAGE_KEYS.practiceQuestionPrefix)) {
         const id = decodeURIComponent(
           key.slice(STORAGE_KEYS.practiceQuestionPrefix.length)
@@ -1016,7 +1031,12 @@ export default function Home() {
   }
 
   function persistResult(id: string, correct: boolean) {
-    const next = sanitizeResults({ ...studyResults, [id]: correct });
+    const latestPersisted = sanitizeResults(
+      readStorage(STORAGE_KEYS.results, {})
+    );
+    const next = sanitizeResults(
+      withStudyResult(studyResults, latestPersisted, id, correct)
+    );
     setStudyResults(next);
     writeStorage(STORAGE_KEYS.results, next);
   }
@@ -1130,7 +1150,10 @@ export default function Home() {
       ...previous,
       submitted: { ...previous.submitted, [id]: true },
     }));
-    persistProgress({ ...completed, [id]: true });
+    persistProgress({
+      ...sanitizeProgress(readStorage(STORAGE_KEYS.progress, {})),
+      [id]: true,
+    });
     persistResult(id, answer === practiceQuestion.correct);
   }
 
@@ -1166,8 +1189,10 @@ export default function Home() {
     if (!confirmed) return;
     const nextAnswers = { ...practice.answers };
     const nextSubmitted = { ...practice.submitted };
-    const nextCompleted = { ...completed };
-    const nextResults = { ...studyResults };
+    const nextCompleted = sanitizeProgress(
+      readStorage(STORAGE_KEYS.progress, {})
+    );
+    const nextResults = sanitizeResults(readStorage(STORAGE_KEYS.results, {}));
     ids.forEach(id => {
       delete nextAnswers[id];
       delete nextSubmitted[id];
@@ -1877,7 +1902,7 @@ function QuestionCard({
           <div className="question-hint">
             <CircleHelp size={15} />
             {simulate
-              ? "Confirme sua alternativa para revelar o gabarito."
+              ? "Confirme para revelar o gabarito ou pule sem confirmar; itens pendentes não contam como acerto."
               : "Selecione uma alternativa e confirme para ver o gabarito."}
           </div>
         )}
@@ -1894,13 +1919,21 @@ function QuestionCard({
               {nextLabel} <ChevronRight size={16} />
             </button>
           ) : (
-            <button
-              className="primary-button"
-              disabled={!currentAnswer}
-              onClick={onSubmit}
-            >
-              Confirmar resposta <Check size={16} />
-            </button>
+            <>
+              <button
+                className="primary-button"
+                disabled={!currentAnswer}
+                onClick={onSubmit}
+              >
+                Confirmar resposta <Check size={16} />
+              </button>
+              {simulate && (
+                <button type="button" className="quiet-button" onClick={onNext}>
+                  {position === total ? "Concluir simulado" : "Pular questão"}
+                  <ChevronRight size={16} />
+                </button>
+              )}
+            </>
           )}
         </div>
         <span className="keyboard-hint">
