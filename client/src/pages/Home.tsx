@@ -22,7 +22,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { studyData } from "@/data/questions";
 import { candidateData } from "@/data/candidates";
 import { questionId } from "@/lib/simulation";
@@ -31,9 +31,12 @@ import { candidateStageTone } from "@/lib/candidateStageTone";
 import { didCandidatePassStage } from "@/lib/candidateStageStatus";
 import { normalizeSearchText } from "@/lib/normalizeSearch";
 import {
-  persistBeforeRemovingLegacy,
-  writeJsonSafely,
-} from "@/lib/safeStorage";
+  persistScopedDiff,
+  readScopedValue,
+  scopedStorageKey,
+  writeJsonValue,
+} from "@/lib/scopedStorage";
+import { writeJsonSafely } from "@/lib/safeStorage";
 import { simulationAnswerStatus } from "@/lib/simulationAnswerStatus";
 import {
   availableSubjects,
@@ -339,8 +342,10 @@ function ProgressBar({
 
 const STORAGE_KEYS = {
   practice: "provaquest-practice",
+  practiceQuestionPrefix: "provaquest-practice-question:",
   simulation: "provaquest-simulation", // chave antiga, usada para migrar sessões já salvas
   simulations: "provaquest-simulations",
+  simulationEditionPrefix: "provaquest-simulation-edition:",
   simulationEdition: "provaquest-simulation-edition",
   filters: "provaquest-practice-filters",
   progress: "provaquest-progress",
@@ -376,6 +381,26 @@ const emptyPracticeState: PracticeState = {
   answers: {},
   submitted: {},
 };
+
+function practiceStorageEntries(
+  state: PracticeState
+): Record<string, { answer?: string; submitted?: true }> {
+  const ids = new Set([
+    ...Object.keys(state.answers),
+    ...Object.keys(state.submitted),
+  ]);
+  return Object.fromEntries(
+    [...ids]
+      .filter(id => state.answers[id] || state.submitted[id] === true)
+      .map(id => [
+        id,
+        {
+          ...(state.answers[id] ? { answer: state.answers[id] } : {}),
+          ...(state.submitted[id] === true ? { submitted: true as const } : {}),
+        },
+      ])
+  );
+}
 
 const emptySimulationState: SimulationState = {
   ids: [],
@@ -439,14 +464,33 @@ function loadPracticeState(): PracticeState {
     STORAGE_KEYS.practice,
     emptyPracticeState
   );
+  const answers = sanitizeAnswers(saved.answers);
+  const submitted = sanitizeResults(saved.submitted);
+  if (typeof window !== "undefined") {
+    for (const question of allQuestions) {
+      const id = questionKey(question);
+      const scoped = readScopedValue(
+        window.localStorage,
+        STORAGE_KEYS.practiceQuestionPrefix,
+        id
+      );
+      if (!scoped.present || !scoped.value || typeof scoped.value !== "object")
+        continue;
+      const value = scoped.value as { answer?: unknown; submitted?: unknown };
+      if (typeof value.answer === "string") answers[id] = value.answer;
+      else delete answers[id];
+      if (value.submitted === true) submitted[id] = true;
+      else delete submitted[id];
+    }
+  }
   return {
     activeId:
       typeof saved.activeId === "string" &&
       respondibleQuestionIds.has(saved.activeId)
         ? saved.activeId
         : null,
-    answers: sanitizeAnswers(saved.answers),
-    submitted: sanitizeResults(saved.submitted),
+    answers,
+    submitted,
   };
 }
 
@@ -493,6 +537,7 @@ function loadSimulationStateForEdition(
 function loadSimulationStates(): Record<string, SimulationState> {
   const saved = readStorage<unknown>(STORAGE_KEYS.simulations, {});
   const states: Record<string, SimulationState> = {};
+  const scopedEditions = new Set<string>();
   if (saved && typeof saved === "object") {
     for (const edition of editionList) {
       const state = loadSimulationStateForEdition(
@@ -500,6 +545,21 @@ function loadSimulationStates(): Record<string, SimulationState> {
         edition.id
       );
       if (state.ids.length) states[edition.id] = state;
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    for (const edition of editionList) {
+      const scoped = readScopedValue(
+        window.localStorage,
+        STORAGE_KEYS.simulationEditionPrefix,
+        edition.id
+      );
+      if (!scoped.present) continue;
+      scopedEditions.add(edition.id);
+      const state = loadSimulationStateForEdition(scoped.value, edition.id);
+      if (state.ids.length) states[edition.id] = state;
+      else delete states[edition.id];
     }
   }
 
@@ -514,6 +574,7 @@ function loadSimulationStates(): Record<string, SimulationState> {
     if (
       legacyEdition &&
       editionLabels[legacyEdition] &&
+      !scopedEditions.has(legacyEdition) &&
       !states[legacyEdition]
     ) {
       const migrated = loadSimulationStateForEdition(legacy, legacyEdition);
@@ -618,22 +679,91 @@ export default function Home() {
   const [simEdition, setSimEdition] = useState<string>(() =>
     loadSimulationEdition(loadSimulationStates())
   );
+  const previousPracticeRef = useRef(practice);
+  const previousSimulationsRef = useRef(simulations);
   const simulation = simulations[simEdition] ?? emptySimulationState;
 
-  /* A sessão sobrevive ao F5: estado e filtros ficam no localStorage. */
+  /* Migra dados antigos para chaves isoladas antes de remover os formatos legados. */
   useEffect(() => {
-    writeStorage(STORAGE_KEYS.practice, practice);
+    if (typeof window === "undefined") return;
+    const storage = window.localStorage;
+    try {
+      let migrated = true;
+      const practiceEntries = practiceStorageEntries(practice);
+      for (const [id, value] of Object.entries(practiceEntries)) {
+        const scoped = readScopedValue(
+          storage,
+          STORAGE_KEYS.practiceQuestionPrefix,
+          id
+        );
+        if (
+          !scoped.present &&
+          !writeJsonValue(
+            storage,
+            scopedStorageKey(STORAGE_KEYS.practiceQuestionPrefix, id),
+            value
+          )
+        )
+          migrated = false;
+      }
+      if (migrated) {
+        writeJsonValue(storage, STORAGE_KEYS.practice, {
+          activeId: practice.activeId,
+        });
+      }
+
+      let simulationsMigrated = true;
+      for (const [editionId, state] of Object.entries(simulations)) {
+        const scoped = readScopedValue(
+          storage,
+          STORAGE_KEYS.simulationEditionPrefix,
+          editionId
+        );
+        if (
+          !scoped.present &&
+          !writeJsonValue(
+            storage,
+            scopedStorageKey(STORAGE_KEYS.simulationEditionPrefix, editionId),
+            state
+          )
+        )
+          simulationsMigrated = false;
+      }
+      if (simulationsMigrated) {
+        storage.removeItem(STORAGE_KEYS.simulations);
+        storage.removeItem(STORAGE_KEYS.simulation);
+      }
+    } catch {
+      /* Mantém os formatos anteriores se o storage não aceitar a migração. */
+    }
+  }, []);
+
+  /* Cada questão/edital tem sua chave: uma aba não sobrescreve as outras. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const storage = window.localStorage;
+    const previousEntries = practiceStorageEntries(previousPracticeRef.current);
+    const currentEntries = practiceStorageEntries(practice);
+    persistScopedDiff(
+      storage,
+      STORAGE_KEYS.practiceQuestionPrefix,
+      previousEntries,
+      currentEntries
+    );
+    writeStorage(STORAGE_KEYS.practice, { activeId: practice.activeId });
+    previousPracticeRef.current = practice;
   }, [practice]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      persistBeforeRemovingLegacy(
+      persistScopedDiff(
         window.localStorage,
-        STORAGE_KEYS.simulations,
-        STORAGE_KEYS.simulation,
+        STORAGE_KEYS.simulationEditionPrefix,
+        previousSimulationsRef.current,
         simulations
       );
+      previousSimulationsRef.current = simulations;
     } catch {
       /* Mantém a sessão em memória quando o storage está indisponível. */
     }
@@ -671,7 +801,59 @@ export default function Home() {
   }, [mode]);
 
   useEffect(() => {
-    const syncBookmarks = (event: Event) => {
+    const syncStorage = (event: Event) => {
+      const storageEvent = event as StorageEvent;
+      const key = storageEvent.key;
+      if (key?.startsWith(STORAGE_KEYS.practiceQuestionPrefix)) {
+        const id = decodeURIComponent(
+          key.slice(STORAGE_KEYS.practiceQuestionPrefix.length)
+        );
+        if (!respondibleQuestionIds.has(id)) return;
+        let value: { answer?: unknown; submitted?: unknown } | null = null;
+        try {
+          value = storageEvent.newValue
+            ? JSON.parse(storageEvent.newValue)
+            : null;
+        } catch {
+          return;
+        }
+        setPractice(previous => {
+          const answers = { ...previous.answers };
+          const submitted = { ...previous.submitted };
+          if (value && typeof value.answer === "string")
+            answers[id] = value.answer;
+          else delete answers[id];
+          if (value?.submitted === true) submitted[id] = true;
+          else delete submitted[id];
+          return { ...previous, answers, submitted };
+        });
+        return;
+      }
+      if (key?.startsWith(STORAGE_KEYS.simulationEditionPrefix)) {
+        const editionId = decodeURIComponent(
+          key.slice(STORAGE_KEYS.simulationEditionPrefix.length)
+        );
+        if (!editionLabels[editionId]) return;
+        let state: SimulationState | undefined;
+        try {
+          if (storageEvent.newValue) {
+            state = loadSimulationStateForEdition(
+              JSON.parse(storageEvent.newValue),
+              editionId
+            );
+          }
+        } catch {
+          return;
+        }
+        setSimulations(previous => {
+          const next = { ...previous };
+          if (state?.ids.length) next[editionId] = state;
+          else delete next[editionId];
+          return next;
+        });
+        return;
+      }
+
       const detail = (event as CustomEvent<string[]>).detail;
       if (Array.isArray(detail)) {
         setBookmarkedIds(detail);
@@ -684,11 +866,11 @@ export default function Home() {
           : []
       );
     };
-    window.addEventListener("provaquest-bookmarks-changed", syncBookmarks);
-    window.addEventListener("storage", syncBookmarks);
+    window.addEventListener("provaquest-bookmarks-changed", syncStorage);
+    window.addEventListener("storage", syncStorage);
     return () => {
-      window.removeEventListener("provaquest-bookmarks-changed", syncBookmarks);
-      window.removeEventListener("storage", syncBookmarks);
+      window.removeEventListener("provaquest-bookmarks-changed", syncStorage);
+      window.removeEventListener("storage", syncStorage);
     };
   }, []);
 
@@ -1923,6 +2105,22 @@ function PracticeView({
       </div>
 
       <div className="practice-layout">
+        <div className="practice-stage">
+          <QuestionCard
+            question={questions.length ? question : undefined}
+            currentAnswer={currentAnswer}
+            isSubmitted={isSubmitted}
+            onSelect={onSelect}
+            onSubmit={onSubmit}
+            onNext={onNext}
+            onPrev={onPrev}
+            canPrev={canPrev}
+            position={position}
+            total={questions.length}
+            progress={progress}
+            nextLabel={atLast ? "Voltar ao início" : "Próxima questão"}
+          />
+        </div>
         <aside className="practice-list" aria-label="Questões do filtro">
           {questions.map((item, index) => {
             const id = questionKey(item);
@@ -1976,22 +2174,6 @@ function PracticeView({
             </div>
           )}
         </aside>
-        <div className="practice-stage">
-          <QuestionCard
-            question={questions.length ? question : undefined}
-            currentAnswer={currentAnswer}
-            isSubmitted={isSubmitted}
-            onSelect={onSelect}
-            onSubmit={onSubmit}
-            onNext={onNext}
-            onPrev={onPrev}
-            canPrev={canPrev}
-            position={position}
-            total={questions.length}
-            progress={progress}
-            nextLabel={atLast ? "Voltar ao início" : "Próxima questão"}
-          />
-        </div>
       </div>
     </div>
   );
@@ -2024,6 +2206,15 @@ function SimulationView({
   onRestart,
 }: any) {
   const [reviewing, setReviewing] = useState(false);
+  const reviewHeadingRef = useRef<HTMLHeadingElement>(null);
+  const resultHeadingRef = useRef<HTMLHeadingElement>(null);
+  const previousReviewingRef = useRef(reviewing);
+  useEffect(() => {
+    if (previousReviewingRef.current !== reviewing) {
+      (reviewing ? reviewHeadingRef : resultHeadingRef).current?.focus();
+      previousReviewingRef.current = reviewing;
+    }
+  }, [reviewing]);
   const submitted = simulations[selectedEdition]?.submitted ?? {};
   const sessionAnswered = ids.filter((id: string) =>
     Boolean(submitted[id] && answers[id])
@@ -2203,6 +2394,7 @@ function SimulationView({
           answers={answers}
           submitted={submitted}
           onBack={() => setReviewing(false)}
+          headingRef={reviewHeadingRef}
         />
       ) : (
         <div className="study-layout simulation-layout">
@@ -2311,6 +2503,7 @@ function SimulationView({
               correctTotal={sessionCorrect}
               answeredTotal={sessionAnswered}
               onReview={() => setReviewing(true)}
+              headingRef={resultHeadingRef}
             />
           ) : (
             <QuestionCard
@@ -2345,6 +2538,7 @@ function ResultView({
   correctTotal = 0,
   answeredTotal = 0,
   onReview,
+  headingRef,
 }: {
   sessionIds: string[];
   resetStudy: () => void;
@@ -2353,6 +2547,7 @@ function ResultView({
   correctTotal?: number;
   answeredTotal?: number;
   onReview: () => void;
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
 }) {
   return (
     <section className="result-card">
@@ -2360,7 +2555,9 @@ function ResultView({
         <Trophy size={25} />
       </div>
       <span className="section-kicker">Simulado concluído</span>
-      <h2>{score}% de aproveitamento</h2>
+      <h2 ref={headingRef} tabIndex={-1}>
+        {score}% de aproveitamento
+      </h2>
       <p>
         Você chegou até o fim. Revise os itens abaixo e transforme os erros em
         pontos.
@@ -2407,19 +2604,23 @@ function ReviewPanel({
   answers,
   submitted,
   onBack,
+  headingRef,
 }: {
   edition: Edition;
   sessionIds: string[];
   answers: Record<string, string>;
   submitted: Record<string, boolean>;
   onBack: () => void;
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
 }) {
   return (
     <section className="review-panel">
       <div className="review-header">
         <div>
           <span className="section-kicker">Revisão do simulado</span>
-          <h2>Veja onde ganhou — e onde pode virar o jogo.</h2>
+          <h2 ref={headingRef} tabIndex={-1}>
+            Veja onde ganhou — e onde pode virar o jogo.
+          </h2>
           <p>
             {sessionIds.length} questões comparadas ao gabarito do{" "}
             {edition.label}, incluindo pendentes e rascunhos não confirmados.

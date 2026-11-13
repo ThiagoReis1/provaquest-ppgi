@@ -9,4 +9,6 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
+      MANUS_API_URL: ${MANUS_API_URL:-}
+      MANUS_API_KEY: ${MANUS_API_KEY:-}
     restart: unless-stopped

@@ -31,6 +31,8 @@ docker compose up --build
 
 Depois abra <http://localhost:3000>.
 
+O proxy de arquivos `/manus-storage/*` é opcional. Para usá-lo, defina `MANUS_API_URL` e `MANUS_API_KEY` no ambiente antes de subir o Compose ou coloque essas variáveis em um arquivo `.env` local na raiz do projeto. Não publique nem versione a chave. Sem essas variáveis, estudo, simulados e consulta aos dados locais continuam funcionando, mas downloads que dependam do proxy de storage não estarão disponíveis.
+
 Para executar em segundo plano:
 
 ```bash

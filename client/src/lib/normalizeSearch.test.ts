@@ -14,4 +14,9 @@ describe("normalizeSearchText", () => {
   it("trims surrounding whitespace", () => {
     expect(normalizeSearchText("  busca  ")).toBe("busca");
   });
+
+  it("matches typographic apostrophes typed as ASCII", () => {
+    expect(normalizeSearchText("D’Paula")).toBe(normalizeSearchText("D'Paula"));
+    expect(normalizeSearchText("O‘Brien")).toBe(normalizeSearchText("O'Brien"));
+  });
 });
