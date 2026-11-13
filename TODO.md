@@ -1,9 +1,0 @@
-# ProvaQuest PPGI — Entregas
-
-- [x] **Acervo convertido dos editais** — As provas oficiais de 2026/02, 2026/01, 2025/02, 2025/01, 2024/02, 2024/01 e 2020/01 aparecem como editais navegáveis, com 20 questões cada, alternativas, gabarito, status de anulada e links para prova/gabarito. Três itens cuja extração visual ainda exige conferência permanecem marcados como “em revisão” e não são respondíveis.
-- [x] **Treino estilo baralho** — O usuário consegue escolher edital ou assunto, responder uma questão por vez, revelar imediatamente o gabarito, ver acerto/erro, resolução individual passo a passo, análise das alternativas e avançar com progresso visível.
-- [x] **Simulados válidos** — Cada edital inicia um simulado usando apenas questões não anuladas e não marcadas em revisão, calcula pontuação ao finalizar e permite revisar a alternativa marcada versus a correta.
-- [x] **Pesquisa e fontes** — A busca filtra questões respondíveis por termo, assunto e edital; a área de fontes mantém links oficiais e miniaturas extraídas das páginas das provas.
-- [x] **Experiência responsiva** — A interface funciona em desktop e mobile, tem navegação clara, estados vazios/feedback, microinterações, foco de teclado e linguagem em português.
-- [x] **Avaliação independente** — Três IAs avaliaram a aplicação com notas 8,5/10, 8,8/10 e 9,0/10; média 8,77/10.
-- [x] **Consulta nominal dos editais** — A aba separada “Candidatos e resultados” permite buscar por nome, edital, modalidade e etapa, exibindo a nota publicada em cada fase, a situação “Passou/Não passou” baseada no resultado oficial da fase seguinte, o corte mínimo de 7,00 para a prova de conhecimentos e a classificação final. O painel também mostra um funil por edital/modalidade com quantos entraram em cada etapa e quantos avançaram para a próxima, além do link para a fonte oficial.

@@ -1,13 +1,11 @@
 import {
   ArrowRight,
-  BarChart3,
   BookOpen,
   Bookmark,
   Check,
   ChevronLeft,
   ChevronRight,
   CircleHelp,
-  Clock3,
   ExternalLink,
   FileText,
   Flame,
@@ -19,6 +17,7 @@ import {
   Search,
   Sparkles,
   Target,
+  Trash2,
   Trophy,
   X,
   Zap,
@@ -26,11 +25,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { studyData } from "@/data/questions";
 import { candidateData } from "@/data/candidates";
-import {
-  questionId,
-  resetSimulationState,
-  sessionBelongsToEdition,
-} from "@/lib/simulation";
+import { questionId } from "@/lib/simulation";
 import { matchesQuestionQuery } from "@/lib/questionFilters";
 import { candidateStageTone } from "@/lib/candidateStageTone";
 import {
@@ -41,6 +36,7 @@ import {
 
 type Edition = (typeof studyData.editions)[number];
 type Question = Edition["questions"][number];
+type PracticeQuestion = Question & { editionId: string; editionLabel: string };
 
 type ListItem = { label: string; text: string; code?: boolean; level?: number };
 type Block =
@@ -198,42 +194,39 @@ function QuestionBody({ question }: { question: Question }) {
     </div>
   );
 }
-type Mode = "home" | "study" | "simulate" | "search" | "sources" | "candidates";
+
+type Mode = "home" | "practice" | "simulate" | "sources" | "candidates";
 
 const editionList = studyData.editions;
-const allQuestions = editionList.flatMap(edition =>
+const allQuestions: PracticeQuestion[] = editionList.flatMap(edition =>
   edition.questions.map(question => ({
     ...question,
     editionId: edition.id,
     editionLabel: edition.label,
   }))
 );
+const editionLabels: Record<string, string> = Object.fromEntries(
+  editionList.map(edition => [edition.id, edition.label])
+);
 const respondibleQuestionIds = new Set(
   allQuestions
     .filter(question => !question.annulled && !question.needsReview)
-    .map(question => question.editionId + "-" + question.number)
+    .map(questionKey)
 );
 
-function sanitizeProgress(value: unknown): Record<string, boolean> {
-  if (!value || typeof value !== "object") return {};
-  return Object.fromEntries(
-    Object.entries(value).filter(
-      ([id, answered]) => answered === true && respondibleQuestionIds.has(id)
-    )
-  );
+function questionKey(question: { editionId: string; number: number }) {
+  return `${question.editionId}-${question.number}`;
 }
-function sanitizeResults(value: unknown): Record<string, boolean> {
-  if (!value || typeof value !== "object") return {};
-  return Object.fromEntries(
-    Object.entries(value).filter(
-      ([id, correct]) =>
-        typeof correct === "boolean" && respondibleQuestionIds.has(id)
-    )
-  );
+
+function editionIdFromQuestionId(id: string) {
+  const separator = id.lastIndexOf("-");
+  return separator > 0 ? id.slice(0, separator) : "";
 }
+
 function isRespondible(question: Question) {
   return !question.annulled && !question.needsReview;
 }
+
 const subjectColors: Record<string, string> = {
   Algoritmos: "coral",
   "Estruturas de dados": "blue",
@@ -333,84 +326,337 @@ function ProgressBar({
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Persistência local: nada de perder a sessão com F5                 */
+/* ------------------------------------------------------------------ */
+
+const STORAGE_KEYS = {
+  practice: "provaquest-practice",
+  simulation: "provaquest-simulation", // chave antiga, usada para migrar sessões já salvas
+  simulations: "provaquest-simulations",
+  simulationEdition: "provaquest-simulation-edition",
+  filters: "provaquest-practice-filters",
+  progress: "provaquest-progress",
+  results: "provaquest-results",
+  bookmarks: "provaquest-bookmarks",
+} as const;
+
+type PracticeState = {
+  activeId: string | null;
+  answers: Record<string, string>;
+  submitted: Record<string, boolean>;
+};
+
+type SimulationState = {
+  ids: string[];
+  index: number;
+  answers: Record<string, string>;
+  submitted: Record<string, boolean>;
+  finished: boolean;
+};
+
+type PracticeFilters = {
+  query: string;
+  edition: string;
+  subject: string;
+  topic: string;
+  subtopic: string;
+  bookmarksOnly: boolean;
+};
+
+const emptyPracticeState: PracticeState = {
+  activeId: null,
+  answers: {},
+  submitted: {},
+};
+
+const emptySimulationState: SimulationState = {
+  ids: [],
+  index: 0,
+  answers: {},
+  submitted: {},
+  finished: false,
+};
+
+function readStorage<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeStorage(key: string, value: unknown) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* quota excedida ou navegação privada: o estado continua em memória */
+  }
+}
+
+function sanitizeProgress(value: unknown): Record<string, boolean> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, answered]) => answered === true && respondibleQuestionIds.has(id)
+    )
+  );
+}
+
+function sanitizeResults(value: unknown): Record<string, boolean> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, correct]) =>
+        typeof correct === "boolean" && respondibleQuestionIds.has(id)
+    )
+  );
+}
+
+function sanitizeAnswers(value: unknown): Record<string, string> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, answer]) =>
+        typeof answer === "string" && respondibleQuestionIds.has(id)
+    )
+  ) as Record<string, string>;
+}
+
+function loadPracticeState(): PracticeState {
+  const saved = readStorage<Partial<PracticeState>>(
+    STORAGE_KEYS.practice,
+    emptyPracticeState
+  );
+  return {
+    activeId:
+      typeof saved.activeId === "string" &&
+      respondibleQuestionIds.has(saved.activeId)
+        ? saved.activeId
+        : null,
+    answers: sanitizeAnswers(saved.answers),
+    submitted: sanitizeResults(saved.submitted),
+  };
+}
+
+function loadSimulationStateForEdition(
+  value: unknown,
+  editionId: string
+): SimulationState {
+  if (!value || typeof value !== "object") return emptySimulationState;
+  const saved = value as Partial<SimulationState>;
+  const validIds = new Set(
+    (editionList.find(edition => edition.id === editionId)?.questions ?? [])
+      .filter(isRespondible)
+      .map(question => questionId(editionId, question.number))
+  );
+  const ids = Array.isArray(saved.ids)
+    ? Array.from(
+        new Set(
+          saved.ids.filter(
+            (id): id is string => typeof id === "string" && validIds.has(id)
+          )
+        )
+      )
+    : [];
+  const scopedIds = new Set(ids);
+  const answers = sanitizeAnswers(saved.answers);
+  const submitted = sanitizeResults(saved.submitted);
+  const index =
+    typeof saved.index === "number"
+      ? Math.min(Math.max(0, saved.index), Math.max(0, ids.length - 1))
+      : 0;
+  return {
+    ids,
+    index,
+    answers: Object.fromEntries(
+      Object.entries(answers).filter(([id]) => scopedIds.has(id))
+    ),
+    submitted: Object.fromEntries(
+      Object.entries(submitted).filter(([id]) => scopedIds.has(id))
+    ),
+    finished: saved.finished === true && ids.length > 0,
+  };
+}
+
+function loadSimulationStates(): Record<string, SimulationState> {
+  const saved = readStorage<unknown>(STORAGE_KEYS.simulations, {});
+  const states: Record<string, SimulationState> = {};
+  if (saved && typeof saved === "object") {
+    for (const edition of editionList) {
+      const state = loadSimulationStateForEdition(
+        (saved as Record<string, unknown>)[edition.id],
+        edition.id
+      );
+      if (state.ids.length) states[edition.id] = state;
+    }
+  }
+
+  // Migra a sessão única criada por versões anteriores, sem sobrescrever dados novos.
+  const legacy = readStorage<unknown>(STORAGE_KEYS.simulation, null);
+  if (legacy && typeof legacy === "object") {
+    const oldState = legacy as Partial<SimulationState>;
+    const firstId = Array.isArray(oldState.ids)
+      ? oldState.ids.find((id): id is string => typeof id === "string")
+      : undefined;
+    const legacyEdition = firstId ? editionIdFromQuestionId(firstId) : "";
+    if (
+      legacyEdition &&
+      editionLabels[legacyEdition] &&
+      !states[legacyEdition]
+    ) {
+      const migrated = loadSimulationStateForEdition(legacy, legacyEdition);
+      if (migrated.ids.length) states[legacyEdition] = migrated;
+    }
+  }
+  return states;
+}
+
+function loadSimulationEdition(
+  states: Record<string, SimulationState>
+): string {
+  const saved = readStorage<unknown>(STORAGE_KEYS.simulationEdition, null);
+  if (typeof saved === "string" && editionLabels[saved]) return saved;
+  const legacy = readStorage<unknown>(STORAGE_KEYS.simulation, null);
+  if (legacy && typeof legacy === "object") {
+    const ids = (legacy as Partial<SimulationState>).ids;
+    const firstId = Array.isArray(ids)
+      ? ids.find((id): id is string => typeof id === "string")
+      : undefined;
+    const legacyEdition = firstId ? editionIdFromQuestionId(firstId) : "";
+    if (legacyEdition && editionLabels[legacyEdition]) return legacyEdition;
+  }
+  return (
+    editionList.find(edition => states[edition.id])?.id ?? editionList[0].id
+  );
+}
+
+function loadFilters(): PracticeFilters {
+  const saved = readStorage<Partial<PracticeFilters>>(STORAGE_KEYS.filters, {});
+  const edition =
+    typeof saved.edition === "string" &&
+    (saved.edition === "todos" ||
+      editionList.some(item => item.id === saved.edition))
+      ? saved.edition
+      : "todos";
+  return {
+    query: typeof saved.query === "string" ? saved.query : "",
+    edition,
+    subject:
+      typeof saved.subject === "string" ? saved.subject : "Todos os assuntos",
+    topic: typeof saved.topic === "string" ? saved.topic : "Todos os temas",
+    subtopic:
+      typeof saved.subtopic === "string" ? saved.subtopic : "Todos os subtemas",
+    bookmarksOnly: saved.bookmarksOnly === true,
+  };
+}
+
+function modeFromUrl(): Mode {
+  if (typeof window === "undefined") return "home";
+  const view = new URLSearchParams(window.location.search).get("view");
+  if (view === "study" || view === "search" || view === "practice")
+    return "practice";
+  if (view === "simulate") return "simulate";
+  if (view === "sources") return "sources";
+  if (view === "candidates") return "candidates";
+  return "home";
+}
+
+/* ------------------------------------------------------------------ */
+
 export default function Home() {
-  const initialView =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("view")
-      : null;
-  const previewMode: Mode =
-    initialView === "study" ||
-    initialView === "simulate" ||
-    initialView === "search" ||
-    initialView === "sources" ||
-    initialView === "candidates"
-      ? initialView
-      : "home";
-  const previewAnswered =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("demo") === "answered";
-  const [mode, setMode] = useState<Mode>(previewMode);
-  const [selectedEdition, setSelectedEdition] = useState<string>(
-    previewMode === "search" ? "todos" : editionList[0].id
+  const [mode, setMode] = useState<Mode>(() => modeFromUrl());
+  const initialFilters = useMemo(() => loadFilters(), []);
+
+  const [selectedEdition, setSelectedEdition] = useState(
+    initialFilters.edition
   );
-  const [selectedSubject, setSelectedSubject] = useState("Todos os assuntos");
-  const [selectedTopic, setSelectedTopic] = useState("Todos os temas");
-  const [selectedSubtopic, setSelectedSubtopic] = useState("Todos os subtemas");
-  const [query, setQuery] = useState("");
-  const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
-  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
-    try {
-      const saved = JSON.parse(
-        localStorage.getItem("provaquest-bookmarks") ?? "[]"
-      );
-      return Array.isArray(saved)
-        ? saved.filter(item => typeof item === "string")
-        : [];
-    } catch {
-      return [];
-    }
-  });
-  const [sessionIds, setSessionIds] = useState<string[]>(() =>
-    previewMode === "study"
-      ? allQuestions
-          .filter(question => !question.annulled && !question.needsReview)
-          .slice(0, 12)
-          .map(question => question.editionId + "-" + question.number)
-      : []
+  const [selectedSubject, setSelectedSubject] = useState(
+    initialFilters.subject
   );
-  const [sessionIndex, setSessionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>(() =>
-    previewAnswered && previewMode === "study"
-      ? ({ "2026-02-1": "B" } as Record<string, string>)
-      : {}
+  const [selectedTopic, setSelectedTopic] = useState(initialFilters.topic);
+  const [selectedSubtopic, setSelectedSubtopic] = useState(
+    initialFilters.subtopic
   );
-  const [submitted, setSubmitted] = useState<Record<string, boolean>>(() =>
-    previewAnswered && previewMode === "study"
-      ? ({ "2026-02-1": true } as Record<string, boolean>)
-      : {}
+  const [query, setQuery] = useState(initialFilters.query);
+  const [bookmarkedOnly, setBookmarkedOnly] = useState(
+    initialFilters.bookmarksOnly
   );
-  const [finished, setFinished] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [completed, setCompleted] = useState<Record<string, boolean>>(() => {
-    try {
-      return sanitizeProgress(
-        JSON.parse(localStorage.getItem("provaquest-progress") ?? "{}")
-      );
-    } catch {
-      return {};
-    }
+
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
+    const saved = readStorage<unknown>(STORAGE_KEYS.bookmarks, []);
+    return Array.isArray(saved)
+      ? saved.filter((item): item is string => typeof item === "string")
+      : [];
   });
-  const [studyResults, setStudyResults] = useState<Record<string, boolean>>(
-    () => {
-      try {
-        return sanitizeResults(
-          JSON.parse(localStorage.getItem("provaquest-results") ?? "{}")
-        );
-      } catch {
-        return {};
-      }
-    }
+
+  const [completed, setCompleted] = useState<Record<string, boolean>>(() =>
+    sanitizeProgress(readStorage(STORAGE_KEYS.progress, {}))
   );
+  const [studyResults, setStudyResults] = useState<Record<string, boolean>>(
+    () => sanitizeResults(readStorage(STORAGE_KEYS.results, {}))
+  );
+
+  const [practice, setPractice] = useState<PracticeState>(() =>
+    loadPracticeState()
+  );
+  const [simulations, setSimulations] = useState<
+    Record<string, SimulationState>
+  >(() => loadSimulationStates());
+  const [simEdition, setSimEdition] = useState<string>(() =>
+    loadSimulationEdition(loadSimulationStates())
+  );
+  const simulation = simulations[simEdition] ?? emptySimulationState;
+
+  /* A sessão sobrevive ao F5: estado e filtros ficam no localStorage. */
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.practice, practice);
+  }, [practice]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.simulations, simulations);
+    try {
+      window.localStorage.removeItem(STORAGE_KEYS.simulation);
+    } catch {
+      /* storage indisponível */
+    }
+  }, [simulations]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.simulationEdition, simEdition);
+  }, [simEdition]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.filters, {
+      query,
+      edition: selectedEdition,
+      subject: selectedSubject,
+      topic: selectedTopic,
+      subtopic: selectedSubtopic,
+      bookmarksOnly: bookmarkedOnly,
+    });
+  }, [
+    query,
+    selectedEdition,
+    selectedSubject,
+    selectedTopic,
+    selectedSubtopic,
+    bookmarkedOnly,
+  ]);
+
+  /* Mantém a aba atual na URL para que o F5 reabra a mesma tela. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (mode === "home") url.searchParams.delete("view");
+    else url.searchParams.set("view", mode);
+    window.history.replaceState({}, "", url);
+  }, [mode]);
 
   useEffect(() => {
     const syncBookmarks = (event: Event) => {
@@ -419,18 +665,12 @@ export default function Home() {
         setBookmarkedIds(detail);
         return;
       }
-      try {
-        const saved = JSON.parse(
-          localStorage.getItem("provaquest-bookmarks") ?? "[]"
-        );
-        setBookmarkedIds(
-          Array.isArray(saved)
-            ? saved.filter(item => typeof item === "string")
-            : []
-        );
-      } catch {
-        setBookmarkedIds([]);
-      }
+      const saved = readStorage<unknown>(STORAGE_KEYS.bookmarks, []);
+      setBookmarkedIds(
+        Array.isArray(saved)
+          ? saved.filter((item): item is string => typeof item === "string")
+          : []
+      );
     };
     window.addEventListener("provaquest-bookmarks-changed", syncBookmarks);
     window.addEventListener("storage", syncBookmarks);
@@ -439,23 +679,6 @@ export default function Home() {
       window.removeEventListener("storage", syncBookmarks);
     };
   }, []);
-
-  const edition =
-    editionList.find(item => item.id === selectedEdition) ?? editionList[0];
-  const valid = validQuestions(edition);
-  const safeSession = sessionBelongsToEdition(sessionIds, selectedEdition)
-    ? sessionIds
-    : [];
-  const currentQuestion =
-    allQuestions.find(
-      item => item.editionId + "-" + item.number === safeSession[sessionIndex]
-    ) ?? undefined;
-  const currentAnswer = currentQuestion
-    ? answers[safeSession[sessionIndex]]
-    : undefined;
-  const isSubmitted = currentQuestion
-    ? Boolean(submitted[safeSession[sessionIndex]])
-    : false;
 
   const subjects = useMemo(
     () => [
@@ -500,8 +723,7 @@ export default function Home() {
       const matchesEdition =
         selectedEdition === "todos" || question.editionId === selectedEdition;
       const matchesBookmark =
-        !bookmarkedOnly ||
-        bookmarkedIds.includes(question.editionId + "-" + question.number);
+        !bookmarkedOnly || bookmarkedIds.includes(questionKey(question));
       return (
         matchesQuery &&
         matchesSubject &&
@@ -522,64 +744,90 @@ export default function Home() {
     bookmarkedIds,
   ]);
 
-  const answeredCount = Object.keys(completed).filter(id =>
+  const answeredCount = Object.keys(practice.submitted).filter(id =>
     respondibleQuestionIds.has(id)
   ).length;
-  const correctCount = Object.entries(submitted).filter(
-    ([id, didSubmit]) =>
-      didSubmit &&
-      allQuestions.find(
-        question => question.editionId + "-" + question.number === id
-      )?.correct === answers[id]
-  ).length;
-  const recordedCorrectCount =
-    Object.values(studyResults).filter(Boolean).length;
-  const recordedAnswerCount = Object.keys(studyResults).length;
+  const correctCount = Object.values(studyResults).filter(Boolean).length;
   const globalProgress = Math.min(
     100,
-    Math.round(
-      (answeredCount /
-        Math.max(
-          1,
-          allQuestions.filter(
-            question => !question.annulled && !question.needsReview
-          ).length
-        )) *
-        100
-    )
+    Math.round((answeredCount / Math.max(1, respondibleQuestionIds.size)) * 100)
   );
+
+  const practiceQuestion = practice.activeId
+    ? allQuestions.find(question => questionKey(question) === practice.activeId)
+    : undefined;
+  const practicePosition = practiceQuestion
+    ? filteredQuestions.findIndex(
+        question => questionKey(question) === practice.activeId
+      ) + 1
+    : 0;
+  const practiceAnswer = practiceQuestion
+    ? practice.answers[questionKey(practiceQuestion)]
+    : undefined;
+  const practiceSubmitted = practiceQuestion
+    ? Boolean(practice.submitted[questionKey(practiceQuestion)])
+    : false;
+
+  const filterIds = useMemo(
+    () => filteredQuestions.map(questionKey),
+    [filteredQuestions]
+  );
+  const answeredInFilter = filterIds.filter(
+    id => practice.submitted[id]
+  ).length;
+  const correctInFilter = filterIds.filter(
+    id => practice.submitted[id] && studyResults[id] === true
+  ).length;
+  const filterProgress = filteredQuestions.length
+    ? (answeredInFilter / filteredQuestions.length) * 100
+    : 0;
+
+  const simulationEdition =
+    editionList.find(item => item.id === simEdition) ?? editionList[0];
+  const simulationQuestion = simulation.ids[simulation.index]
+    ? allQuestions.find(
+        question => questionKey(question) === simulation.ids[simulation.index]
+      )
+    : undefined;
+  const simulationAnswer = simulationQuestion
+    ? simulation.answers[questionKey(simulationQuestion)]
+    : undefined;
+  const simulationSubmitted = simulationQuestion
+    ? Boolean(simulation.submitted[questionKey(simulationQuestion)])
+    : false;
+
+  /* Sempre existe uma questão ativa dentro do filtro atual. */
+  useEffect(() => {
+    if (mode !== "practice" || !filteredQuestions.length) return;
+    const stillVisible =
+      practice.activeId &&
+      filteredQuestions.some(
+        question => questionKey(question) === practice.activeId
+      );
+    if (stillVisible) return;
+    const nextQuestion =
+      filteredQuestions.find(
+        question => !practice.submitted[questionKey(question)]
+      ) ?? filteredQuestions[0];
+    setPractice(previous => ({
+      ...previous,
+      activeId: questionKey(nextQuestion),
+    }));
+  }, [mode, filteredQuestions, practice.activeId, practice.submitted]);
 
   function persistProgress(next: Record<string, boolean>) {
     const sanitized = sanitizeProgress(next);
     setCompleted(sanitized);
-    try {
-      localStorage.setItem("provaquest-progress", JSON.stringify(sanitized));
-    } catch {
-      /* storage bloqueado/quota excedida não interrompe a resposta */
-    }
+    writeStorage(STORAGE_KEYS.progress, sanitized);
   }
 
   function persistResult(id: string, correct: boolean) {
     const next = sanitizeResults({ ...studyResults, [id]: correct });
     setStudyResults(next);
-    try {
-      localStorage.setItem("provaquest-results", JSON.stringify(next));
-    } catch {
-      /* O histórico de aproveitamento é local e não pode interromper a resposta. */
-    }
-  }
-
-  function clearSession() {
-    const empty = resetSimulationState();
-    setSessionIds(empty.sessionIds);
-    setSessionIndex(empty.sessionIndex);
-    setAnswers(empty.answers);
-    setSubmitted(empty.submitted);
-    setFinished(empty.finished);
+    writeStorage(STORAGE_KEYS.results, next);
   }
 
   function handleEditionChange(nextEdition: string) {
-    if (nextEdition !== selectedEdition) clearSession();
     setSelectedEdition(nextEdition);
     if (
       selectedSubject !== "Todos os assuntos" &&
@@ -609,106 +857,281 @@ export default function Home() {
     setSelectedSubtopic("Todos os subtemas");
   }
 
-  function beginStudy(
-    questionIds: string[],
-    nextMode: "study" | "simulate" = "study"
-  ) {
-    if (!questionIds.length) return;
-    setSessionIds(questionIds);
-    setSessionIndex(0);
-    setAnswers({});
-    setSubmitted({});
-    setFinished(false);
+  function nav(nextMode: Mode) {
     setMode(nextMode);
+    setMobileMenu(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function openSearchQuestion(question: Question & { editionId: string }) {
-    // Um resultado encontrado em "Todos os editais" precisa abrir no edital
-    // real para que a sessão e a revisão usem a fonte correta.
-    setSelectedEdition(question.editionId);
-    beginStudy([questionId(question.editionId, question.number)]);
-  }
-
-  function startSubjectStudy(subject = selectedSubject) {
-    const pool = allQuestions.filter(
-      question =>
-        !question.annulled &&
-        !question.needsReview &&
-        (subject === "Todos os assuntos" || question.subject === subject)
-    );
-    setSelectedEdition("todos");
-    beginStudy(
-      pool
-        .slice(0, 12)
-        .map(question => question.editionId + "-" + question.number)
-    );
-  }
-
-  function startEditionStudy(editionId: string, simulate = false) {
-    const target = editionList.find(item => item.id === editionId) ?? edition;
-    setSelectedEdition(target.id);
-    beginStudy(
-      validQuestions(target).map(question =>
-        questionId(target.id, question.number)
-      ),
-      simulate ? "simulate" : "study"
-    );
-  }
-
-  function submitAnswer() {
-    if (!currentQuestion || !currentAnswer || isSubmitted) return;
-    const id = sessionIds[sessionIndex];
-    const next = { ...submitted, [id]: true };
-    setSubmitted(next);
-    const nextCompleted = { ...completed, [id]: true };
-    persistProgress(nextCompleted);
-    persistResult(id, currentAnswer === currentQuestion.correct);
-  }
-
-  function goNext() {
-    if (sessionIndex >= sessionIds.length - 1) {
-      setFinished(true);
-      return;
-    }
-    setSessionIndex(index => index + 1);
-  }
-
-  function resetStudy() {
-    setAnswers({});
-    setSubmitted({});
-    setSessionIndex(0);
-    setFinished(false);
-  }
-
-  function nav(nextMode: Mode) {
-    if (
-      nextMode !== mode &&
-      (nextMode === "study" ||
-        nextMode === "simulate" ||
-        mode === "study" ||
-        mode === "simulate")
-    )
-      clearSession();
-    if (nextMode === "simulate" && selectedEdition === "todos") {
-      setSelectedEdition(editionList[0].id);
-    }
-    setMode(nextMode);
-    setMobileMenu(false);
-    if (nextMode === "search") {
-      setQuery("");
+  /** Abre a prática já com o filtro desejado (ou o último filtro salvo). */
+  function startPractice(
+    options: {
+      editionId?: string;
+      subject?: string;
+      bookmarksOnly?: boolean;
+      resetFilters?: boolean;
+      activeId?: string | null;
+    } = {}
+  ) {
+    if (options.resetFilters) {
       setSelectedEdition("todos");
       setSelectedSubject("Todos os assuntos");
       setSelectedTopic("Todos os temas");
       setSelectedSubtopic("Todos os subtemas");
+      setQuery("");
+      setBookmarkedOnly(false);
+    } else {
+      if (options.editionId) setSelectedEdition(options.editionId);
+      if (options.subject) setSelectedSubject(options.subject);
+      if (options.bookmarksOnly !== undefined)
+        setBookmarkedOnly(options.bookmarksOnly);
     }
+    setPractice(previous => ({
+      ...previous,
+      activeId: options.activeId ?? null,
+    }));
+    setMode("practice");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function startEditionPractice(editionId: string) {
+    startPractice({ editionId, subject: "Todos os assuntos" });
+  }
+
+  function openPracticeQuestion(question: PracticeQuestion) {
+    setPractice(previous => ({
+      ...previous,
+      activeId: questionKey(question),
+    }));
+  }
+
+  function selectPracticeOption(optionId: string) {
+    if (!practiceQuestion) return;
+    const id = questionKey(practiceQuestion);
+    setPractice(previous => ({
+      ...previous,
+      answers: { ...previous.answers, [id]: optionId },
+    }));
+  }
+
+  function submitPracticeAnswer() {
+    if (!practiceQuestion || practiceSubmitted) return;
+    const id = questionKey(practiceQuestion);
+    const answer = practice.answers[id];
+    if (!answer) return;
+    setPractice(previous => ({
+      ...previous,
+      submitted: { ...previous.submitted, [id]: true },
+    }));
+    persistProgress({ ...completed, [id]: true });
+    persistResult(id, answer === practiceQuestion.correct);
+  }
+
+  function stepPractice(direction: 1 | -1) {
+    if (!filteredQuestions.length) return;
+    const currentIndex = filteredQuestions.findIndex(
+      question => questionKey(question) === practice.activeId
+    );
+    if (currentIndex === -1) return;
+    const nextIndex = currentIndex + direction;
+    if (nextIndex < 0) return;
+    if (nextIndex >= filteredQuestions.length) {
+      setPractice(previous => ({
+        ...previous,
+        activeId: questionKey(filteredQuestions[0]),
+      }));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setPractice(previous => ({
+      ...previous,
+      activeId: questionKey(filteredQuestions[nextIndex]),
+    }));
+  }
+
+  /** Apaga as respostas apenas do filtro atual, para recomeçar do zero. */
+  function clearFilterProgress() {
+    const ids = filterIds;
+    if (!ids.length) return;
+    const confirmed = window.confirm(
+      `Apagar as respostas de ${ids.length} questão(ões) deste filtro? Elas voltam a contar como não respondidas.`
+    );
+    if (!confirmed) return;
+    const nextAnswers = { ...practice.answers };
+    const nextSubmitted = { ...practice.submitted };
+    const nextCompleted = { ...completed };
+    const nextResults = { ...studyResults };
+    ids.forEach(id => {
+      delete nextAnswers[id];
+      delete nextSubmitted[id];
+      delete nextCompleted[id];
+      delete nextResults[id];
+    });
+    setPractice(previous => ({
+      ...previous,
+      answers: nextAnswers,
+      submitted: nextSubmitted,
+    }));
+    persistProgress(nextCompleted);
+    setStudyResults(nextResults);
+    writeStorage(STORAGE_KEYS.results, nextResults);
+  }
+
+  /** Apaga todo o histórico local (respostas, acertos e simulado salvo). */
+  function clearAllProgress() {
+    const confirmed = window.confirm(
+      "Apagar todo o seu progresso (respostas, acertos e simulado salvo)? Os favoritos são mantidos. Esta ação não pode ser desfeita."
+    );
+    if (!confirmed) return;
+    setPractice(emptyPracticeState);
+    setSimulations({});
+    persistProgress({});
+    setStudyResults({});
+    writeStorage(STORAGE_KEYS.results, {});
+  }
+
+  function startSimulation(editionId: string, restart = false) {
+    const target =
+      editionList.find(item => item.id === editionId) ?? editionList[0];
+    const current = simulations[target.id];
+    const hasProgress = Boolean(
+      current &&
+        (Object.keys(current.answers).length ||
+          Object.keys(current.submitted).length)
+    );
+    if (
+      restart &&
+      hasProgress &&
+      !window.confirm(
+        `Reiniciar o simulado ${target.label}? As respostas salvas deste edital serão apagadas.`
+      )
+    )
+      return;
+
+    setSimEdition(target.id);
+    if (!current?.ids.length || restart) {
+      setSimulations(previous => ({
+        ...previous,
+        [target.id]: {
+          ids: validQuestions(target).map(question =>
+            questionId(target.id, question.number)
+          ),
+          index: 0,
+          answers: {},
+          submitted: {},
+          finished: false,
+        },
+      }));
+    }
+    setMode("simulate");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function clearSimulation(editionId: string) {
+    const state = simulations[editionId];
+    if (!state) return;
+    const label = editionLabels[editionId] ?? editionId;
+    if (
+      !window.confirm(
+        `Zerar somente o progresso do simulado ${label}? Esta ação não pode ser desfeita.`
+      )
+    )
+      return;
+    setSimulations(previous => {
+      const next = { ...previous };
+      delete next[editionId];
+      return next;
+    });
+  }
+
+  function clearAllSimulations() {
+    if (!Object.keys(simulations).length) return;
+    if (
+      !window.confirm(
+        "Zerar o progresso de todos os simulados? O progresso da prática e os favoritos serão mantidos."
+      )
+    )
+      return;
+    setSimulations({});
+  }
+
+  function selectSimulationEdition(editionId: string) {
+    setSimEdition(editionId);
+    setMode("simulate");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function selectSimulationOption(optionId: string) {
+    if (!simulationQuestion) return;
+    const id = questionKey(simulationQuestion);
+    setSimulations(previous => ({
+      ...previous,
+      [simEdition]: {
+        ...(previous[simEdition] ?? emptySimulationState),
+        answers: {
+          ...(previous[simEdition]?.answers ?? {}),
+          [id]: optionId,
+        },
+      },
+    }));
+  }
+
+  function submitSimulationAnswer() {
+    if (!simulationQuestion || simulationSubmitted) return;
+    const id = questionKey(simulationQuestion);
+    if (!simulation.answers[id]) return;
+    setSimulations(previous => ({
+      ...previous,
+      [simEdition]: {
+        ...(previous[simEdition] ?? emptySimulationState),
+        submitted: {
+          ...(previous[simEdition]?.submitted ?? {}),
+          [id]: true,
+        },
+      },
+    }));
+  }
+
+  function nextSimulationQuestion() {
+    setSimulations(previous => {
+      const current = previous[simEdition] ?? emptySimulationState;
+      if (current.index >= current.ids.length - 1)
+        return {
+          ...previous,
+          [simEdition]: { ...current, finished: true },
+        };
+      return {
+        ...previous,
+        [simEdition]: { ...current, index: current.index + 1 },
+      };
+    });
+  }
+
+  function previousSimulationQuestion() {
+    setSimulations(previous => {
+      const current = previous[simEdition] ?? emptySimulationState;
+      return {
+        ...previous,
+        [simEdition]: { ...current, index: Math.max(0, current.index - 1) },
+      };
+    });
+  }
+
+  function goToSimulationQuestion(index: number) {
+    setSimulations(previous => {
+      const current = previous[simEdition] ?? emptySimulationState;
+      if (index < 0 || index >= current.ids.length) return previous;
+      return {
+        ...previous,
+        [simEdition]: { ...current, index },
+      };
+    });
   }
 
   const navItems: { id: Mode; label: string; icon: React.ReactNode }[] = [
     { id: "home", label: "Visão geral", icon: <LayoutGrid size={17} /> },
-    { id: "study", label: "Treinar", icon: <BookOpen size={17} /> },
+    { id: "practice", label: "Praticar", icon: <Search size={17} /> },
     { id: "simulate", label: "Simulados", icon: <Target size={17} /> },
-    { id: "search", label: "Buscar questões", icon: <Search size={17} /> },
     {
       id: "candidates",
       label: "Candidatos e resultados",
@@ -765,29 +1188,31 @@ export default function Home() {
             </nav>
           </div>
           <div className="sidebar-bottom">
-            <div className="streak-card">
-              <div className="streak-icon">
-                <Flame size={18} />
+            <div className="sidebar-progress-panel">
+              <div className="streak-card">
+                <div className="streak-icon">
+                  <Flame size={18} />
+                </div>
+                <div>
+                  <strong>Seu progresso de prática</strong>
+                  <span>
+                    {answeredCount
+                      ? `${answeredCount} respostas registradas`
+                      : "Comece sua primeira sessão"}
+                  </span>
+                </div>
               </div>
-              <div>
-                <strong>Foco em alta</strong>
-                <span>
-                  {answeredCount
-                    ? `${answeredCount} respostas registradas`
-                    : "Comece sua primeira sessão"}
-                </span>
+              <div className="mini-progress">
+                <div className="mini-progress-label">
+                  <span>Prática respondida</span>
+                  <b>{globalProgress}%</b>
+                </div>
+                <ProgressBar value={globalProgress} tone="mint" />
+                <button className="reset-link" onClick={clearAllProgress}>
+                  <Trash2 size={13} /> Zerar progresso
+                </button>
               </div>
             </div>
-            <div className="mini-progress">
-              <div className="mini-progress-label">
-                <span>Progresso geral</span>
-                <b>{globalProgress}%</b>
-              </div>
-              <ProgressBar value={globalProgress} tone="mint" />
-            </div>
-            <p className="sidebar-note">
-              Questões oficiais, feedback sem enrolação.
-            </p>
           </div>
         </aside>
 
@@ -811,9 +1236,9 @@ export default function Home() {
                   <div className="hero-ctas">
                     <button
                       className="primary-button"
-                      onClick={() => startSubjectStudy()}
+                      onClick={() => startPractice()}
                     >
-                      <Play size={16} fill="currentColor" /> Começar treino{" "}
+                      <Play size={16} fill="currentColor" /> Praticar agora{" "}
                       <ArrowRight size={16} />
                     </button>
                     <button
@@ -829,10 +1254,12 @@ export default function Home() {
                   <div className="orbit-ring ring-two" />
                   <div className="orbit-core">
                     <GraduationCap size={30} />
-                    <span>7 editais</span>
+                    <span>{editionList.length} editais</span>
                   </div>
                   <span className="orbit-chip chip-one">+ feedback</span>
-                  <span className="orbit-chip chip-two">20 questões</span>
+                  <span className="orbit-chip chip-two">
+                    {respondibleQuestionIds.size} questões
+                  </span>
                 </div>
               </section>
               <section className="stats-strip">
@@ -841,7 +1268,7 @@ export default function Home() {
                     <BookOpen size={18} />
                   </span>
                   <div>
-                    <strong>140</strong>
+                    <strong>{allQuestions.length}</strong>
                     <span>questões mapeadas</span>
                   </div>
                 </div>
@@ -850,30 +1277,22 @@ export default function Home() {
                     <Target size={18} />
                   </span>
                   <div>
-                    <strong>7</strong>
+                    <strong>{editionList.length}</strong>
                     <span>editais disponíveis</span>
                   </div>
                 </div>
                 <div>
-                  <span className="stat-icon violet">
+                  <span className="stat-icon mint">
                     <Trophy size={18} />
                   </span>
                   <div>
                     <strong>
-                      {answeredCount
-                        ? `${Math.round((correctCount / answeredCount) * 100)}%`
-                        : "—"}
+                      {answeredCount}
+                      <small className="stat-total">
+                        /{respondibleQuestionIds.size}
+                      </small>
                     </strong>
-                    <span>seu aproveitamento</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="stat-icon mint">
-                    <Clock3 size={18} />
-                  </span>
-                  <div>
-                    <strong>∞</strong>
-                    <span>ritmo no seu tempo</span>
+                    <span>questões respondidas na prática</span>
                   </div>
                 </div>
               </section>
@@ -890,7 +1309,7 @@ export default function Home() {
                 <div className="path-grid">
                   <button
                     className="path-card path-card-main"
-                    onClick={() => startSubjectStudy()}
+                    onClick={() => startPractice()}
                   >
                     <div className="path-card-top">
                       <span className="round-icon coral">
@@ -900,11 +1319,11 @@ export default function Home() {
                     </div>
                     <h3>Treino rápido</h3>
                     <p>
-                      Uma sequência de 12 questões válidas, misturando os
-                      assuntos para aquecer.
+                      Abre na sua próxima questão não respondida, com correção
+                      imediata e progresso salvo automático.
                     </p>
                     <span className="path-link">
-                      Começar agora <ArrowRight size={15} />
+                      Continuar de onde parei <ArrowRight size={15} />
                     </span>
                     <div className="path-decoration">01</div>
                   </button>
@@ -925,17 +1344,20 @@ export default function Home() {
                     </span>
                     <div className="path-decoration">02</div>
                   </button>
-                  <button className="path-card" onClick={() => nav("search")}>
+                  <button
+                    className="path-card"
+                    onClick={() => startPractice({ resetFilters: true })}
+                  >
                     <div className="path-card-top">
                       <span className="round-icon violet">
                         <Search size={19} />
                       </span>
                       <span className="path-tag">Explorar</span>
                     </div>
-                    <h3>Buscar por assunto</h3>
+                    <h3>Encontre a questão certa</h3>
                     <p>
-                      Encontre uma questão específica por palavra, tema ou
-                      período.
+                      Filtre por edital, assunto e tema, ou busque por palavra —
+                      e resolva a questão ali mesmo.
                     </p>
                     <span className="path-link violet-link">
                       Abrir busca <ArrowRight size={15} />
@@ -962,7 +1384,7 @@ export default function Home() {
                     <button
                       className="edition-row"
                       key={item.id}
-                      onClick={() => startEditionStudy(item.id)}
+                      onClick={() => startEditionPractice(item.id)}
                     >
                       <img src={item.thumbnail} alt="" />
                       <div className="edition-main">
@@ -982,77 +1404,72 @@ export default function Home() {
             </>
           )}
 
-          {mode === "study" && (
-            <StudyView
-              edition={edition}
+          {mode === "practice" && (
+            <PracticeView
+              query={query}
+              setQuery={setQuery}
+              selectedEdition={selectedEdition}
+              onEditionChange={handleEditionChange}
               selectedSubject={selectedSubject}
-              setSelectedSubject={setSelectedSubject}
+              onSubjectChange={handleSearchSubjectChange}
+              selectedTopic={selectedTopic}
+              onTopicChange={handleSearchTopicChange}
+              selectedSubtopic={selectedSubtopic}
+              onSubtopicChange={setSelectedSubtopic}
               subjects={subjects}
-              startSubjectStudy={startSubjectStudy}
-              currentQuestion={currentQuestion}
-              currentAnswer={currentAnswer}
-              setAnswers={setAnswers}
-              answers={answers}
-              submitted={submitted}
-              isSubmitted={isSubmitted}
-              submitAnswer={submitAnswer}
-              goNext={goNext}
-              sessionIndex={sessionIndex}
-              sessionIds={safeSession}
-              finished={finished}
-              resetStudy={resetStudy}
-              completed={completed}
+              topics={topics}
+              subtopics={subtopics}
+              questions={filteredQuestions}
+              bookmarkedOnly={bookmarkedOnly}
+              onBookmarkedOnlyChange={setBookmarkedOnly}
+              question={practiceQuestion}
+              position={practicePosition}
+              currentAnswer={practiceAnswer}
+              isSubmitted={practiceSubmitted}
+              onSelect={selectPracticeOption}
+              onSubmit={submitPracticeAnswer}
+              onNext={() => stepPractice(1)}
+              onPrev={() => stepPractice(-1)}
+              canPrev={practicePosition > 1}
+              onOpen={openPracticeQuestion}
+              onClearFilter={clearFilterProgress}
+              answeredInFilter={answeredInFilter}
+              correctInFilter={correctInFilter}
+              submitted={practice.submitted}
+              results={studyResults}
+              progress={filterProgress}
             />
           )}
 
           {mode === "simulate" && (
             <SimulationView
-              edition={edition}
-              selectedEdition={selectedEdition}
-              onEditionChange={handleEditionChange}
-              startEditionStudy={startEditionStudy}
-              currentQuestion={currentQuestion}
-              currentAnswer={currentAnswer}
-              answers={answers}
-              submitted={submitted}
-              setAnswers={setAnswers}
-              isSubmitted={isSubmitted}
-              submitAnswer={submitAnswer}
-              goNext={goNext}
-              sessionIndex={sessionIndex}
-              sessionIds={safeSession}
-              finished={finished}
-              resetStudy={resetStudy}
-              correctCount={correctCount}
-            />
-          )}
-
-          {mode === "search" && (
-            <SearchView
-              query={query}
-              setQuery={setQuery}
-              selectedEdition={selectedEdition}
-              setSelectedEdition={handleEditionChange}
-              selectedSubject={selectedSubject}
-              setSelectedSubject={handleSearchSubjectChange}
-              selectedTopic={selectedTopic}
-              setSelectedTopic={handleSearchTopicChange}
-              selectedSubtopic={selectedSubtopic}
-              setSelectedSubtopic={setSelectedSubtopic}
-              subjects={subjects}
-              topics={topics}
-              subtopics={subtopics}
-              filteredQuestions={filteredQuestions}
-              bookmarkedOnly={bookmarkedOnly}
-              setBookmarkedOnly={setBookmarkedOnly}
-              openQuestion={openSearchQuestion}
+              edition={simulationEdition}
+              selectedEdition={simEdition}
+              onEditionChange={selectSimulationEdition}
+              simulations={simulations}
+              onClearSimulation={clearSimulation}
+              onClearAllSimulations={clearAllSimulations}
+              onStart={startSimulation}
+              currentQuestion={simulationQuestion}
+              currentAnswer={simulationAnswer}
+              isSubmitted={simulationSubmitted}
+              answers={simulation.answers}
+              ids={simulation.ids}
+              index={simulation.index}
+              finished={simulation.finished}
+              onSelect={selectSimulationOption}
+              onSubmit={submitSimulationAnswer}
+              onNext={nextSimulationQuestion}
+              onPrev={previousSimulationQuestion}
+              onGoToQuestion={goToSimulationQuestion}
+              onRestart={() => startSimulation(simEdition, true)}
             />
           )}
 
           {mode === "sources" && (
             <SourcesView
               editionList={editionList}
-              startEditionStudy={startEditionStudy}
+              startEditionPractice={startEditionPractice}
             />
           )}
 
@@ -1063,33 +1480,44 @@ export default function Home() {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Card da questão (compartilhado entre prática e simulado)            */
+/* ------------------------------------------------------------------ */
+
 function QuestionCard({
   question,
   currentAnswer,
-  setAnswers,
   isSubmitted,
-  submitAnswer,
-  goNext,
-  sessionIndex,
-  sessionIds,
-  finished,
-  resetStudy,
+  revealAnswer = true,
+  onSelect,
+  onSubmit,
+  onNext,
+  onPrev,
+  canPrev = false,
+  position,
+  total,
+  progress,
+  nextLabel,
   simulate = false,
 }: {
-  question?: Question;
+  question?: PracticeQuestion;
   currentAnswer?: string;
-  setAnswers: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   isSubmitted: boolean;
-  submitAnswer: () => void;
-  goNext: () => void;
-  sessionIndex: number;
-  sessionIds: string[];
-  finished: boolean;
-  resetStudy: () => void;
+  revealAnswer?: boolean;
+  onSelect: (optionId: string) => void;
+  onSubmit: () => void;
+  onNext: () => void;
+  onPrev?: () => void;
+  canPrev?: boolean;
+  position: number;
+  total: number;
+  progress: number;
+  nextLabel: string;
   simulate?: boolean;
 }) {
-  const id = question ? (sessionIds[sessionIndex] ?? "") : "";
+  const id = question ? questionKey(question) : "";
   const [bookmarked, setBookmarked] = useState(false);
+
   useEffect(() => {
     const syncBookmark = (event?: Event) => {
       if (!id) {
@@ -1101,14 +1529,8 @@ function QuestionCard({
         setBookmarked(detail.includes(id));
         return;
       }
-      try {
-        const saved: unknown = JSON.parse(
-          localStorage.getItem("provaquest-bookmarks") ?? "[]"
-        );
-        setBookmarked(Array.isArray(saved) && saved.includes(id));
-      } catch {
-        setBookmarked(false);
-      }
+      const saved = readStorage<unknown>(STORAGE_KEYS.bookmarks, []);
+      setBookmarked(Array.isArray(saved) && saved.includes(id));
     };
     syncBookmark();
     window.addEventListener("provaquest-bookmarks-changed", syncBookmark);
@@ -1118,76 +1540,58 @@ function QuestionCard({
       window.removeEventListener("storage", syncBookmark);
     };
   }, [id]);
+
   if (!question)
     return (
       <div className="empty-state">
         <CircleHelp size={28} />
-        <h3>Escolha uma sessão para começar</h3>
-        <p>Selecione um assunto ou edital e volte para esta área.</p>
+        <h3>Nenhuma questão neste filtro</h3>
+        <p>Ajuste o edital, o assunto ou a busca para encontrar questões.</p>
       </div>
     );
+
   function toggleBookmark() {
-    try {
-      const current = JSON.parse(
-        localStorage.getItem("provaquest-bookmarks") ?? "[]"
-      ) as string[];
-      const next = current.includes(id)
-        ? current.filter(item => item !== id)
-        : [...current, id];
-      localStorage.setItem("provaquest-bookmarks", JSON.stringify(next));
-      window.dispatchEvent(
-        new CustomEvent("provaquest-bookmarks-changed", { detail: next })
-      );
-      setBookmarked(next.includes(id));
-    } catch {
-      /* bookmark é opcional e não pode interromper o fluxo */
-    }
-  }
-  const correct = currentAnswer === question.correct;
-  const options = question.options;
-  if (finished)
-    return (
-      <section className="result-card">
-        <div className="result-badge">
-          <Check size={25} />
-        </div>
-        <span className="section-kicker">Sequência concluída</span>
-        <h2>Bom ritmo.</h2>
-        <p>
-          Você fechou esta rodada. Comece outra para consolidar o assunto ou
-          mude o filtro para variar o treino.
-        </p>
-        <div className="result-actions">
-          <button className="primary-button" onClick={resetStudy}>
-            <RotateCcw size={16} /> Recomeçar
-          </button>
-        </div>
-      </section>
+    const saved = readStorage<unknown>(STORAGE_KEYS.bookmarks, []);
+    const current = Array.isArray(saved)
+      ? saved.filter((item): item is string => typeof item === "string")
+      : [];
+    const next = current.includes(id)
+      ? current.filter(item => item !== id)
+      : [...current, id];
+    writeStorage(STORAGE_KEYS.bookmarks, next);
+    window.dispatchEvent(
+      new CustomEvent("provaquest-bookmarks-changed", { detail: next })
     );
+    setBookmarked(next.includes(id));
+  }
+
+  const correct = currentAnswer === question.correct;
+  const showFeedback = isSubmitted && revealAnswer;
+  const options = question.options;
+
   return (
     <section className="question-stage">
       <div className="question-topline">
         <div className="question-counter">
-          <span>{String(sessionIndex + 1).padStart(2, "0")}</span>
+          <span>{String(position).padStart(2, "0")}</span>
           <span className="counter-slash">/</span>
-          <span className="counter-total">{sessionIds.length}</span>
+          <span className="counter-total">{total}</span>
         </div>
         <div className="question-labels">
           <Pill tone={subjectColor(question.subject)}>{question.subject}</Pill>
+          <Pill tone="neutral">{question.editionLabel}</Pill>
           {question.annulled && <Pill tone="coral">Anulada</Pill>}
         </div>
-        <span className="question-source">Edital oficial</span>
+        <span className="question-source">
+          {simulate ? "Simulado" : "Progresso salvo"}
+        </span>
       </div>
-      <ProgressBar
-        value={
-          ((sessionIndex + (isSubmitted ? 1 : 0)) / sessionIds.length) * 100
-        }
-        tone={subjectColor(question.subject)}
-      />
+      <ProgressBar value={progress} tone={subjectColor(question.subject)} />
       <div className="question-card">
         <div className="question-card-head">
           <span className="question-overline">
-            Questão {question.number} · {simulate ? "simulado" : "treino"}
+            Questão {question.number} · {simulate ? "simulado" : "treino"} ·{" "}
+            {question.editionLabel}
           </span>
           <button
             className={`bookmark-button ${bookmarked ? "is-bookmarked" : ""}`}
@@ -1208,20 +1612,19 @@ function QuestionCard({
           {options.map(option => {
             const chosen = currentAnswer === option.id;
             const isCorrect = option.id === question.correct;
-            const state =
-              isSubmitted && isCorrect
+            const state = showFeedback
+              ? isCorrect
                 ? "correct"
-                : isSubmitted && chosen
+                : chosen
                   ? "wrong"
-                  : "";
+                  : ""
+              : "";
             return (
               <button
                 disabled={isSubmitted}
                 key={option.id}
                 className={`option-row ${chosen ? "selected" : ""} ${state}`}
-                onClick={() =>
-                  setAnswers(prev => ({ ...prev, [id]: option.id }))
-                }
+                onClick={() => onSelect(option.id)}
               >
                 <span className="option-letter">{option.id}</span>
                 <span
@@ -1229,13 +1632,13 @@ function QuestionCard({
                 >
                   {option.text}
                 </span>
-                {isSubmitted && isCorrect && <Check size={18} />}
-                {isSubmitted && chosen && !isCorrect && <X size={18} />}
+                {showFeedback && isCorrect && <Check size={18} />}
+                {showFeedback && chosen && !isCorrect && <X size={18} />}
               </button>
             );
           })}
         </div>
-        {isSubmitted ? (
+        {showFeedback ? (
           <div
             role="status"
             aria-live="polite"
@@ -1253,178 +1656,367 @@ function QuestionCard({
               <SolutionDetails question={question} />
             </div>
           </div>
+        ) : isSubmitted ? (
+          <div className="question-hint" role="status" aria-live="polite">
+            <Check size={15} /> Resposta registrada. O gabarito aparece na
+            revisão, ao final do simulado.
+          </div>
         ) : (
           <div className="question-hint">
-            <CircleHelp size={15} /> Selecione uma alternativa para revelar o
-            gabarito.
+            <CircleHelp size={15} />
+            {simulate
+              ? "Confirme sua alternativa para revelar o gabarito."
+              : "Selecione uma alternativa e confirme para ver o gabarito."}
           </div>
         )}
       </div>
       <div className="question-actions">
-        {isSubmitted ? (
-          <button className="primary-button" onClick={goNext}>
-            {sessionIndex === sessionIds.length - 1
-              ? "Ver resultado"
-              : "Próxima questão"}{" "}
-            <ChevronRight size={16} />
-          </button>
-        ) : (
-          <button
-            className="primary-button"
-            disabled={!currentAnswer}
-            onClick={submitAnswer}
-          >
-            Confirmar resposta <Check size={16} />
-          </button>
-        )}
+        <div className="question-action-buttons">
+          {canPrev && onPrev && (
+            <button className="quiet-button" onClick={onPrev}>
+              <ChevronLeft size={16} /> Anterior
+            </button>
+          )}
+          {isSubmitted ? (
+            <button className="primary-button" onClick={onNext}>
+              {nextLabel} <ChevronRight size={16} />
+            </button>
+          ) : (
+            <button
+              className="primary-button"
+              disabled={!currentAnswer}
+              onClick={onSubmit}
+            >
+              Confirmar resposta <Check size={16} />
+            </button>
+          )}
+        </div>
         <span className="keyboard-hint">
-          {isSubmitted ? "Continue no seu ritmo" : "Escolha com calma"}
+          {isSubmitted
+            ? "Salvo neste navegador — pode atualizar a página sem perder nada"
+            : "Escolha com calma"}
         </span>
       </div>
     </section>
   );
 }
 
-function StudyView({
-  edition,
+/* ------------------------------------------------------------------ */
+/* Prática: busca + resolução na mesma tela                            */
+/* ------------------------------------------------------------------ */
+
+type PracticeViewProps = {
+  query: string;
+  setQuery: (value: string) => void;
+  selectedEdition: string;
+  onEditionChange: (value: string) => void;
+  selectedSubject: string;
+  onSubjectChange: (value: string) => void;
+  selectedTopic: string;
+  onTopicChange: (value: string) => void;
+  selectedSubtopic: string;
+  onSubtopicChange: (value: string) => void;
+  subjects: string[];
+  topics: string[];
+  subtopics: string[];
+  questions: PracticeQuestion[];
+  bookmarkedOnly: boolean;
+  onBookmarkedOnlyChange: (value: boolean) => void;
+  question?: PracticeQuestion;
+  position: number;
+  currentAnswer?: string;
+  isSubmitted: boolean;
+  onSelect: (optionId: string) => void;
+  onSubmit: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+  canPrev: boolean;
+  onOpen: (question: PracticeQuestion) => void;
+  onClearFilter: () => void;
+  answeredInFilter: number;
+  correctInFilter: number;
+  submitted: Record<string, boolean>;
+  results: Record<string, boolean>;
+  progress: number;
+};
+
+function PracticeView({
+  query,
+  setQuery,
+  selectedEdition,
+  onEditionChange,
   selectedSubject,
-  setSelectedSubject,
+  onSubjectChange,
+  selectedTopic,
+  onTopicChange,
+  selectedSubtopic,
+  onSubtopicChange,
   subjects,
-  startSubjectStudy,
-  currentQuestion,
+  topics,
+  subtopics,
+  questions,
+  bookmarkedOnly,
+  onBookmarkedOnlyChange,
+  question,
+  position,
   currentAnswer,
-  setAnswers,
-  answers,
-  submitted,
   isSubmitted,
-  submitAnswer,
-  goNext,
-  sessionIndex,
-  sessionIds,
-  finished,
-  resetStudy,
-  completed,
-}: any) {
+  onSelect,
+  onSubmit,
+  onNext,
+  onPrev,
+  canPrev,
+  onOpen,
+  onClearFilter,
+  answeredInFilter,
+  correctInFilter,
+  submitted,
+  results,
+  progress,
+}: PracticeViewProps) {
+  const atLast = position === questions.length && questions.length > 0;
   return (
-    <div className="page-view">
-      <div className="page-intro">
+    <div className="page-view practice-view">
+      <div className="page-intro search-intro">
         <div>
-          <span className="section-kicker">Modo treino</span>
-          <h1>Uma questão de cada vez.</h1>
+          <span className="section-kicker">
+            Praticar · biblioteca pesquisável
+          </span>
+          <h1>Encontre a questão certa.</h1>
           <p>
-            Feedback imediato, sem pressão. Escolha um assunto para montar sua
-            próxima sequência.
+            Filtre por edital, assunto e tema — ou busque por palavra. A questão
+            abre ao lado, com correção imediata e progresso salvo no seu
+            navegador.
           </p>
         </div>
-        <div className="mode-toggle">
-          <button
-            className={selectedSubject === "Todos os assuntos" ? "active" : ""}
-            onClick={() => setSelectedSubject("Todos os assuntos")}
-          >
-            Mix rápido
-          </button>
-          {subjects
-            .filter((subject: string) => subject !== "Todos os assuntos")
-            .slice(0, 2)
-            .map((subject: string) => (
-              <button
-                key={subject}
-                className={selectedSubject === subject ? "active" : ""}
-                onClick={() => setSelectedSubject(subject)}
-              >
-                {subject}
-              </button>
-            ))}
+        <div className="search-summary">
+          <strong>{questions.length}</strong>
+          <span>questões no filtro</span>
         </div>
       </div>
-      <div className="study-layout">
-        <aside className="study-rail">
-          <div className="rail-card">
-            <span className="rail-label">Sua sequência</span>
-            <strong>{sessionIds.length || 12} questões</strong>
-            <p>
-              {selectedSubject === "Todos os assuntos"
-                ? "Mistura de assuntos"
-                : selectedSubject}
-            </p>
-            <button
-              className="secondary-button"
-              onClick={() => startSubjectStudy(selectedSubject)}
-            >
-              Começar sequência <Play size={15} />
-            </button>
-          </div>
-          <div className="rail-card rail-stats">
-            <span className="rail-label">Desempenho nesta sessão</span>
-            <div className="rail-stat">
-              <span>Respondidas</span>
-              <b>
-                {
-                  Object.keys(submitted ?? {}).filter(id => submitted[id])
-                    .length
-                }
-              </b>
+
+      <div className="search-controls">
+        <div className="search-input">
+          <Search size={19} />
+          <input
+            aria-label="Buscar questões"
+            value={query}
+            onChange={event => setQuery(event.target.value)}
+            placeholder="Ex.: heap, árvore AVL, complexidade..."
+          />
+        </div>
+        <select
+          aria-label="Filtrar por edital"
+          value={selectedEdition}
+          onChange={event => onEditionChange(event.target.value)}
+        >
+          <option value="todos">Todos os editais</option>
+          {editionList.map(item => (
+            <option key={item.id} value={item.id}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Filtrar por assunto"
+          value={selectedSubject}
+          onChange={event => onSubjectChange(event.target.value)}
+        >
+          {subjects.map(subject => (
+            <option key={subject}>{subject}</option>
+          ))}
+        </select>
+        <select
+          aria-label="Filtrar por tema"
+          value={selectedTopic}
+          onChange={event => onTopicChange(event.target.value)}
+        >
+          {topics.map(topic => (
+            <option key={topic}>{topic}</option>
+          ))}
+        </select>
+        <select
+          aria-label="Filtrar por subtema"
+          value={selectedSubtopic}
+          onChange={event => onSubtopicChange(event.target.value)}
+        >
+          {subtopics.map(subtopic => (
+            <option key={subtopic}>{subtopic}</option>
+          ))}
+        </select>
+        <label className="bookmark-filter">
+          <input
+            type="checkbox"
+            checked={bookmarkedOnly}
+            onChange={event => onBookmarkedOnlyChange(event.target.checked)}
+          />
+          Somente salvas
+        </label>
+      </div>
+
+      <div className="search-filter-path" aria-live="polite">
+        <span>Filtro atual:</span>
+        <b>
+          {selectedEdition === "todos"
+            ? "Todos os editais"
+            : editionLabels[selectedEdition]}
+        </b>
+        <span>›</span>
+        <b>{selectedSubject}</b>
+        <span>›</span>
+        <b>{selectedTopic}</b>
+        <span>›</span>
+        <b>{selectedSubtopic}</b>
+      </div>
+
+      <div className="practice-progress">
+        <div className="practice-progress-copy">
+          <span className="rail-label">Seu progresso neste filtro</span>
+          <strong>
+            {answeredInFilter} de {questions.length}
+          </strong>
+          <span>
+            {correctInFilter} acerto(s) ·{" "}
+            {Math.max(0, answeredInFilter - correctInFilter)} para revisar
+          </span>
+        </div>
+        <div className="practice-progress-bar">
+          <ProgressBar value={progress} tone="mint" />
+        </div>
+        <button
+          className="quiet-button"
+          onClick={onClearFilter}
+          disabled={!answeredInFilter}
+        >
+          <Trash2 size={15} /> Zerar este filtro
+        </button>
+      </div>
+
+      <div className="practice-layout">
+        <aside className="practice-list" aria-label="Questões do filtro">
+          {questions.map((item, index) => {
+            const id = questionKey(item);
+            const answered = Boolean(submitted[id]);
+            const isCorrect = results[id] === true;
+            const active = question ? questionKey(question) === id : false;
+            return (
+              <button
+                key={id}
+                className={`practice-item ${active ? "active" : ""} ${
+                  answered ? (isCorrect ? "is-correct" : "is-wrong") : ""
+                }`}
+                aria-current={active ? "true" : undefined}
+                onClick={() => onOpen(item)}
+              >
+                <span className="practice-item-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="practice-item-body">
+                  <span className="practice-item-meta">
+                    <b>{item.editionLabel}</b>
+                    <span>{item.subject}</span>
+                  </span>
+                  <span className="practice-item-text">
+                    {previewOf(item).slice(0, 120)}
+                  </span>
+                </span>
+                <span className="practice-item-status">
+                  {answered ? (
+                    isCorrect ? (
+                      <Check size={15} />
+                    ) : (
+                      <X size={15} />
+                    )
+                  ) : (
+                    <ChevronRight size={15} />
+                  )}
+                </span>
+              </button>
+            );
+          })}
+          {!questions.length && (
+            <div className="empty-state">
+              <Search size={28} />
+              <h3>Nenhuma questão encontrada</h3>
+              <p>
+                {bookmarkedOnly
+                  ? "Você ainda não salvou questões com esse filtro. Toque no marcador de uma questão para salvá-la."
+                  : "Tente outro termo ou limpe os filtros."}
+              </p>
             </div>
-            <div className="rail-stat">
-              <span>Salvas no progresso</span>
-              <b>{Object.keys(completed).length}</b>
-            </div>
-          </div>
+          )}
         </aside>
-        <QuestionCard
-          question={currentQuestion}
-          currentAnswer={currentAnswer}
-          setAnswers={setAnswers}
-          isSubmitted={isSubmitted}
-          submitAnswer={submitAnswer}
-          goNext={goNext}
-          sessionIndex={sessionIndex}
-          sessionIds={sessionIds}
-          finished={finished}
-          resetStudy={resetStudy}
-        />
+        <div className="practice-stage">
+          <QuestionCard
+            question={questions.length ? question : undefined}
+            currentAnswer={currentAnswer}
+            isSubmitted={isSubmitted}
+            onSelect={onSelect}
+            onSubmit={onSubmit}
+            onNext={onNext}
+            onPrev={onPrev}
+            canPrev={canPrev}
+            position={position}
+            total={questions.length}
+            progress={progress}
+            nextLabel={atLast ? "Voltar ao início" : "Próxima questão"}
+          />
+        </div>
       </div>
     </div>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Simulado                                                            */
+/* ------------------------------------------------------------------ */
+
 function SimulationView({
   edition,
   selectedEdition,
   onEditionChange,
-  startEditionStudy,
+  simulations,
+  onClearSimulation,
+  onClearAllSimulations,
+  onStart,
   currentQuestion,
   currentAnswer,
-  answers,
-  submitted,
-  setAnswers,
   isSubmitted,
-  submitAnswer,
-  goNext,
-  sessionIndex,
-  sessionIds,
+  answers,
+  ids,
+  index,
   finished,
-  resetStudy,
+  onSelect,
+  onSubmit,
+  onNext,
+  onPrev,
+  onGoToQuestion,
+  onRestart,
 }: any) {
   const [reviewing, setReviewing] = useState(false);
-  const sessionCorrect = sessionIds.filter((id: string) => {
-    const question = allQuestions.find(
-      item => item.editionId + "-" + item.number === id
-    );
+  const sessionAnswered = ids.filter((id: string) =>
+    Boolean(simulations[selectedEdition]?.submitted?.[id])
+  ).length;
+  const sessionCorrect = ids.filter((id: string) => {
+    const question = allQuestions.find(item => questionKey(item) === id);
     return question && answers[id] === question.correct;
   }).length;
-  const score = sessionIds.length
-    ? Math.round((sessionCorrect / sessionIds.length) * 100)
+  const score = ids.length
+    ? Math.round((sessionCorrect / ids.length) * 100)
     : 0;
+  const hasAnySimulationProgress = Object.keys(simulations).length > 0;
+
   return (
     <div className="page-view">
       <div className="page-intro">
         <div>
           <span className="section-kicker">Modo simulado</span>
-          <h1>Como você se sairia na prova?</h1>
+          <h1>Seu simulado, seu progresso.</h1>
           <p>
-            Selecione um edital. Questões anuladas ou sem alternativas legíveis
-            ficam fora da prova respondível.
+            Cada edital tem respostas e progresso independentes. Após confirmar
+            cada resposta, veja o gabarito e a explicação imediatamente.
+            Continue de onde parou, refaça um edital ou zere apenas aquele
+            simulado.
           </p>
           <EditionSourceLinks edition={edition} />
         </div>
@@ -1447,46 +2039,129 @@ function SimulationView({
             className="primary-button compact"
             onClick={() => {
               setReviewing(false);
-              startEditionStudy(selectedEdition, true);
+              if (simulations[selectedEdition]?.finished) {
+                onEditionChange(selectedEdition);
+              } else {
+                onStart(selectedEdition);
+              }
             }}
           >
-            <Play size={15} /> Iniciar
+            <Play size={15} />
+            {simulations[selectedEdition]?.finished
+              ? "Ver resultado"
+              : simulations[selectedEdition]?.ids.length
+                ? "Continuar"
+                : "Iniciar"}
           </button>
         </div>
       </div>
-      {!sessionIds.length ? (
-        <div className="simulation-launch">
-          <div className="launch-illustration">
-            <Target size={34} />
-          </div>
+
+      <section
+        className="simulator-progress-section"
+        aria-labelledby="simulator-progress-title"
+      >
+        <div className="simulator-progress-heading">
           <div>
-            <Pill tone="blue">
-              {validQuestions(edition).length} questões respondíveis
-            </Pill>
-            <h2>{edition.label}</h2>
-            <p>
-              {edition.subtitle}. Faça o simulado completo e revise tudo no
-              final.
-            </p>
-            <button
-              className="primary-button"
-              onClick={() => startEditionStudy(selectedEdition, true)}
-            >
-              Começar simulado <ArrowRight size={16} />
-            </button>
+            <span className="section-kicker">Progresso individual</span>
+            <h2 id="simulator-progress-title">Simulados por edital</h2>
           </div>
-          <div className="launch-note">
-            <strong>Gabarito no final</strong>
-            <span>
-              Você responde sem ver a resposta e revisa toda a prova ao
-              terminar.
-            </span>
-          </div>
+          <button
+            type="button"
+            className="quiet-button simulator-reset-all"
+            disabled={!hasAnySimulationProgress}
+            onClick={onClearAllSimulations}
+          >
+            <Trash2 size={15} /> Zerar todos os simulados
+          </button>
         </div>
-      ) : reviewing ? (
+        <div className="simulator-progress-grid">
+          {editionList.map(item => {
+            const state = simulations[item.id];
+            const total = validQuestions(item).length;
+            const answered = state
+              ? Object.keys(state.submitted).filter(id =>
+                  state.ids.includes(id)
+                ).length
+              : 0;
+            const percent = total ? Math.round((answered / total) * 100) : 0;
+            const status = state?.finished
+              ? "Concluído"
+              : state?.ids.length
+                ? "Em andamento"
+                : "Não iniciado";
+            const hasSaved = Boolean(state?.ids.length);
+
+            return (
+              <article
+                className={`simulator-progress-card ${
+                  selectedEdition === item.id ? "selected" : ""
+                }`}
+                key={item.id}
+              >
+                <div className="simulator-card-top">
+                  <span>{item.id.replace("-", "/")}</span>
+                  <Pill tone={state?.finished ? "mint" : "neutral"}>
+                    {status}
+                  </Pill>
+                </div>
+                <h3>{item.label}</h3>
+                <p>{item.subtitle}</p>
+                <div className="simulator-card-progress-label">
+                  <span>
+                    {answered} de {total} respondidas
+                  </span>
+                  <b>{percent}%</b>
+                </div>
+                <ProgressBar value={percent} tone="blue" />
+                <div className="simulator-card-actions">
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={() => {
+                      onEditionChange(item.id);
+                      setReviewing(false);
+                      if (!state?.finished) onStart(item.id);
+                    }}
+                  >
+                    {state?.finished
+                      ? "Ver resultado"
+                      : hasSaved
+                        ? "Continuar"
+                        : "Iniciar simulado"}
+                  </button>
+                  {state?.finished && (
+                    <button
+                      type="button"
+                      className="quiet-button"
+                      onClick={() => {
+                        setReviewing(false);
+                        onStart(item.id, true);
+                      }}
+                    >
+                      <RotateCcw size={14} /> Refazer
+                    </button>
+                  )}
+                  {hasSaved && (
+                    <button
+                      type="button"
+                      className="simulator-reset-one"
+                      onClick={() => onClearSimulation(item.id)}
+                      aria-label={`Zerar progresso de ${item.label}`}
+                    >
+                      <Trash2 size={14} /> Zerar
+                    </button>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {!ids.length ? null : reviewing ? (
         <ReviewPanel
           edition={edition}
-          sessionIds={sessionIds}
+          sessionIds={ids}
           answers={answers}
           onBack={() => setReviewing(false)}
         />
@@ -1496,35 +2171,102 @@ function SimulationView({
             <div className="rail-card">
               <span className="rail-label">Simulado atual</span>
               <strong>{edition.label}</strong>
-              <p>{sessionIds.length} questões respondíveis</p>
+              <p>{ids.length} questões respondíveis</p>
               <ProgressBar
-                value={(sessionIndex / sessionIds.length) * 100}
+                value={(sessionAnswered / Math.max(1, ids.length)) * 100}
                 tone="blue"
               />
             </div>
             <div className="rail-card rail-stats">
-              <span className="rail-label">Parcial</span>
+              <span className="rail-label">Este edital</span>
               <div className="rail-stat">
                 <span>Respondidas</span>
-                <b>
-                  {
-                    Object.keys(submitted ?? {}).filter(id => submitted[id])
-                      .length
-                  }
-                </b>
+                <b>{sessionAnswered}</b>
               </div>
               <div className="rail-stat">
-                <span>Acertos</span>
-                <b>{sessionCorrect}</b>
+                <span>Restantes</span>
+                <b>{Math.max(0, ids.length - sessionAnswered)}</b>
               </div>
+              <button
+                type="button"
+                className="reset-link"
+                onClick={() => onClearSimulation(selectedEdition)}
+              >
+                <Trash2 size={13} /> Zerar este simulado
+              </button>
             </div>
+            <section
+              className="rail-card question-map-card"
+              aria-label="Mapa de questões do simulado"
+            >
+              <div className="question-map-heading">
+                <span className="rail-label">Mapa de questões</span>
+                <span>
+                  {sessionAnswered}/{ids.length}
+                </span>
+              </div>
+              <div
+                className="question-map-grid"
+                role="group"
+                aria-label="Ir para questão"
+              >
+                {ids.map((id: string, questionIndex: number) => {
+                  const question = allQuestions.find(
+                    item => questionKey(item) === id
+                  );
+                  const hasAnswer = Boolean(
+                    simulations[selectedEdition]?.submitted?.[id]
+                  );
+                  const isCorrect =
+                    hasAnswer &&
+                    Boolean(question) &&
+                    answers[id] === question?.correct;
+                  const status = !hasAnswer
+                    ? "pendente"
+                    : isCorrect
+                      ? "correta"
+                      : "errada";
+
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`question-map-dot ${
+                        hasAnswer
+                          ? isCorrect
+                            ? "is-correct"
+                            : "is-wrong"
+                          : "is-pending"
+                      } ${index === questionIndex ? "is-current" : ""}`}
+                      aria-label={`Questão ${questionIndex + 1}, ${status}`}
+                      aria-current={
+                        index === questionIndex ? "step" : undefined
+                      }
+                      title={`Questão ${questionIndex + 1} · ${status}`}
+                      onClick={() => onGoToQuestion(questionIndex)}
+                    >
+                      {questionIndex + 1}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="question-map-legend">
+                <span>
+                  <i className="legend-correct" /> Certa
+                </span>
+                <span>
+                  <i className="legend-wrong" /> Errada
+                </span>
+                <span>
+                  <i className="legend-pending" /> Pendente
+                </span>
+              </div>
+            </section>
           </aside>
           {finished ? (
             <ResultView
-              sessionIds={sessionIds}
-              answers={answers}
-              questions={edition.questions}
-              resetStudy={resetStudy}
+              sessionIds={ids}
+              resetStudy={onRestart}
               simulate
               score={score}
               correctTotal={sessionCorrect}
@@ -1534,14 +2276,19 @@ function SimulationView({
             <QuestionCard
               question={currentQuestion}
               currentAnswer={currentAnswer}
-              setAnswers={setAnswers}
               isSubmitted={isSubmitted}
-              submitAnswer={submitAnswer}
-              goNext={goNext}
-              sessionIndex={sessionIndex}
-              sessionIds={sessionIds}
-              finished={finished}
-              resetStudy={resetStudy}
+              revealAnswer
+              onSelect={onSelect}
+              onSubmit={onSubmit}
+              onNext={onNext}
+              onPrev={onPrev}
+              canPrev={index > 0}
+              position={index + 1}
+              total={ids.length}
+              progress={(sessionAnswered / Math.max(1, ids.length)) * 100}
+              nextLabel={
+                index === ids.length - 1 ? "Ver resultado" : "Próxima questão"
+              }
               simulate
             />
           )}
@@ -1559,8 +2306,6 @@ function ResultView({
   onReview,
 }: {
   sessionIds: string[];
-  answers: Record<string, string>;
-  questions: readonly Question[];
   resetStudy: () => void;
   simulate: boolean;
   score?: number;
@@ -1625,7 +2370,10 @@ function ReviewPanel({
         <div>
           <span className="section-kicker">Revisão do simulado</span>
           <h2>Veja onde ganhou — e onde pode virar o jogo.</h2>
-          <p>{sessionIds.length} respostas comparadas ao gabarito final.</p>
+          <p>
+            {sessionIds.length} respostas comparadas ao gabarito do{" "}
+            {edition.label}.
+          </p>
         </div>
         <button className="quiet-button" onClick={onBack}>
           <ChevronLeft size={15} /> Voltar ao resultado
@@ -1633,9 +2381,7 @@ function ReviewPanel({
       </div>
       <div className="review-list">
         {sessionIds.map((id, index) => {
-          const question = allQuestions.find(
-            item => item.editionId + "-" + item.number === id
-          );
+          const question = allQuestions.find(item => questionKey(item) === id);
           if (!question) return null;
           const marked = answers[id];
           const isCorrect = marked === question.correct;
@@ -1677,151 +2423,12 @@ function ReviewPanel({
   );
 }
 
-function SearchView({
-  query,
-  setQuery,
-  selectedEdition,
-  setSelectedEdition,
-  selectedSubject,
-  setSelectedSubject,
-  selectedTopic,
-  setSelectedTopic,
-  selectedSubtopic,
-  setSelectedSubtopic,
-  subjects,
-  topics,
-  subtopics,
-  filteredQuestions,
-  bookmarkedOnly,
-  setBookmarkedOnly,
-  openQuestion,
-}: any) {
-  return (
-    <div className="page-view">
-      <div className="page-intro search-intro">
-        <div>
-          <span className="section-kicker">Biblioteca pesquisável</span>
-          <h1>Encontre a questão certa.</h1>
-          <p>
-            Comece pela área, refine pelo tema e subtema, ou pesquise termos
-            como hash, pilha, Dijkstra e caminho mínimo.
-          </p>
-        </div>
-        <div className="search-summary">
-          <strong>{filteredQuestions.length}</strong>
-          <span>resultados encontrados</span>
-        </div>
-      </div>
-      <div className="search-controls">
-        <div className="search-input">
-          <Search size={19} />
-          <input
-            aria-label="Buscar questões"
-            autoFocus
-            value={query}
-            onChange={event => setQuery(event.target.value)}
-            placeholder="Ex.: heap, árvore AVL, complexidade..."
-          />
-        </div>
-        <select
-          aria-label="Filtrar por edital"
-          value={selectedEdition}
-          onChange={event => setSelectedEdition(event.target.value)}
-        >
-          <option value="todos">Todos os editais</option>
-          {editionList.map(item => (
-            <option key={item.id} value={item.id}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="Filtrar por assunto"
-          value={selectedSubject}
-          onChange={event => setSelectedSubject(event.target.value)}
-        >
-          {subjects.map((subject: string) => (
-            <option key={subject}>{subject}</option>
-          ))}
-        </select>
-        <select
-          aria-label="Filtrar por tema"
-          value={selectedTopic}
-          onChange={event => setSelectedTopic(event.target.value)}
-        >
-          {topics.map((topic: string) => (
-            <option key={topic}>{topic}</option>
-          ))}
-        </select>
-        <select
-          aria-label="Filtrar por subtema"
-          value={selectedSubtopic}
-          onChange={event => setSelectedSubtopic(event.target.value)}
-        >
-          {subtopics.map((subtopic: string) => (
-            <option key={subtopic}>{subtopic}</option>
-          ))}
-        </select>
-        <label className="bookmark-filter">
-          <input
-            type="checkbox"
-            checked={bookmarkedOnly}
-            onChange={event => setBookmarkedOnly(event.target.checked)}
-          />
-          Somente salvas
-        </label>
-      </div>
-      <div className="search-filter-path" aria-live="polite">
-        <span>Filtro atual:</span>
-        <b>{selectedSubject}</b>
-        <span>›</span>
-        <b>{selectedTopic}</b>
-        <span>›</span>
-        <b>{selectedSubtopic}</b>
-      </div>
-      <div className="search-results">
-        {filteredQuestions.map((question: any) => (
-          <button
-            key={`${question.editionId}-${question.number}`}
-            className="search-result"
-            onClick={() => openQuestion(question)}
-          >
-            <div className={`result-index ${subjectColor(question.subject)}`}>
-              {String(question.number).padStart(2, "0")}
-            </div>
-            <div className="result-copy">
-              <div className="result-meta">
-                <Pill tone={subjectColor(question.subject)}>
-                  {question.subject}
-                </Pill>
-                <span>{question.editionLabel}</span>
-              </div>
-              <strong>
-                {previewOf(question).slice(0, 175)}
-                {previewOf(question).length > 175 ? "…" : ""}
-              </strong>
-            </div>
-            <ArrowRight size={17} />
-          </button>
-        ))}
-        {!filteredQuestions.length && (
-          <div className="empty-state">
-            <Search size={28} />
-            <h3>Nenhuma questão encontrada</h3>
-            <p>Tente outro termo ou limpe os filtros.</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 function SourcesView({
   editionList,
-  startEditionStudy,
+  startEditionPractice,
 }: {
   editionList: readonly Edition[];
-  startEditionStudy: (id: string, simulate?: boolean) => void;
+  startEditionPractice: (id: string) => void;
 }) {
   return (
     <div className="page-view">
@@ -1867,9 +2474,9 @@ function SourcesView({
                 </div>
                 <button
                   className="source-start"
-                  onClick={() => startEditionStudy(edition.id)}
+                  onClick={() => startEditionPractice(edition.id)}
                 >
-                  Treinar este edital <ArrowRight size={15} />
+                  Praticar este edital <ArrowRight size={15} />
                 </button>
               </div>
             </article>
