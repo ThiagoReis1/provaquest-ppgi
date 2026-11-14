@@ -2957,13 +2957,23 @@ function CandidatesView() {
   };
   const funnel = activeStages.map((def, index) => {
     const entered = selectedEditionRecords.filter(
-      item => item.candidate.stages[def.id]
+      item =>
+        item.candidate.stages[def.id] &&
+        (def.id !== "inscricoes" ||
+          !/não|nao/i.test(item.candidate.stages[def.id].status ?? ""))
     ).length;
     const next = activeStages[index + 1];
     const advanced = next
       ? selectedEditionRecords.filter(
           item =>
-            item.candidate.stages[def.id] && item.candidate.stages[next.id]
+            item.candidate.stages[def.id] &&
+            item.candidate.stages[next.id] &&
+            didCandidatePassStage(
+              def.id,
+              next.id,
+              item.candidate.stages,
+              item.candidate.passedStages ?? []
+            )
         ).length
       : null;
     return { ...def, entered, advanced };

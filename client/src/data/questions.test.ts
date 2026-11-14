@@ -201,6 +201,20 @@ describe("acervo de questões", () => {
     expect(item.solution?.steps.join(" ")).toMatch(/gabarito final oficial/i);
   });
 
+  it("mantém a tabela e as alternativas oficiais de 2026/02-12 legíveis", () => {
+    const item = question("2026-02", 12);
+    expect(item.correct).toBe("D");
+    expect(item.sourcePageImage).toBe("/evidence/2026-02-page-7.png");
+    expect(item.prompt).toContain("índices: 0, 1, 2, 3, 4, 5, 6");
+    expect(item.prompt).toContain("elementos: [70, 9, 2, Ø, 4, 705, 27]");
+    expect(item.options.map(option => option.text)).toEqual([
+      "h(k, i) = (h'(k) + i) mod m.",
+      "h(k, i) = (h'(k) + i²) mod m.",
+      "h(k, i) = (h'(k) + 2i + i²) mod m.",
+      "h(k, i) = (h'(k) + 3i) mod m.",
+    ]);
+  });
+
   it("só deixa como respondível quem tem alternativas e gabarito", () => {
     for (const edition of studyData.editions) {
       for (const item of edition.questions) {

@@ -829,12 +829,12 @@
         {
           "number": 12,
           "subject": "Estruturas de dados",
-          "prompt": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo @ representa uma posição vazia):\níndices: O, 4d, De 3, ay 5, 6\nelementos: [70, 9, 2y Ds 4, 705, 27]\nSabendo que as colisões foram tratadas por endereçamento aberto e que nenhuma outra operação de inserção ou remoção foi realizada, selecione a alternativa que representa uma possível função de sondagem empregada na elaboração dessa tabela.",
+          "prompt": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h'(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo Ø representa uma posição vazia):\níndices: 0, 1, 2, 3, 4, 5, 6\nelementos: [70, 9, 2, Ø, 4, 705, 27]\nSabendo que as colisões foram tratadas por endereçamento aberto e que nenhuma outra operação de inserção ou remoção foi realizada, selecione a alternativa que representa uma possível função de sondagem empregada na elaboração dessa tabela.",
           "intro": null,
           "code": null,
           "ask": null,
-          "sourcePageImage": null,
-          "sourcePageLabel": null,
+          "sourcePageImage": "/evidence/2026-02-page-7.png",
+          "sourcePageLabel": "Página 7 · prova original",
           "options": [
             {
               "id": "A",
@@ -846,7 +846,7 @@
             },
             {
               "id": "C",
-              "text": "h(k, i) = (h'(k) + 21 + 2) mod m."
+              "text": "h(k, i) = (h'(k) + 2i + i²) mod m."
             },
             {
               "id": "D",
@@ -861,21 +861,21 @@
             "steps": [
               "Para a última chave inserida, 9, a posição inicial é h'(9) = 9 mod 7 = 2.",
               "Na alternativa D, a sondagem é h(9, i) = (2 + 3i) mod 7. Para i = 0, 1, 2, 3, 4, 5 e 6, obtêm-se as posições 2, 5, 1, 4, 0, 3 e 6.",
-              "Assim, essa função pode colocar 9 na posição 1 quando as posições 2 e 5 já estiverem ocupadas e a posição 1 estiver vazia antes da última inserção.",
-              "Como 3 e 7 são coprimos, essa sondagem visita todas as posições antes de repetir uma delas. Entretanto, a tabela final e a expressão da alternativa C estão corrompidas na transcrição, impedindo uma verificação integral da exclusão das demais alternativas."
+              "A posição final de 9 é 1; portanto, as posições 2 e 5 precisavam estar ocupadas antes da última inserção, exatamente como ocorre na tabela.",
+              "Como 3 e 7 são coprimos, essa sondagem visita todas as posições antes de repetir uma delas, tornando D uma função de sondagem possível para a tabela publicada."
             ],
-            "conclusion": "Alternativa D, conforme o gabarito: h(k, i) = (h'(k) + 3i) mod m; sua sequência de sondagem para 9 é 2, 5, 1, 4, 0, 3, 6.",
-            "distractors": "A percorre posições consecutivas, mas sua exclusão depende da tabela legível; B, partindo de 2, visita apenas 2, 3, 6 e 4, nunca alcançando 1; C está corrompida e não pode ser avaliada com segurança.",
+            "conclusion": "Alternativa D — h(k, i) = (h'(k) + 3i) mod m.",
+            "distractors": "A, B e C produzem sequências de sondagem incompatíveis com a posição final da chave 9 na tabela publicada.",
             "method": "Aplicação da função hash e simulação da estratégia de resolução de colisões."
           },
           "blocks": [
             {
               "type": "p",
-              "text": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo @ representa uma posição vazia):"
+              "text": "Em uma tabela de espalhamento com tamanho m = 7, foram inseridas 6 chaves. A função de dispersão utilizada foi h'(k) = k mod m. A ordem exata de inserção das chaves é desconhecida, mas a chave k₆ = 9 foi a última. O conteúdo final da tabela imediatamente após a inserção da chave k₆ = 9 foi o seguinte (o símbolo Ø representa uma posição vazia):"
             },
             {
               "type": "code",
-              "text": "índices: O, 4d, De 3, ay 5, 6\nelementos: [70, 9, 2y Ds 4, 705, 27]"
+              "text": "índices: 0, 1, 2, 3, 4, 5, 6\nelementos: [70, 9, 2, Ø, 4, 705, 27]"
             },
             {
               "type": "p",
