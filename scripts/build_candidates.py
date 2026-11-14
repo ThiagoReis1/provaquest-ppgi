@@ -17,6 +17,13 @@ def number(s):
     try: return float(s.replace('.', '').replace(',', '.')) if ',' in s else float(s)
     except ValueError: return None
 
+def explicit_negative_status(status):
+    return bool(re.fullmatch(
+        r'(não(?:\s+homologada)?|reprovad[oa]|eliminad[oa]|desclassificad[oa]|inabilitad[oa])',
+        clean(status or ''),
+        re.IGNORECASE,
+    ))
+
 def parse_rows(path, kind):
     """Parse official layout text. Each row retains the published score(s)."""
     rows, degree = [], ''
@@ -141,7 +148,12 @@ for eid, c in config.items():
         st = person['stages']
         person['id'] = f"{eid}-{norm(person['name']).replace(' ','-')}"
         # A stage is considered passed only when the candidate is present in the official next-stage result.
-        person['passedStages'] = [stage_keys[i] for i in range(len(stage_keys)-1) if stage_keys[i+1] in st]
+        person['passedStages'] = [
+            stage_keys[i]
+            for i in range(len(stage_keys) - 1)
+            if stage_keys[i + 1] in st
+            and not explicit_negative_status(st.get(stage_keys[i], {}).get('status'))
+        ]
         # Some official result documents omit the previous stage while still
         # publishing the candidate in the next one. Keep that passed stage in
         # the generated model so the UI can display the complete funnel.

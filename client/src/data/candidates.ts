@@ -3926,7 +3926,7 @@ export const candidateData = {
           },
         },
         id: "2026-02-luiz-felipe-lima-dos-santos",
-        passedStages: ["inscricoes"],
+        passedStages: [],
       },
       editalUrl:
         "https://edoc.ufam.edu.br/bitstream/123456789/11516/1/EDITAL%20N.%c2%ba%20014-2026-PROPESP-UFAM-PPGI-M-2026-2-Site.pdf",
@@ -29902,7 +29902,7 @@ export const candidateData = {
           },
         },
         id: "2024-01-jose-oiris-inacio-da-costa",
-        passedStages: ["inscricoes"],
+        passedStages: [],
       },
       editalUrl:
         "https://drive.google.com/file/d/1rWUIHlm7onS5sYCQZ06UaPF_ciVRe8pU/view",

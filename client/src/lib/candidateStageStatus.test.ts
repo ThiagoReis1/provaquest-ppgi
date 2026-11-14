@@ -19,6 +19,20 @@ describe("didCandidatePassStage", () => {
     ).toBe(true);
   });
 
+  it("does not override an explicit negative stage status", () => {
+    expect(
+      didCandidatePassStage(
+        "inscricoes",
+        "prova",
+        {
+          inscricoes: { status: "Não Homologada" },
+          prova: { status: "Publicado" },
+        },
+        ["inscricoes"]
+      )
+    ).toBe(false);
+  });
+
   it("does not infer a pass without an explicit result or a following stage", () => {
     expect(
       didCandidatePassStage("projetos", "titulos", { projetos: {} }, [])
